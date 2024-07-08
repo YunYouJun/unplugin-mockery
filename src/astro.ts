@@ -3,7 +3,7 @@ import type { Options } from './types'
 import unplugin from '.'
 
 export default (options: Options) => ({
-  name: 'unplugin-starter',
+  name: 'unplugin-mocker',
   hooks: {
     'astro:config:setup': async (astro: any) => {
       astro.config.vite.plugins ||= []

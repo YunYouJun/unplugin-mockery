@@ -1,0 +1,19 @@
+{
+  "name": "webpack-example",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack watch --mode development",
+    "serve": "webpack serve"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/webpack": "^5.28.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3",
+    "unplugin-mocker": "workspace:*",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  }
+}

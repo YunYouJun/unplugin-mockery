@@ -1,17 +1,17 @@
 {
-  "name": "unplugin-starter",
+  "name": "unplugin-mocker",
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@8.15.8",
   "description": "",
   "license": "MIT",
-  "homepage": "https://github.com/antfu/unplugin-starter#readme",
+  "homepage": "https://github.com/YunYouJun/unplugin-mocker#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/unplugin-starter.git"
+    "url": "git+https://github.com/YunYouJun/unplugin-mocker.git"
   },
   "bugs": {
-    "url": "https://github.com/antfu/unplugin-starter/issues"
+    "url": "https://github.com/YunYouJun/unplugin-mocker/issues"
   },
   "keywords": [
     "unplugin",
@@ -88,6 +88,7 @@
     "build:fix": "esno scripts/postbuild.ts",
     "lint": "eslint .",
     "play": "npm -C playground run dev",
+    "play:webpack": "pnpm -C playground/webpack run dev",
     "prepublishOnly": "npm run build",
     "release": "bumpp && npm publish",
     "start": "esno src/index.ts",
@@ -102,7 +103,13 @@
     "webpack": "^4 || ^5"
   },
   "peerDependenciesMeta": {
-    "webpack": {
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "@nuxt/schema": {
+      "optional": true
+    },
+    "esbuild": {
       "optional": true
     },
     "rollup": {
@@ -111,17 +118,12 @@
     "vite": {
       "optional": true
     },
-    "esbuild": {
-      "optional": true
-    },
-    "@nuxt/kit": {
-      "optional": true
-    },
-    "@nuxt/schema": {
+    "webpack": {
       "optional": true
     }
   },
   "dependencies": {
+    "jiti": "^1.21.6",
     "unplugin": "^1.11.0"
   },
   "devDependencies": {
@@ -131,6 +133,7 @@
     "@types/node": "^20.14.10",
     "bumpp": "^9.4.1",
     "chalk": "^5.3.0",
+    "consola": "^3.2.3",
     "eslint": "^8.57.0",
     "esno": "^4.7.0",
     "fast-glob": "^3.3.2",
