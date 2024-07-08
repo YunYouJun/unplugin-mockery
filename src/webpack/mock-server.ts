@@ -9,7 +9,7 @@ import { glob } from 'fast-glob'
 
 import type { MockMethod, Options } from '../types'
 
-// eslint-disable-next-line ts/no-var-requires, ts/no-require-imports
+// eslint-disable-next-line ts/no-require-imports
 const jiti = require('jiti')(__filename)
 
 export function mockServer(devServer: Server, options: Options) {

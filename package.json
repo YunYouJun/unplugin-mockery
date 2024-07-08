@@ -2,7 +2,7 @@
   "name": "unplugin-mocker",
   "type": "module",
   "version": "0.1.0",
-  "packageManager": "pnpm@8.15.8",
+  "packageManager": "pnpm@9.5.0",
   "description": "",
   "license": "MIT",
   "homepage": "https://github.com/YunYouJun/unplugin-mocker#readme",
@@ -127,14 +127,14 @@
     "unplugin": "^1.11.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.21.3",
+    "@antfu/eslint-config": "^2.22.0-beta.3",
     "@nuxt/kit": "^3.12.3",
     "@nuxt/schema": "^3.12.3",
     "@types/node": "^20.14.10",
     "bumpp": "^9.4.1",
     "chalk": "^5.3.0",
     "consola": "^3.2.3",
-    "eslint": "^8.57.0",
+    "eslint": "^9.6.0",
     "esno": "^4.7.0",
     "fast-glob": "^3.3.2",
     "nodemon": "^3.1.4",
@@ -143,7 +143,7 @@
     "tsup": "^8.1.0",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
-    "vitest": "^1.6.0",
+    "vitest": "^2.0.0",
     "webpack": "^5.92.1"
   }
 }
