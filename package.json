@@ -1,17 +1,17 @@
 {
-  "name": "unplugin-mocker",
+  "name": "unplugin-mockery",
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@9.5.0",
   "description": "",
   "license": "MIT",
-  "homepage": "https://github.com/YunYouJun/unplugin-mocker#readme",
+  "homepage": "https://github.com/YunYouJun/unplugin-mockery#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YunYouJun/unplugin-mocker.git"
+    "url": "git+https://github.com/YunYouJun/unplugin-mockery.git"
   },
   "bugs": {
-    "url": "https://github.com/YunYouJun/unplugin-mocker/issues"
+    "url": "https://github.com/YunYouJun/unplugin-mockery/issues"
   },
   "keywords": [
     "unplugin",

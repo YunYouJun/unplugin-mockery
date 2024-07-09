@@ -1,6 +1,6 @@
-# unplugin-mocker
+# unplugin-mockery
 
-[![NPM version](https://img.shields.io/npm/v/unplugin-mocker?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-mocker)
+[![NPM version](https://img.shields.io/npm/v/unplugin-mockery?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-mockery)
 
 ## Features
 
@@ -9,7 +9,7 @@
 ## Install
 
 ```bash
-pnpm add -D unplugin-mocker
+pnpm add -D unplugin-mockery
 ```
 
 <details>
@@ -17,7 +17,7 @@ pnpm add -D unplugin-mocker
 
 ```ts
 // vite.config.ts
-import Mocker from 'unplugin-mocker/vite'
+import Mocker from 'unplugin-mockery/vite'
 
 export default defineConfig({
   plugins: [
@@ -35,7 +35,7 @@ Example: [`playground/`](./playground/)
 
 ```ts
 // rollup.config.js
-import Mocker from 'unplugin-mocker/rollup'
+import Mocker from 'unplugin-mockery/rollup'
 
 export default {
   plugins: [
@@ -54,7 +54,7 @@ export default {
 module.exports = {
   /* ... */
   plugins: [
-    require('unplugin-mocker/webpack')({ /* options */ })
+    require('unplugin-mockery/webpack')({ /* options */ })
   ]
 }
 ```
@@ -68,7 +68,7 @@ module.exports = {
 // nuxt.config.js
 export default defineNuxtConfig({
   modules: [
-    ['unplugin-mocker/nuxt', { /* options */ }],
+    ['unplugin-mockery/nuxt', { /* options */ }],
   ],
 })
 ```
@@ -85,7 +85,7 @@ export default defineNuxtConfig({
 module.exports = {
   configureWebpack: {
     plugins: [
-      require('unplugin-mocker/webpack')({ /* options */ }),
+      require('unplugin-mockery/webpack')({ /* options */ }),
     ],
   },
 }
@@ -99,7 +99,7 @@ module.exports = {
 ```ts
 // esbuild.config.js
 import { build } from 'esbuild'
-import Mocker from 'unplugin-mocker/esbuild'
+import Mocker from 'unplugin-mockery/esbuild'
 
 build({
   plugins: [Mocker()],

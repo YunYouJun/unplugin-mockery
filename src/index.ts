@@ -12,7 +12,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
   options = { ...defaultOptions, ...options }
 
   return {
-    name: 'unplugin-mocker',
+    name: 'unplugin-mockery',
     transformInclude(id) {
       return id.endsWith('main.ts')
     },
@@ -21,7 +21,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     },
 
     webpack(compiler) {
-      compiler.hooks.afterEnvironment.tap('unplugin-mocker', () => {
+      compiler.hooks.afterEnvironment.tap('unplugin-mockery', () => {
         // console.log('Webpack done!')
         const devServer = compiler.options.devServer as Server.Configuration
         if (devServer) {
