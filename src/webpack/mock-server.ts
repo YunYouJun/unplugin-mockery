@@ -7,10 +7,14 @@ import consola from 'consola'
 import chalk from 'chalk'
 import { glob } from 'fast-glob'
 
+import type { Application } from 'express'
 import type { MockMethod, Options } from '../types'
 
 // eslint-disable-next-line ts/no-require-imports
-const jiti = require('jiti')(__filename)
+const jiti = require('jiti')(__filename, {
+  // clear cache
+  requireCache: false,
+})
 
 export function mockServer(devServer: Server, options: Options) {
   const files = glob.sync('**/*.ts', {
@@ -18,44 +22,45 @@ export function mockServer(devServer: Server, options: Options) {
     absolute: true,
   })
 
-  function registerRoutes(app: Exclude<Server['app'], undefined>) {
-    const prevRouteNum = app._router.stack.length
+  /**
+   * Register a mock route by file
+   * @param app
+   * @param file
+   */
+  function registerRoute(app: Application, file: string) {
+    consola.info(` > Registering Mock Server: ${chalk.dim(file)}`)
+    const mockMethods = jiti(file).default as MockMethod[]
 
-    for (const file of files) {
-      consola.info(` > Registering Mock Server: ${chalk.dim(file)}`)
-      const mockMethods = jiti(file).default as MockMethod[]
+    mockMethods.forEach((mockMethod) => {
+      const { method, url, response, rawResponse } = mockMethod
 
-      mockMethods.forEach((mockMethod) => {
-        const { method, url, response, rawResponse } = mockMethod
-        setTimeout(() => {
-          app[method || 'get'](url, (req, res) => {
-            if (rawResponse) {
-              rawResponse(
+      // unregister route
+      app._router.stack = app._router.stack.filter((i: any) => {
+        return !(i.route && i.route.path === url)
+      })
+
+      app[method || 'get'](url, (req, res) => {
+        setTimeout(async () => {
+          if (rawResponse) {
+            res.json(
+              await rawResponse(
                 req,
                 res,
-              )
-            }
-            else {
-              res.json(response)
-            }
-          })
+              ),
+            )
+          }
+          else {
+            res.json(response)
+          }
         }, mockMethod.timeout || 0)
       })
-    }
-
-    const mockRoutesLength = app._router.stack.length - prevRouteNum
-    return {
-      mockRoutesLength,
-      mockStartIndex: app._router.stack.length - mockRoutesLength,
-    }
+    })
   }
 
-  function unregisterRoutes() {
-    Object.keys(require.cache).forEach((i) => {
-      if (i.includes(options.mockDir)) {
-        delete require.cache[require.resolve(i)]
-      }
-    })
+  function registerRoutes(app: Application) {
+    for (const file of files) {
+      registerRoute(app, file)
+    }
   }
 
   const { app } = devServer
@@ -70,11 +75,8 @@ export function mockServer(devServer: Server, options: Options) {
     }),
   )
 
-  const mockRoutes = registerRoutes(app)
+  registerRoutes(app)
   consola.success(`\n > Mock Server Registered success!`)
-
-  let mockRoutesLength = mockRoutes.mockRoutesLength
-  let mockStartIndex = mockRoutes.mockStartIndex
 
   chokidar
     .watch(options.mockDir, {
@@ -83,17 +85,9 @@ export function mockServer(devServer: Server, options: Options) {
     .on('all', (event, path) => {
       if (event === 'change' || event === 'add') {
         try {
-          // remove mock routes stack
-          app._router.stack.splice(mockStartIndex, mockRoutesLength)
-
-          // clear routes cache
-          unregisterRoutes()
-
-          const mockRoutes = registerRoutes(app)
-          mockRoutesLength = mockRoutes.mockRoutesLength
-          mockStartIndex = mockRoutes.mockStartIndex
-
-          consola.success(`\n > Mock Server hot reload success! changed  ${chalk.dim(path)}`)
+          // clear route in register
+          registerRoute(app, path)
+          consola.success(` Mock Server hot reload success! changed  ${chalk.dim(path)}`)
         }
         catch (error) {
           consola.error(error)

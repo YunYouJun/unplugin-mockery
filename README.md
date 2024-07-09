@@ -2,6 +2,10 @@
 
 [![NPM version](https://img.shields.io/npm/v/unplugin-mocker?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-mocker)
 
+## Features
+
+- Hot Reload Routes on demand
+
 ## Install
 
 ```bash

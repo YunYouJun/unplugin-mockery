@@ -30,5 +30,5 @@ export interface MockMethod {
     query: Recordable
     headers: Recordable
   }) => any) | any
-  rawResponse?: (req: IncomingMessage, res: ServerResponse) => void
+  rawResponse?: (req: IncomingMessage, res: ServerResponse) => void | Promise<void>
 }
