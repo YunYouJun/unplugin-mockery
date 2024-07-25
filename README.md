@@ -54,7 +54,7 @@ export default {
 module.exports = {
   /* ... */
   plugins: [
-    require('unplugin-mockery/webpack')({ /* options */ })
+    require('unplugin-mockery/webpack').default({ /* options */ })
   ]
 }
 ```

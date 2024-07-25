@@ -31,7 +31,7 @@ export function mockServer(devServer: Server, options: Options) {
    * @param file
    */
   function registerRoute(app: Application, file: string) {
-    consola.info(` > Registering Mock Server: ${chalk.dim(file)}`)
+    consola.info(`Registering Mock Server: ${chalk.dim(file)}`)
     const mockMethods = jiti(file).default as MockMethod[]
 
     mockMethods.forEach((mockMethod) => {
@@ -62,7 +62,7 @@ export function mockServer(devServer: Server, options: Options) {
 
   function registerRoutes(app: Application) {
     if (options.debug) {
-      consola.info(` > Registering all routes in ${chalk.dim(options.mockDir)}`)
+      consola.info(`Registering all routes in ${chalk.dim(options.mockDir)}`)
     }
     for (const file of files) {
       registerRoute(app, file)
@@ -82,7 +82,7 @@ export function mockServer(devServer: Server, options: Options) {
   )
 
   registerRoutes(app)
-  consola.success(`\n > Mock Server Registered success!`)
+  consola.success(`Mock Server Registered success!`)
 
   chokidar
     .watch(options.mockDir, {

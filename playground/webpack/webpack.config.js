@@ -12,7 +12,7 @@ module.exports = {
   },
 
   plugins: [
-    require('unplugin-mockery').webpack({
+    require('unplugin-mockery/webpack')({
       mockDir: path.resolve(__dirname, 'mock'),
     }),
   ],
