@@ -17,6 +17,9 @@ const jiti = require('jiti')(__filename, {
 })
 
 export function mockServer(devServer: Server, options: Options) {
+  if (options.debug) {
+    consola.info('Mock Server Starting...')
+  }
   const files = glob.sync('**/*.ts', {
     cwd: options.mockDir,
     absolute: true,
@@ -58,6 +61,9 @@ export function mockServer(devServer: Server, options: Options) {
   }
 
   function registerRoutes(app: Application) {
+    if (options.debug) {
+      consola.info(` > Registering all routes in ${chalk.dim(options.mockDir)}`)
+    }
     for (const file of files) {
       registerRoute(app, file)
     }

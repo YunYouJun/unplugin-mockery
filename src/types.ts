@@ -2,6 +2,10 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 
 export interface Options {
   // define your plugin options here
+  /**
+   * Display debug information.
+   */
+  debug?: boolean
 
   /**
    * The directory where the mock files are located.
