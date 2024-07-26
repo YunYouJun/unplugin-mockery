@@ -43,24 +43,40 @@ router.use('/active-scene', async (req, res) => {
     filePath: string
     url: string
   })
-  res.json(scene)
+  res.json({
+    scene,
+  })
 })
 
-router.use('/toggle-scene', async (req, _res) => {
-  await toggleMockScene(req.query as {
+router.use('/toggle-scene', async (req, res) => {
+  const code = await toggleMockScene(req.query as {
     filePath: string
     sceneName: string
     url: string
   })
+  res.send(code)
 })
 
 router.use('/mock-list', (req, res) => {
   const files = getMockFiles(globalState.userOptions?.mockDir || defaultOptions.mockDir)
 
-  const list = files.map(file => ({
-    path: file,
-    methods: jiti(file).default,
-  }))
+  const list = files.map((file) => {
+    const mockery = jiti(file).default
+    if (mockery.scenes) {
+      // parse function
+      Object.keys(mockery.scenes).forEach((sceneId) => {
+        const scene = mockery.scenes[sceneId]
+        if (typeof scene === 'function') {
+          mockery.scenes[sceneId] = scene()
+        }
+      })
+    }
+
+    return {
+      path: file,
+      mockery,
+    }
+  })
 
   res.json({
     list,

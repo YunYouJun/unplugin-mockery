@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 defineProps<{
+  active?: boolean
   item: any
 }>()
 
@@ -7,7 +8,13 @@ const previewStore = usePreviewStore()
 </script>
 
 <template>
-  <div flex="~ col" class="gap-2 rounded p-2 text-left shadow dark:bg-dark-500">
+  <div
+    flex="~ col" class="gap-2 rounded p-2 text-left shadow"
+    :class="{
+      'dark:bg-dark-300': active,
+      'dark:bg-dark-500': !active,
+    }"
+  >
     <div class="flex items-center justify-between">
       <div class="flex cursor-pointer items-center gap-2 text-xs" @click="previewStore.previewRawFile(item.path)">
         <div i-vscode-icons:file-type-typescript />
@@ -18,7 +25,7 @@ const previewStore = usePreviewStore()
 
     <div class="flex flex-col gap-2">
       <!-- <MockMethodItem v-for="method in item.methods" :key="method" :method="method" :path="item.path" /> -->
-      <MockMethodItem :method="item.methods" :path="item.path" />
+      <MockMethodItem :method="item.mockery" :path="item.path" />
     </div>
   </div>
 </template>

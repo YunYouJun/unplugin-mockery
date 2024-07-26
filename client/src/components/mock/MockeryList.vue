@@ -4,6 +4,8 @@ import { useMockeryFetch } from '../../composables/fetch'
 const { data, error, isFetching, execute } = useMockeryFetch<{
   list: any[]
 }>('/mock-list').json()
+
+const previewStore = usePreviewStore()
 </script>
 
 <template>
@@ -16,6 +18,7 @@ const { data, error, isFetching, execute } = useMockeryFetch<{
         v-for="item in data.list"
         :key="item.path"
         :item="item"
+        :active="item.path === previewStore.curFilePath"
       />
     </div>
 

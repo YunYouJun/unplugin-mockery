@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import type { MockMethod } from 'unplugin-mockery'
+import type { MockeryRequest } from 'unplugin-mockery'
+import { mockeryAxios } from '~/utils/axios'
 
 const props = defineProps<{
-  method: MockMethod
+  method: MockeryRequest
   path: string
 }>()
 
@@ -38,12 +39,16 @@ const activeScene = ref<string | null>(null)
 const httpMethod = computed(() => props.method.method || 'get')
 
 onMounted(() => {
-  if (props.method.scenes) {
-    const keys = Object.keys(props.method.scenes)
-    if (keys.length) {
-      activeScene.value = keys[0]
+  mockeryAxios.get('/active-scene', {
+    params: {
+      filePath: props.path,
+      url: props.method.url,
+    },
+  }).then((res) => {
+    if (res.data.scene) {
+      activeScene.value = res.data.scene
     }
-  }
+  })
 })
 </script>
 
@@ -51,16 +56,16 @@ onMounted(() => {
   <div class="flex flex-col gap-2 pl-4">
     <div class="flex items-center gap-2 text-sm">
       <div i-ri-link />
-      <span class="w-28 inline-flex items-center justify-between">
+      <span class="w-28 inline-flex items-center justify-between text-sm">
         <span class="font-bold uppercase" :class="getMethodClass(httpMethod)">{{ httpMethod }}</span>
         <span
-          class="text-right text-xs"
+          class="text-right"
           :class="getTimeoutClass(method.timeout)"
         >
           {{ method.timeout || 0 }}ms
         </span>
       </span>
-      <span class="text-blue" ml-2 cursor-pointer text-xs op-80 hover:op-100 @click="previewStore.previewMockMethod(method)">
+      <span class="text-blue dark:text-blue-300" ml-2 cursor-pointer op-90 hover:op-100 @click="previewStore.previewMockMethod(method)">
         {{ method.url }}
       </span>
     </div>

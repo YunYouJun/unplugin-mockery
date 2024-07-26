@@ -24,11 +24,10 @@ function onClickScene() {
 <template>
   <div
     text="xs"
-    hover=" text-white"
     border="blue-500"
     class="inline-flex cursor-pointer items-center justify-center border rounded px-2 py-1 shadow"
     :class="{
-      'bg-blue-500': active,
+      'bg-blue-500 text-white': active,
       '': !active,
     }"
 

@@ -4,6 +4,6 @@ const { t } = useI18n()
 
 <template>
   <button icon-btn :title="t('button.toggle_dark')" @click="toggleDark()">
-    <div i="carbon-sun dark:carbon-moon" />
+    <div i="ri-sun-line dark:ri-moon-line" />
   </button>
 </template>

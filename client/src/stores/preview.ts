@@ -24,7 +24,13 @@ export const usePreviewStore = defineStore('preview', () => {
     curMockeryRequest.value = mockery
 
     language.value = 'json'
-    fileContent.value = JSON.stringify(mockery.response, null, 2)
+
+    const response = mockery.response
+      ? mockery.response
+      : mockery.curScene
+        ? mockery.scenes?.[mockery.curScene]
+        : mockery.scenes
+    fileContent.value = JSON.stringify(response, null, 2)
   }
 
   function openFileInEditor(filePath: string) {
@@ -45,6 +51,7 @@ export const usePreviewStore = defineStore('preview', () => {
     sceneName: string
     url: string
   }) {
+    curFilePath.value = params.filePath
     mockeryAxios.get('/toggle-scene', {
       params,
     })

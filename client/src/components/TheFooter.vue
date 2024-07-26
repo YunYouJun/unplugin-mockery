@@ -18,9 +18,7 @@ async function toggleLocales() {
       <div i-carbon-campsite />
     </RouterLink>
 
-    <button icon-btn :title="t('button.toggle_dark')" @click="toggleDark()">
-      <div i="carbon-sun dark:carbon-moon" />
-    </button>
+    <ToggleDark />
 
     <a icon-btn :title="t('button.toggle_langs')" @click="toggleLocales()">
       <div i-carbon-language />
