@@ -6,12 +6,22 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
+      "~/*": ["./client/src/*"],
       "unplugin-mockery": ["./src/index.ts"]
     },
     "resolveJsonModule": true,
+    "types": [
+      "vitest",
+      "vite/client",
+      "vite-plugin-vue-layouts/client",
+      "vite-plugin-pwa/client",
+      "unplugin-vue-macros/macros-global",
+      "unplugin-vue-router/client"
+    ],
     "strict": true,
     "strictNullChecks": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "exclude": ["dist", "eslint.config.js"]
+  "exclude": ["dist", "eslint.config.js", ".vite-ssg-temp"]
 }

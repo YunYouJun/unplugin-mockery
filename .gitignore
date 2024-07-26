@@ -76,3 +76,7 @@ typings/
 
 dist/
 dist-client/
+
+# vite-ssg
+.vite-ssg-dist
+.vite-ssg-temp
