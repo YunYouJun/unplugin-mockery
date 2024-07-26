@@ -4,34 +4,21 @@ import bodyParser from 'body-parser'
 import chokidar from 'chokidar'
 
 import consola from 'consola'
-import chalk from 'chalk'
-import { glob } from 'fast-glob'
+import colors from 'picocolors'
 
 import type { Application } from 'express'
 import type { MockMethod, Options } from '../types'
-
-// eslint-disable-next-line ts/no-require-imports
-const jiti = require('jiti')(__filename, {
-  // clear cache
-  requireCache: false,
-})
+import { getMockFiles, jiti } from '../core/utils'
 
 export function mockServer(devServer: Server, options: Options) {
-  if (options.debug) {
-    consola.debug('Mock Server Starting...')
-  }
-  const files = glob.sync('**/*.ts', {
-    cwd: options.mockDir,
-    absolute: true,
-  })
-
+  const files = getMockFiles(options.mockDir)
   /**
    * Register a mock route by file
    * @param app
    * @param file
    */
   function registerRoute(app: Application, file: string) {
-    consola.info(`Registering Mock Server: ${chalk.dim(file)}`)
+    consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
     const mockMethods = jiti(file).default as MockMethod[]
 
     mockMethods.forEach((mockMethod) => {
@@ -62,7 +49,7 @@ export function mockServer(devServer: Server, options: Options) {
 
   function registerRoutes(app: Application) {
     if (options.debug) {
-      consola.info(`Registering all routes in ${chalk.dim(options.mockDir)}`)
+      consola.info(`${colors.dim('Registering all routes in')} 📂 ${colors.cyan(options.mockDir)}`)
     }
     for (const file of files) {
       registerRoute(app, file)
@@ -82,7 +69,6 @@ export function mockServer(devServer: Server, options: Options) {
   )
 
   registerRoutes(app)
-  consola.success(`Mock Server Registered success!`)
 
   chokidar
     .watch(options.mockDir, {
@@ -93,7 +79,7 @@ export function mockServer(devServer: Server, options: Options) {
         try {
           // clear route in register
           registerRoute(app, path)
-          consola.success(` Mock Server hot reload success! changed  ${chalk.dim(path)}`)
+          consola.success(`  Mock Server hot reload success! changed  ${colors.dim(path)}`)
         }
         catch (error) {
           consola.error(error)

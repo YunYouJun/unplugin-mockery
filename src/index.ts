@@ -2,9 +2,7 @@ import type Server from 'webpack-dev-server'
 
 import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
-import consola from 'consola'
 import type { Options } from './types'
-import { mockServer } from './webpack/mock-server'
 import { defaultOptions } from './core/options'
 import { getWebpackConfig } from './webpack/get-config'
 
@@ -26,10 +24,16 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 
     webpack(compiler) {
       compiler.hooks.environment.tap(PLUGIN_NAME, () => {
-        const { setupMiddlewares } = getWebpackConfig(options)
+        const webpackConfig = getWebpackConfig(options)
         compiler.options.devServer = {
           ...compiler.options.devServer,
-          setupMiddlewares,
+          setupMiddleware: (middlewares: Server.Middleware[], devServer: Server) => {
+            webpackConfig.devServer.setupMiddlewares?.(middlewares, devServer)
+            // @ts-expect-error use private API
+            compiler.options.devServer?.setupMiddlewares?.(middlewares, devServer)
+
+            return middlewares
+          },
         }
       })
     },

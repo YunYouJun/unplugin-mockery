@@ -1,7 +1,10 @@
 import type Server from 'webpack-dev-server'
 import consola from 'consola'
-import type { MockMethod, Options } from '../types'
-import { defaultOptions } from '../core/options'
+import colors from 'picocolors'
+import type { Options } from '../types'
+import { clientDistFolder, defaultOptions } from '../core/options'
+import { serveClient } from '../core/client'
+import { globalState } from '../core/env'
 import { mockServer } from './mock-server'
 
 /**
@@ -9,6 +12,8 @@ import { mockServer } from './mock-server'
  * @param options
  */
 export function getWebpackConfig(options: Options = defaultOptions) {
+  globalState.startTimestamp = performance.now()
+
   options = Object.assign({}, defaultOptions, options)
 
   const webpackConfig: {
@@ -20,21 +25,31 @@ export function getWebpackConfig(options: Options = defaultOptions) {
           throw new Error('webpack-dev-server is not defined')
         }
 
-        // add custom
-
-        // // 插入自定义中间件
+        // maybe add custom
         // middlewares.unshift((req, res, next) => {
         //   console.log(`Request URL: ${req.url}`)
         //   next()
         // })
 
-        consola.info('Mock Server Starting...')
+        // eslint-disable-next-line no-console
+        console.log()
+        consola.start('Mock Server Starting...')
+
+        const startTimestamp = performance.now()
         mockServer(devServer, options)
+        const consumedTime = performance.now() - startTimestamp
+        consola.success(`Mock Server Started: ${colors.green(`${consumedTime.toFixed(2)}ms`)}`)
 
         return middlewares
       },
     },
   }
+
+  globalState.userOptions = options
+  serveClient({
+    staticPath: clientDistFolder,
+    port: options.client.port,
+  })
 
   return webpackConfig
 }

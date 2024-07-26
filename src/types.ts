@@ -11,6 +11,20 @@ export interface Options {
    * The directory where the mock files are located.
    */
   mockDir: string
+
+  /**
+   * mock client ui
+   */
+  client: {
+    /**
+     * The port to run the client server.
+     */
+    port: number
+    /**
+     * auto open browser.
+     */
+    open: boolean
+  }
 }
 
 export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch'

@@ -14,6 +14,10 @@ module.exports = defineConfig({
     devServer: {
       ...getWebpackConfig({
         debug: true,
+        client: {
+          port: 51223,
+          open: true,
+        },
       }).devServer,
     },
   },
