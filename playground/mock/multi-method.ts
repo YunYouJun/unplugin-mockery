@@ -33,4 +33,12 @@ export default [
       message: 'I am a DELETE method',
     },
   },
+  {
+    url: '/methods/patch',
+    method: 'patch',
+    timeout: 2000,
+    response: {
+      message: 'I am a PATCH method',
+    },
+  },
 ] as MockMethod[]

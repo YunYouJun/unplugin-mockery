@@ -10,7 +10,7 @@ const { data, error, isFetching, execute } = useMockeryFetch<{
       Loading...
     </div>
     <div v-if="data?.list">
-      <MockMethodItem
+      <MockFileItem
         v-for="item in data.list"
         :key="item.path"
         :item="item"

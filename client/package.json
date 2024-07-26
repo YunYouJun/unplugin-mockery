@@ -3,7 +3,7 @@
   "private": true,
   "packageManager": "pnpm@9.6.0",
   "scripts": {
-    "build": "vite-ssg build",
+    "build": "vite build",
     "dev": "run-p dev:*",
     "dev:client": "vite --port 3000 --open",
     "dev:server": "nodemon -w ../src -x tsx src/server.ts",
@@ -23,6 +23,7 @@
     "@unocss/reset": "^0.61.5",
     "@vueuse/core": "^10.11.0",
     "@vueuse/head": "^2.0.0",
+    "axios": "^1.7.2",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.34",
@@ -69,7 +70,6 @@
     "vite-plugin-pwa": "^0.20.1",
     "vite-plugin-vue-devtools": "^7.3.7",
     "vite-plugin-vue-layouts": "^0.11.0",
-    "vite-plugin-webfont-dl": "^3.9.4",
     "vite-ssg": "^0.23.8",
     "vitest": "^2.0.4",
     "vue-tsc": "^2.0.29"

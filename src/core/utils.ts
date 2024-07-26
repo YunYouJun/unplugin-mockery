@@ -2,13 +2,13 @@ import consola from 'consola'
 import fg from 'fast-glob'
 import createJITI from 'jiti'
 
+import { filename } from './shims'
+
 // shim for esm
-export const jiti = typeof require === 'undefined'
-  ? createJITI(import.meta.url)
-  : createJITI(__filename, {
+export const jiti = createJITI(filename, {
   // clear cache
-    requireCache: false,
-  })
+  requireCache: false,
+})
 
 export async function openBrowser(address: string) {
   await import('open')

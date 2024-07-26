@@ -2,9 +2,11 @@ import type Server from 'webpack-dev-server'
 import consola from 'consola'
 import colors from 'picocolors'
 import type { Options } from '../types'
-import { clientDistFolder, defaultOptions } from '../core/options'
+import { defaultOptions } from '../core/options'
 import { serveClient } from '../core/client'
 import { globalState } from '../core/env'
+import { clientDistFolder } from '../core/constants'
+
 import { mockServer } from './mock-server'
 
 /**
@@ -48,7 +50,7 @@ export function getWebpackConfig(options: Options = defaultOptions) {
   globalState.userOptions = options
   serveClient({
     staticPath: clientDistFolder,
-    port: options.client.port,
+    port: options.client?.port,
   })
 
   return webpackConfig

@@ -6,6 +6,7 @@ import type { Options } from './types'
 import { defaultOptions } from './core/options'
 import { getWebpackConfig } from './webpack/get-config'
 
+export * from './core'
 export * from './types'
 
 const PLUGIN_NAME = 'unplugin:webpack'

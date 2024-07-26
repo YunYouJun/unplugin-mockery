@@ -7,8 +7,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    MockFileItem: typeof import('./components/mock/MockFileItem.vue')['default']
     MockMethodItem: typeof import('./components/mock/MockMethodItem.vue')['default']
     MockMethodsList: typeof import('./components/mock/MockMethodsList.vue')['default']
+    MockSceneItem: typeof import('./components/mock/MockSceneItem.vue')['default']
     PreviewFile: typeof import('./components/PreviewFile.vue')['default']
     README: typeof import('./components/README.md')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

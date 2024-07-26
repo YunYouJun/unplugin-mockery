@@ -1,4 +1,3 @@
-import path from 'node:path'
 import type { Options } from '../types'
 
 export const defaultOptions: Options = {
@@ -8,9 +7,3 @@ export const defaultOptions: Options = {
   },
   mockDir: 'mock',
 }
-
-const dirname = typeof __dirname === 'undefined' ? import.meta.dirname : __dirname
-/**
- * build client dist folder
- */
-export const clientDistFolder = path.resolve(dirname, '../dist-client')

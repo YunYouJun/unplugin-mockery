@@ -8,7 +8,7 @@ import { globalState } from './env'
 import { createMockClientServer } from './server'
 
 export function serveClient(options: {
-  mode: 'development' | 'production'
+  mode?: 'development' | 'production'
   staticPath?: string
   port?: number
 }) {

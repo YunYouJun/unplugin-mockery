@@ -9,6 +9,8 @@ defineOptions({
 const { t } = useI18n()
 const name = ref('')
 
+const previewStore = usePreviewStore()
+
 const router = useRouter()
 function go() {
   if (name.value)
@@ -43,7 +45,11 @@ function go() {
       </div>
       <MockMethodsList />
     </Pane>
-    <Pane class="border-l dark:border-l-dark-200">
+    <Pane class="flex flex-col border-l dark:border-l-dark-200">
+      <div class="flex cursor-pointer items-center p-1 text-xs op-80 hover:op-100" @click="previewStore.openFileInEditor(previewStore.curFilePath)">
+        <div i-vscode-icons:file-type-vscode />
+        <span class="text-left" ml-2 :title="previewStore.curFilePath">{{ previewStore.curFilePath }}</span>
+      </div>
       <PreviewFile />
     </Pane>
   </Splitpanes>

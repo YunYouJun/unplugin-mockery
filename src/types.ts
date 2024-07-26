@@ -29,7 +29,7 @@ export interface Options {
 
 export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
-interface RespThisType {
+export interface RespThisType {
   req: IncomingMessage
   res: ServerResponse
   parseJson: () => any
@@ -37,16 +37,24 @@ interface RespThisType {
 
 type Recordable<T = any> = Record<string, T>
 
-export interface MockMethod {
+export type MockResponse = ((this: RespThisType, opt: {
+  url: Recordable
+  body: Recordable
+  query: Recordable
+  headers: Recordable
+}) => any) | any
+
+export type RawResponse = (req: IncomingMessage, res: ServerResponse) => void | Promise<void>
+
+type MockScenes = Record<string, MockResponse>
+export interface MockMethod<T extends MockScenes | undefined = MockScenes> {
   url: string
   method?: MethodType
   timeout?: number
   statusCode?: number
-  response?: ((this: RespThisType, opt: {
-    url: Recordable
-    body: Recordable
-    query: Recordable
-    headers: Recordable
-  }) => any) | any
-  rawResponse?: (req: IncomingMessage, res: ServerResponse) => void | Promise<void>
+  response?: MockResponse
+  rawResponse?: RawResponse
+
+  scenes?: T
+  curScene?: keyof T | ''
 }

@@ -83,7 +83,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "npm run build:unplugin && npm run build:client",
+    "build:unplugin": "tsup",
     "build:client": "pnpm -C client run build",
     "dev": "tsup --watch src",
     "dev:client": "pnpm -C client run dev",
@@ -127,7 +128,9 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "fs-extra": "^11.2.0",
     "jiti": "^1.21.6",
+    "launch-editor": "^2.8.0",
     "serve-static": "^1.15.0",
     "unplugin": "^1.12.0"
   },
@@ -135,6 +138,7 @@
     "@antfu/eslint-config": "^2.23.2",
     "@nuxt/kit": "^3.12.4",
     "@nuxt/schema": "^3.12.4",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.14.12",
     "@unocss/eslint-config": "^0.61.5",
     "bumpp": "^9.4.1",

@@ -12,7 +12,6 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 import LinkAttributes from 'markdown-it-link-attributes'
 import Unocss from 'unocss/vite'
 import Shiki from '@shikijs/markdown-it'
-import WebfontDownload from 'vite-plugin-webfont-dl'
 import VueRouter from 'unplugin-vue-router/vite'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import consola from 'consola'
@@ -157,9 +156,6 @@ export default defineConfig(({ mode }) => {
         fullInstall: true,
         include: [path.resolve(__dirname, 'locales/**')],
       }),
-
-      // https://github.com/feat-agency/vite-plugin-webfont-dl
-      WebfontDownload(),
 
       // https://github.com/webfansplz/vite-plugin-vue-devtools
       VueDevTools(),

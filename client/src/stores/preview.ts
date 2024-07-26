@@ -1,20 +1,14 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { MockMethod } from '../../../src/types'
+import type { MockMethod } from 'unplugin-mockery'
+import { mockeryAxios } from '~/utils/axios'
 
 export const usePreviewStore = defineStore('preview', () => {
   const curFilePath = ref('')
   const fileContent = ref('')
   const language = ref<'typescript' | 'json'>('typescript')
 
-  const curMockMethod = ref<MockMethod>({
-    url: '',
-    method: 'get',
-    response: {
-      status: 200,
-      body: '',
-    },
-  })
+  const curMockMethod = ref<MockMethod>()
 
   async function previewRawFile(filePath: string) {
     curFilePath.value = filePath
@@ -22,8 +16,8 @@ export const usePreviewStore = defineStore('preview', () => {
     if (filePath.endsWith('.ts'))
       language.value = 'typescript'
 
-    const res = await fetch(filePath)
-    fileContent.value = await res.text()
+    const res = await mockeryAxios.get<string>(`/raw-file?path=${filePath}`)
+    fileContent.value = res.data
   }
 
   function previewMockMethod(mockMethod: MockMethod) {
@@ -31,6 +25,29 @@ export const usePreviewStore = defineStore('preview', () => {
 
     language.value = 'json'
     fileContent.value = JSON.stringify(mockMethod, null, 2)
+  }
+
+  function openFileInEditor(filePath: string) {
+    mockeryAxios.get('/open-file', {
+      params: {
+        path: filePath,
+      },
+    })
+  }
+
+  function previewMockScene(scene: object) {
+    language.value = 'json'
+    fileContent.value = JSON.stringify(scene, null, 2)
+  }
+
+  function toggleMockScene(params: {
+    filePath: string
+    sceneName: string
+    url: string
+  }) {
+    mockeryAxios.get('/toggle-scene', {
+      params,
+    })
   }
 
   return {
@@ -42,6 +59,10 @@ export const usePreviewStore = defineStore('preview', () => {
     fileContent,
     previewRawFile,
     previewMockMethod,
+    previewMockScene,
+    toggleMockScene,
+
+    openFileInEditor,
   }
 })
 
