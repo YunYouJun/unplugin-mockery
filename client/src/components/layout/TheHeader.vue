@@ -4,7 +4,8 @@
 <template>
   <div
     class="h-12 items-center justify-center shadow"
-    flex gap="2" px-4
+    flex
+    gap="2" px-4
     border="b b-gray-200 dark:b-dark-200"
   >
     <div text-xl>

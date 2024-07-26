@@ -1,4 +1,4 @@
-import { defineMockMethod } from 'unplugin-mockery'
+import { defineMockery } from 'unplugin-mockery'
 
 const successResponse = {
   code: 0,
@@ -10,9 +10,11 @@ const successResponse = {
 
 const scenes = {
   '登录成功': successResponse,
-  '登录失败-账号不存在': {
-    code: -1,
-    message: 'fail',
+  '登录失败-账号不存在': () => {
+    return {
+      code: -1,
+      message: 'fail',
+    }
   },
   '登录失败-密码错误': {
     code: -2,
@@ -20,10 +22,10 @@ const scenes = {
   },
 }
 
-export default defineMockMethod({
+export default defineMockery({
   url: '/api/login',
   method: 'post',
-  curScene: '',
+
+  curScene: '登录成功',
   scenes,
-  response: scenes['登录成功'],
 })

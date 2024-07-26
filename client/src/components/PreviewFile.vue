@@ -79,6 +79,15 @@ declare module 'node:http' {
 
 declare module 'unplugin-mockery' {
 ${typeText.split('\n').map(line => `  ${line}`).join('\n')}
+  /**
+   * curScene only can be one of the keys of scenes
+   */
+  declare function defineMockeryRequest<T extends MockeryRequest['scenes']>(method: MockeryRequest<T>): MockeryRequest<T>;
+  /**
+   * Define a mockery request
+   * @alias defineMockeryRequest
+   */
+  declare const defineMockery: typeof defineMockeryRequest;
 `,
   )
 }

@@ -20,7 +20,7 @@ function go() {
 
 <template>
   <Splitpanes class="w-full">
-    <Pane>
+    <Pane class="h-full flex flex-col">
       <!-- TODO search -->
       <div class="relative flex items-center justify-center gap-2 shadow">
         <TheInput
@@ -43,7 +43,7 @@ function go() {
           />
         </button>
       </div>
-      <MockMethodsList />
+      <MockeryList />
     </Pane>
     <Pane class="flex flex-col border-l dark:border-l-dark-200">
       <div class="flex cursor-pointer items-center p-1 text-xs op-80 hover:op-100" @click="previewStore.openFileInEditor(previewStore.curFilePath)">

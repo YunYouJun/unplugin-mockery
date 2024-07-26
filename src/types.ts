@@ -47,7 +47,8 @@ export type MockResponse = ((this: RespThisType, opt: {
 export type RawResponse = (req: IncomingMessage, res: ServerResponse) => void | Promise<void>
 
 type MockScenes = Record<string, MockResponse>
-export interface MockMethod<T extends MockScenes | undefined = MockScenes> {
+
+export interface MockeryRequest<T extends MockScenes | undefined = MockScenes> {
   url: string
   method?: MethodType
   timeout?: number

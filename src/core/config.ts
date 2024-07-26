@@ -1,10 +1,9 @@
-import type { MockMethod } from '../types'
+import type { MockeryRequest } from '../types'
 
 /**
  * curScene only can be one of the keys of scenes
- * @param methods
  */
-export function defineMockMethod<T extends MockMethod['scenes']>(method: MockMethod<T>): MockMethod<T> {
+export function defineMockeryRequest<T extends MockeryRequest['scenes']>(method: MockeryRequest<T>): MockeryRequest<T> {
   if (!method.url) {
     throw new Error('URL is required')
   }
@@ -14,3 +13,15 @@ export function defineMockMethod<T extends MockMethod['scenes']>(method: MockMet
   }
   return method
 }
+
+/**
+ * Define a mockery request
+ * @alias defineMockeryRequest
+ */
+export const defineMockery = defineMockeryRequest
+
+/**
+ * @todo
+ * mockery.config.ts
+ */
+export function defineMockeryConfig() {}

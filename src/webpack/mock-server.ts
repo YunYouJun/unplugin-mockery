@@ -7,7 +7,7 @@ import consola from 'consola'
 import colors from 'picocolors'
 
 import type { Application } from 'express'
-import type { MockMethod, Options } from '../types'
+import type { MockeryRequest, Options } from '../types'
 import { getMockFiles, jiti } from '../core/utils'
 
 export function mockServer(devServer: Server, options: Options) {
@@ -19,31 +19,28 @@ export function mockServer(devServer: Server, options: Options) {
    */
   function registerRoute(app: Application, file: string) {
     consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
-    const mockMethods = jiti(file).default as MockMethod[]
+    const mockeryRequest = jiti(file).default as MockeryRequest
+    const { method, url, response, rawResponse } = mockeryRequest
 
-    mockMethods.forEach((mockMethod) => {
-      const { method, url, response, rawResponse } = mockMethod
+    // unregister route
+    app._router.stack = app._router.stack.filter((i: any) => {
+      return !(i.route && i.route.path === url)
+    })
 
-      // unregister route
-      app._router.stack = app._router.stack.filter((i: any) => {
-        return !(i.route && i.route.path === url)
-      })
-
-      app[method || 'get'](url, (req, res) => {
-        setTimeout(async () => {
-          if (rawResponse) {
-            res.json(
-              await rawResponse(
-                req,
-                res,
-              ),
-            )
-          }
-          else {
-            res.json(response)
-          }
-        }, mockMethod.timeout || 0)
-      })
+    app[method || 'get'](url, (req, res) => {
+      setTimeout(async () => {
+        if (rawResponse) {
+          res.json(
+            await rawResponse(
+              req,
+              res,
+            ),
+          )
+        }
+        else {
+          res.json(response)
+        }
+      }, mockeryRequest.timeout || 0)
     })
   }
 

@@ -1,13 +1,10 @@
 import { defineMockery } from 'unplugin-mockery'
 
 export default defineMockery({
-  url: '/api/ping',
+  url: '/methods/get',
   method: 'get',
+  timeout: 5000,
   response: {
-    code: 0,
-    message: 'success',
-    data: {
-      name: 'pong',
-    },
+    message: 'I am a GET method',
   },
 })

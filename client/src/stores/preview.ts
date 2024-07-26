@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { MockMethod } from 'unplugin-mockery'
+import type { MockeryRequest } from 'unplugin-mockery'
 import { mockeryAxios } from '~/utils/axios'
 
 export const usePreviewStore = defineStore('preview', () => {
@@ -8,7 +8,7 @@ export const usePreviewStore = defineStore('preview', () => {
   const fileContent = ref('')
   const language = ref<'typescript' | 'json'>('typescript')
 
-  const curMockMethod = ref<MockMethod>()
+  const curMockeryRequest = ref<MockeryRequest>()
 
   async function previewRawFile(filePath: string) {
     curFilePath.value = filePath
@@ -20,11 +20,11 @@ export const usePreviewStore = defineStore('preview', () => {
     fileContent.value = res.data
   }
 
-  function previewMockMethod(mockMethod: MockMethod) {
-    curMockMethod.value = mockMethod
+  function previewMockMethod(mockery: MockeryRequest) {
+    curMockeryRequest.value = mockery
 
     language.value = 'json'
-    fileContent.value = JSON.stringify(mockMethod, null, 2)
+    fileContent.value = JSON.stringify(mockery.response, null, 2)
   }
 
   function openFileInEditor(filePath: string) {
@@ -52,7 +52,7 @@ export const usePreviewStore = defineStore('preview', () => {
 
   return {
     curFilePath,
-    curMockMethod,
+    curMockeryRequest,
 
     language,
 

@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    MockeryList: typeof import('./components/mock/MockeryList.vue')['default']
     MockFileItem: typeof import('./components/mock/MockFileItem.vue')['default']
     MockMethodItem: typeof import('./components/mock/MockMethodItem.vue')['default']
     MockMethodsList: typeof import('./components/mock/MockMethodsList.vue')['default']
