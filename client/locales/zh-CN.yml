@@ -10,5 +10,5 @@ intro:
   dynamic-route: 动态路由演示
   hi: 你好，{name}
   aka: 也叫
-  whats-your-name: 输入你的名字
+  search-mockery: 搜索 Mockery
 not-found: 未找到页面

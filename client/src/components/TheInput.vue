@@ -10,11 +10,11 @@ const { modelValue } = defineModels<{
     v-model="modelValue"
     v-bind="$attrs"
     type="text"
-    p="x-4 y-2"
-    w="250px"
-    text="center"
+    class="flex-grow"
+    p="2"
+    text="leftt"
     bg="transparent"
-    border="~ rounded gray-200 dark:gray-700"
+    border="b gray-200 dark:b-dark-200"
     outline="none active:none"
   >
 </template>

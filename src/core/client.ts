@@ -23,7 +23,7 @@ export function serveClient(options: {
     const url = `http://localhost:${port}`
     consola.info(`  ${c.green('🤡')}  ${c.bold('Mockery Started')}: ${c.cyan(url)}`)
 
-    if (globalState.userOptions?.client.open)
+    if (globalState.userOptions?.client?.open)
       openBrowser(url)
 
     if (globalState.startTimestamp) {

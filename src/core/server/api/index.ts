@@ -9,5 +9,5 @@ export function registerClientAPI(app: Application) {
     res.json({ message: 'Hello World' })
   })
 
-  app.use('/_mockery_api', router)
+  app.use('/_mockery_api_', router)
 }

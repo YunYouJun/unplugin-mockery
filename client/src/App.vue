@@ -3,22 +3,23 @@
 // you can use this to manipulate the document head in any components,
 // they will be rendered correctly in the html results with vite-ssg
 useHead({
-  title: 'Vitesse',
+  title: 'Unplugin Mockery',
   meta: [
     {
       name: 'description',
-      content: 'Opinionated Vite Starter Template',
+      content: 'Unplugin Mockery Client',
     },
     {
       name: 'theme-color',
-      content: () => isDark.value ? '#00aba9' : '#ffffff',
+      content: () => isDark.value ? 'dogerblue' : '#ffffff',
     },
   ],
   link: [
     {
       rel: 'icon',
       type: 'image/svg+xml',
-      href: () => preferredDark.value ? '/favicon-dark.svg' : '/favicon.svg',
+      // href: () => preferredDark.value ? '/favicon-dark.svg' : '/favicon.svg',
+      href: '/favicon.svg',
     },
   ],
 })

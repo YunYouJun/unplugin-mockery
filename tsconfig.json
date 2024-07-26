@@ -2,8 +2,12 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["esnext", "DOM"],
+    "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "node",
+    "paths": {
+      "unplugin-mockery": ["./src/index.ts"]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "strictNullChecks": true,

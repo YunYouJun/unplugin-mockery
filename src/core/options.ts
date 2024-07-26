@@ -9,7 +9,8 @@ export const defaultOptions: Options = {
   mockDir: 'mock',
 }
 
+const dirname = typeof __dirname === 'undefined' ? import.meta.dirname : __dirname
 /**
  * build client dist folder
  */
-export const clientDistFolder = path.resolve(__dirname, '../dist-client')
+export const clientDistFolder = path.resolve(dirname, '../dist-client')

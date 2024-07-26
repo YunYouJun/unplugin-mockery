@@ -1,15 +1,20 @@
 <script lang="ts" setup>
-import { useFetch } from '@vueuse/core'
-
-const { data, error, isFetching, execute } = useFetch('/mock-list')
+const { data, error, isFetching, execute } = useMockeryFetch<{
+  list: any[]
+}>('/mock-list').json()
 </script>
 
 <template>
   <div>
-    {{ data }}
-
     <div v-if="isFetching">
       Loading...
+    </div>
+    <div v-if="data?.list">
+      <MockMethodItem
+        v-for="item in data.list"
+        :key="item.path"
+        :item="item"
+      />
     </div>
 
     <div v-if="error">

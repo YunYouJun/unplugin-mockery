@@ -15,15 +15,15 @@ export interface Options {
   /**
    * mock client ui
    */
-  client: {
+  client?: {
     /**
      * The port to run the client server.
      */
-    port: number
+    port?: number
     /**
      * auto open browser.
      */
-    open: boolean
+    open?: boolean
   }
 }
 

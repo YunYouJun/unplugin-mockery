@@ -31,11 +31,15 @@
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
+    "@guolao/vue-monaco-editor": "^1.5.2",
     "@iconify-json/carbon": "^1.1.36",
+    "@iconify-json/ri": "^1.1.21",
+    "@iconify-json/vscode-icons": "^1.1.36",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
     "@shikijs/markdown-it": "^1.11.2",
     "@types/markdown-it-link-attributes": "^3.0.5",
     "@types/nprogress": "^0.2.3",
+    "@types/splitpanes": "^2.2.6",
     "@vitejs/plugin-vue": "^5.1.0",
     "@vue-macros/volar": "^0.25.0",
     "@vue/test-utils": "^2.4.6",
@@ -49,6 +53,7 @@
     "rollup": "^4.19.0",
     "shiki": "^1.11.2",
     "simple-git-hooks": "^2.11.1",
+    "splitpanes": "^3.1.5",
     "tsx": "^4.16.2",
     "typescript": "^5.5.4",
     "unocss": "^0.61.5",

@@ -1,55 +1,52 @@
 <script setup lang="ts">
+import { Pane, Splitpanes } from 'splitpanes'
+import 'splitpanes/dist/splitpanes.css'
+
 defineOptions({
   name: 'IndexPage',
 })
-// const user = useUserStore()
-// const name = ref(user.savedName)
-
-// const router = useRouter()
-// function go() {
-//   if (name.value)
-//     router.push(`/hi/${encodeURIComponent(name.value)}`)
-// }
 
 const { t } = useI18n()
+const name = ref('')
+
+const router = useRouter()
+function go() {
+  if (name.value)
+    router.push(`/hi/${encodeURIComponent(name.value)}`)
+}
 </script>
 
 <template>
-  <div>
-    <div text-4xl>
-      🤡
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/YunYouJun/unplugin-mockery" target="_blank">
-        Hello, Unplugin Mockery!
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
+  <Splitpanes class="w-full">
+    <Pane>
+      <!-- TODO search -->
+      <div class="relative flex items-center justify-center gap-2 shadow">
+        <TheInput
+          v-model="name"
+          :placeholder="t('intro.search-mockery')"
+          autocomplete="false"
+          @keydown.enter="go"
+        />
+        <label class="hidden" for="input">{{ t('intro.search-mockery') }}</label>
 
-    <div py-4 />
-
-    <MockMethodList />
-
-    <!-- <TheInput
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
-      <button
-        m-3 text-sm btn
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
-    </div> -->
-  </div>
+        <button
+          absolute right-2 cursor-pointer text-sm
+          :disabled="!name"
+          @click="go"
+        >
+          <div
+            :class="{
+              'text-gray-400 dark:text-dark-400': !name,
+            }" i-carbon-search
+          />
+        </button>
+      </div>
+      <MockMethodsList />
+    </Pane>
+    <Pane class="border-l dark:border-l-dark-200">
+      <PreviewFile />
+    </Pane>
+  </Splitpanes>
 </template>
 
 <route lang="yaml">

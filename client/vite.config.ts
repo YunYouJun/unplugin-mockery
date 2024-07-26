@@ -38,8 +38,9 @@ export default defineConfig(({ mode }) => {
 
     server: {
       proxy: {
-        _mockery_api_: {
-          target: 'http://localhost:51224/_mockery_api_',
+        // http://localhost:3000/_mockery_api_/xxx => http://localhost:51224/_mockery_api_/xxx
+        '^/_mockery_api_/.*': {
+          target: 'http://localhost:51224',
           changeOrigin: true,
         },
       },
