@@ -18,7 +18,7 @@ const jiti = require('jiti')(__filename, {
 
 export function mockServer(devServer: Server, options: Options) {
   if (options.debug) {
-    consola.info('Mock Server Starting...')
+    consola.debug('Mock Server Starting...')
   }
   const files = glob.sync('**/*.ts', {
     cwd: options.mockDir,

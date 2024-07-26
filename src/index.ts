@@ -6,10 +6,11 @@ import consola from 'consola'
 import type { Options } from './types'
 import { mockServer } from './webpack/mock-server'
 import { defaultOptions } from './core/options'
+import { getWebpackConfig } from './webpack/get-config'
 
 export * from './types'
 
-export * from './webpack/mock-server'
+const PLUGIN_NAME = 'unplugin:webpack'
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
   options = { ...defaultOptions, ...options }
@@ -24,18 +25,12 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     },
 
     webpack(compiler) {
-      compiler.hooks.afterEnvironment.tap('unplugin-mockery', () => {
-        consola.debug('After Environment Hook done!')
-
+      compiler.hooks.environment.tap(PLUGIN_NAME, () => {
+        const { setupMiddlewares } = getWebpackConfig(options)
         compiler.options.devServer = {
           ...compiler.options.devServer,
-          setupMiddlewares(middlewares, devServer) {
-            // add custom
-            mockServer(devServer, options)
-
-            return middlewares
-          },
-        } as Server.Configuration
+          setupMiddlewares,
+        }
       })
     },
   }

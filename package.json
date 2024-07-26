@@ -89,6 +89,7 @@
     "lint": "eslint .",
     "play": "npm -C playground run dev",
     "play:webpack": "pnpm -C playground/webpack run serve",
+    "play:vue-cli": "pnpm -C playground/vue-cli run serve",
     "prepublishOnly": "npm run build",
     "release": "bumpp && npm publish",
     "start": "esno src/index.ts",
