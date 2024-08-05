@@ -13,6 +13,7 @@ const PLUGIN_NAME = 'unplugin:webpack'
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
   options = { ...defaultOptions, ...options }
+  // console.log('options', options)
 
   return {
     name: 'unplugin-mockery',
@@ -20,7 +21,9 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
       return id.endsWith('main.ts')
     },
     transform(code) {
-      return code.replace('__UNPLUGIN__', `Hello Unplugin! ${options}`)
+      return code.replace('__UNPLUGIN__', `Hello Unplugin! <br/> <pre><code>${
+        JSON.stringify(options || {}).replace('client', '')
+      }</code></pre>`)
     },
 
     webpack(compiler) {
