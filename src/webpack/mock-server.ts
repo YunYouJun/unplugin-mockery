@@ -19,6 +19,10 @@ export function mockServer(devServer: Server, options: Options) {
    */
   function registerRoute(app: Application, file: string) {
     consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
+    if (!file.endsWith('.ts')) {
+      consola.silent(`  Skip ${colors.dim(file)}`)
+    }
+
     const mockeryRequest = jiti(file).default as MockeryRequest
     const { method, url, response, rawResponse } = mockeryRequest
 

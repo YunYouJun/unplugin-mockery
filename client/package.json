@@ -15,7 +15,6 @@
     "test:unit": "vitest",
     "typecheck": "vue-tsc --noEmit",
     "up": "taze major -I",
-    "postinstall": "npx simple-git-hooks",
     "sizecheck": "npx vite-bundle-visualizer"
   },
   "dependencies": {
@@ -26,7 +25,7 @@
     "axios": "^1.7.3",
     "nprogress": "^0.2.0",
     "pinia": "^2.2.1",
-    "vue": "^3.4.36",
+    "vue": "^3.4.37",
     "vue-demi": "^0.14.10",
     "vue-i18n": "^9.13.1",
     "vue-router": "^4.4.3"
@@ -65,7 +64,6 @@
     "vite-bundle-visualizer": "^1.2.1",
     "vite-express": "^0.17.0",
     "vite-plugin-inspect": "^0.8.5",
-    "vite-plugin-pwa": "^0.20.1",
     "vite-plugin-vue-devtools": "^7.3.7",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vite-ssg": "^0.23.8",
