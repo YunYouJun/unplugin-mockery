@@ -1,7 +1,7 @@
 {
   "name": "unplugin-mockery",
   "type": "module",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "packageManager": "pnpm@9.7.0",
   "description": "",
   "license": "MIT",
@@ -96,7 +96,6 @@
     "play:webpack": "pnpm -C playground/webpack run serve",
     "play:vite": "pnpm -C playground/vite run dev",
     "play:vue-cli": "pnpm -C playground/vue-cli run serve",
-    "postinstall": "npx simple-git-hooks",
     "prepublishOnly": "npm run build",
     "release": "bumpp --execute 'npm run changelog' --all && npm publish",
     "start": "esno src/index.ts",
