@@ -80,3 +80,10 @@ dist-client/
 # vite-ssg
 .vite-ssg-dist
 .vite-ssg-temp
+
+# milkio
+milkio/generated
+milkio/packages/client/dist
+milkio/packages/client/project
+
+.astro

@@ -1,0 +1,26 @@
+# local env files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# dependencies
+node_modules
+
+# generated files
+/app
+/dist
+/dist-static
+/out
+/generated
+/packages/client/dist
+/packages/client/project
+/.astro
+
+# misc
+.DS_Store
+*.pem
+**/*.log
+/.wrangler
+/.vercel
+/.env
