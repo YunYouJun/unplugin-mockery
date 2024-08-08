@@ -2,7 +2,7 @@
   "name": "unplugin-mockery",
   "type": "module",
   "version": "0.1.6",
-  "packageManager": "pnpm@9.6.0",
+  "packageManager": "pnpm@9.7.0",
   "description": "",
   "license": "MIT",
   "homepage": "https://github.com/YunYouJun/unplugin-mockery#readme",
@@ -86,6 +86,7 @@
     "build": "npm run build:unplugin && npm run build:client",
     "build:unplugin": "tsup",
     "build:client": "pnpm -C client run build",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "dev": "tsup --watch src",
     "dev:client": "pnpm -C client run dev",
     "build:fix": "esno scripts/postbuild.ts",
@@ -95,7 +96,7 @@
     "play:vite": "pnpm -C playground/vite run dev",
     "play:vue-cli": "pnpm -C playground/vue-cli run serve",
     "prepublishOnly": "npm run build",
-    "release": "bumpp && npm publish",
+    "release": "bumpp --execute 'npm run changelog' --all && npm publish",
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
@@ -132,9 +133,9 @@
     "express": "^4.19.2",
     "fs-extra": "^11.2.0",
     "jiti": "^1.21.6",
-    "launch-editor": "^2.8.0",
+    "launch-editor": "^2.8.1",
     "serve-static": "^1.15.0",
-    "unplugin": "^1.12.0"
+    "unplugin": "^1.12.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.24.1",
@@ -146,6 +147,7 @@
     "bumpp": "^9.4.2",
     "chalk": "^5.3.0",
     "consola": "^3.2.3",
+    "conventional-changelog-cli": "^5.0.0",
     "eslint": "^9.8.0",
     "eslint-plugin-format": "^0.1.2",
     "esno": "^4.7.0",
@@ -157,7 +159,7 @@
     "rollup": "^4.20.0",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
-    "vite": "^5.3.5",
+    "vite": "^5.4.0",
     "vitest": "^2.0.5",
     "webpack": "^5.93.0"
   },
