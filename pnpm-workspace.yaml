@@ -2,3 +2,4 @@ packages:
   - client/
   - 'playground/*'
   - milkio
+  - milkio/packages/*
