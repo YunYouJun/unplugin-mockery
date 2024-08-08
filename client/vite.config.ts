@@ -16,6 +16,8 @@ import consola from 'consola'
 
 import colors from 'picocolors'
 
+const prefix = `monaco-editor/esm/vs`
+
 export default defineConfig(({ mode }) => {
   consola.info(`[client] Running in ${colors.green(mode)} mode`)
 
@@ -25,6 +27,19 @@ export default defineConfig(({ mode }) => {
       outDir: path.resolve(__dirname, '../dist-client'),
       minify: false, // 'esbuild',
       emptyOutDir: true,
+
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            monacoEditor: [`${prefix}/editor/editor.main`],
+            jsonWorker: [`${prefix}/language/json/json.worker`],
+            cssWorker: [`${prefix}/language/css/css.worker`],
+            htmlWorker: [`${prefix}/language/html/html.worker`],
+            tsWorker: [`${prefix}/language/typescript/ts.worker`],
+            editorWorker: [`${prefix}/editor/editor.worker`],
+          },
+        },
+      },
     },
 
     resolve: {

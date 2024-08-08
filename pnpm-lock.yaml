@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      chokidar:
+        specifier: ^3.6.0
+        version: 3.6.0
       consola:
         specifier: ^3.2.3
         version: 3.2.3
@@ -17,6 +20,9 @@ importers:
       express:
         specifier: ^4.19.2
         version: 4.19.2
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
       fs-extra:
         specifier: ^11.2.0
         version: 11.2.0
@@ -26,9 +32,15 @@ importers:
       launch-editor:
         specifier: ^2.8.1
         version: 2.8.1
+      magicast:
+        specifier: ^0.3.4
+        version: 0.3.4
       open:
         specifier: ^8.4.2
         version: 8.4.2
+      picocolors:
+        specifier: ^1.0.1
+        version: 1.0.1
       serve-static:
         specifier: ^1.15.0
         version: 1.15.0
@@ -72,12 +84,6 @@ importers:
       esno:
         specifier: ^4.7.0
         version: 4.7.0
-      fast-glob:
-        specifier: ^3.3.2
-        version: 3.3.2
-      magicast:
-        specifier: ^0.3.4
-        version: 0.3.4
       nodemon:
         specifier: ^3.1.4
         version: 3.1.4
@@ -181,9 +187,6 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      https-localhost:
-        specifier: ^4.7.1
-        version: 4.7.1
       lint-staged:
         specifier: ^15.2.8
         version: 15.2.8
@@ -2682,9 +2685,6 @@ packages:
     resolution: {integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==}
     engines: {node: '>= 8'}
 
-  appdata-path@1.0.0:
-    resolution: {integrity: sha512-ZbH3ezXfnT/YE3NdqduIt4lBV+H0ybvA2Qx3K76gIjQvh8gROpDFdDLpx6B1QJtW7zxisCbpTlCLhKqoR8cDBw==}
-
   arch@2.2.0:
     resolution: {integrity: sha512-Of/R0wqp83cgHozfIYLbBMnej79U/SVGOOyuB3VVFv1NRM/PSFMK12x9KVtiYzJqmnU5WR2qp0Z5rHb7sWGnFQ==}
 
@@ -3444,10 +3444,6 @@ packages:
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
-
-  cors@2.8.5:
-    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
-    engines: {node: '>= 0.10'}
 
   cosmiconfig@7.1.0:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}
@@ -4651,10 +4647,6 @@ packages:
   http-signature@1.2.0:
     resolution: {integrity: sha512-CAbnr6Rz4CYQkLYUtSNXxQPUH2gK8f3iWexVlsnMeD+GjlsQ0Xsy1cOX+mN3dtxYomRy21CiOzU8Uhw6OwncEQ==}
     engines: {node: '>=0.8', npm: '>=1.3.7'}
-
-  https-localhost@4.7.1:
-    resolution: {integrity: sha512-rl+NFV0l67/0W7fZwk4LB5gS6HdhtSFLpCpf1N+KD5WQAXtPXX1QE8H0cP8VNJii18rtpTkE9eAHdUfJ0goAnQ==}
-    hasBin: true
 
   https-proxy-agent@7.0.5:
     resolution: {integrity: sha512-1e4Wqeblerz+tMKPIq2EMGiiWW1dIjZOksyHWSUm1rmuvw/how9hBHZ38lAGj5ID4Ik6EdkOw7NmWPy6LAwalw==}
@@ -10713,8 +10705,6 @@ snapshots:
       normalize-path: 3.0.0
       picomatch: 2.3.1
 
-  appdata-path@1.0.0: {}
-
   arch@2.2.0: {}
 
   are-docs-informative@0.0.2: {}
@@ -11371,11 +11361,6 @@ snapshots:
   core-util-is@1.0.2: {}
 
   core-util-is@1.0.3: {}
-
-  cors@2.8.5:
-    dependencies:
-      object-assign: 4.1.1
-      vary: 1.1.2
 
   cosmiconfig@7.1.0:
     dependencies:
@@ -12862,17 +12847,6 @@ snapshots:
       assert-plus: 1.0.0
       jsprim: 1.4.2
       sshpk: 1.18.0
-
-  https-localhost@4.7.1:
-    dependencies:
-      appdata-path: 1.0.0
-      compression: 1.7.4
-      cors: 2.8.5
-      express: 4.19.2
-      spdy: 4.0.2
-      uglify-js: 3.19.1
-    transitivePeerDependencies:
-      - supports-color
 
   https-proxy-agent@7.0.5:
     dependencies:
@@ -15398,7 +15372,8 @@ snapshots:
 
   ufo@1.5.4: {}
 
-  uglify-js@3.19.1: {}
+  uglify-js@3.19.1:
+    optional: true
 
   ulidx@2.4.0:
     dependencies:

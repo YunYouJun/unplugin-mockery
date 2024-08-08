@@ -132,12 +132,16 @@
     }
   },
   "dependencies": {
+    "chokidar": "^3.6.0",
     "consola": "^3.2.3",
     "express": "^4.19.2",
+    "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
     "jiti": "^1.21.6",
     "launch-editor": "^2.8.1",
+    "magicast": "^0.3.4",
     "open": "^8.4.2",
+    "picocolors": "^1.0.1",
     "serve-static": "^1.15.0",
     "unplugin": "^1.12.1"
   },
@@ -154,8 +158,6 @@
     "eslint": "^9.8.0",
     "eslint-plugin-format": "^0.1.2",
     "esno": "^4.7.0",
-    "fast-glob": "^3.3.2",
-    "magicast": "^0.3.4",
     "nodemon": "^3.1.4",
     "rimraf": "^6.0.1",
     "rollup": "^4.20.0",

@@ -12,4 +12,9 @@ export default <Options>{
   // onSuccess: 'npm run build:fix',
 
   shims: true,
+
+  external: [
+    // in express
+    'body-parser',
+  ],
 }

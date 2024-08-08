@@ -22,7 +22,7 @@ const previewStore = usePreviewStore()
       />
     </div>
 
-    <div v-if="error">
+    <div v-if="error" class="p-2">
       Error: {{ error }}
 
       <button @click="execute()">
