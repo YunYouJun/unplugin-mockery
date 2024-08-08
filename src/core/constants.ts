@@ -4,4 +4,4 @@ import { filename } from './shims'
 /**
  * build client dist folder
  */
-export const clientDistFolder = path.resolve(filename, '../dist-client')
+export const clientDistFolder = path.resolve(filename, '../../dist-client')
