@@ -1,3 +1,4 @@
+import { resolve } from 'node:path'
 import type Server from 'webpack-dev-server'
 import bodyParser from 'body-parser'
 
@@ -8,58 +9,82 @@ import colors from 'picocolors'
 
 import type { Application } from 'express'
 import type { MockeryRequest, Options } from '../types'
-import { getMockFiles, jiti } from '../core/utils'
+import { getMockApiFiles, jiti } from '../core/utils'
 
-export function mockServer(devServer: Server, options: Options) {
-  const files = getMockFiles(options.mockDir)
+import { isMockery } from '../mockery/utils'
+
+import { MockeryServer } from '../mockery'
+
+export async function mockServer(devServer: Server, options: Options) {
+  const mockeryServer = new MockeryServer(options)
+  // do not async to avoid register api failed
+  mockeryServer.init()
+
+  const files = getMockApiFiles(options.mockDir)
   /**
    * Register a mock route by file
    * @param app
-   * @param file
    */
-  function registerRoute(app: Application, file: string) {
-    consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
-    if (!file.endsWith('.ts')) {
-      consola.silent(`  Skip ${colors.dim(file)}`)
-    }
+  function registerRoute(app: Application, mockery: MockeryRequest) {
+    const { method = 'get', url, response, rawResponse, results = {}, curScene } = mockery
 
-    const mockeryRequest = jiti(file).default as MockeryRequest
-    const { method, url, response, rawResponse } = mockeryRequest
+    // not a mockery
+    if (!isMockery(mockery)) {
+      return
+    }
 
     // unregister route
     app._router.stack = app._router.stack.filter((i: any) => {
       return !(i.route && i.route.path === url)
     })
 
-    app[method || 'get'](url, (req, res) => {
-      setTimeout(async () => {
-        if (rawResponse) {
-          res.json(
-            await rawResponse(
-              req,
-              res,
-            ),
-          )
-        }
-        else {
+    if (response || rawResponse) {
+      app[method || 'get'](url, (req, res) => {
+        setTimeout(async () => {
+          if (rawResponse) {
+            res.json(
+              await rawResponse(
+                req,
+                res,
+              ),
+            )
+          }
+          else if (response) {
+            res.json(response)
+          }
+        }, mockery.timeout || 0)
+      })
+    }
+    else if (Object.keys(results).length > 0) {
+      app[method || 'get'](url, (req, res) => {
+        const resultKey = curScene || (Object.keys(results)[0])
+        const response = results[resultKey] || {}
+
+        setTimeout(() => {
           res.json(response)
-        }
-      }, mockeryRequest.timeout || 0)
-    })
+        }, mockery.timeout || 0)
+      })
+    }
   }
 
-  function registerRoutes(app: Application) {
+  async function registerRoutes(app: Application) {
     if (options.debug) {
       consola.info(`${colors.dim('Registering all routes in')} 📂 ${colors.cyan(options.mockDir)}`)
     }
+    consola.debug('files', files)
     for (const file of files) {
-      registerRoute(app, file)
+      // clear route in register
+      const mockeryRequest = jiti(file).default as MockeryRequest || {}
+      consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
+
+      mockeryServer.updateSceneSchema(mockeryRequest)
+      registerRoute(app, mockeryRequest)
     }
   }
 
-  const { app } = devServer
+  const app = devServer.app
   if (!app) {
-    return
+    throw new Error('No app found')
   }
 
   app.use(bodyParser.json())
@@ -70,17 +95,26 @@ export function mockServer(devServer: Server, options: Options) {
   )
 
   registerRoutes(app)
+  await mockeryServer.writeSceneSchema()
 
   chokidar
-    .watch(options.mockDir, {
+    .watch('**/*.ts', {
+      cwd: options.mockDir,
       ignoreInitial: true,
     })
-    .on('all', (event, path) => {
+    .on('all', async (event, path) => {
       if (event === 'change' || event === 'add') {
         try {
+          const filePath = resolve(options.mockDir, path)
+
           // clear route in register
-          registerRoute(app, path)
-          consola.success(`  Mock Server hot reload success! changed  ${colors.dim(path)}`)
+          const mockeryRequest = jiti(filePath).default as MockeryRequest || {}
+          consola.debug(`  Registering Mock Server: ${colors.dim(filePath)}`)
+
+          mockeryServer.updateSceneSchema(mockeryRequest)
+          registerRoute(app, mockeryRequest)
+          consola.success(`${colors.magenta('Mock Server hot reload success!')} changed: ${colors.dim(filePath)}`)
+          await mockeryServer.writeSceneSchema()
         }
         catch (error) {
           consola.error(error)

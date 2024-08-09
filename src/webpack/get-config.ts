@@ -38,9 +38,10 @@ export function getWebpackConfig(options: Options = defaultOptions) {
         consola.start('Mock Server Starting...')
 
         const startTimestamp = performance.now()
-        mockServer(devServer, options)
-        const consumedTime = performance.now() - startTimestamp
-        consola.success(`Mock Server Started: ${colors.green(`${consumedTime.toFixed(2)}ms`)}`)
+        mockServer(devServer, options).then(() => {
+          const consumedTime = performance.now() - startTimestamp
+          consola.success(`Mock Server Started: ${colors.green(`${consumedTime.toFixed(2)}ms`)}`)
+        })
 
         return middlewares
       },

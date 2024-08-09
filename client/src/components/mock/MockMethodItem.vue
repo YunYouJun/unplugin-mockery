@@ -80,9 +80,9 @@ onMounted(() => {
       </span>
     </div>
 
-    <div v-if="mockery.scenes" class="mock-scene-container gap-2 pl-6" flex="~ wrap">
+    <div v-if="mockery.results" class="mock-scene-container gap-2 pl-6" flex="~ wrap">
       <MockSceneItem
-        v-for="(scene, key) in mockery.scenes"
+        v-for="(scene, key) in mockery.results"
         :id="key"
         :key="key"
         :url="mockery.url"

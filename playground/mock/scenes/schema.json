@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "/api/login": {
+      "type": "string",
+      "enum": [
+        "登录成功",
+        "登录失败-密码错误",
+        "登录失败-账号不存在"
+      ]
+    },
+    "/api/ping": {
+      "type": "string",
+      "enum": []
+    },
+    "/api/test": {
+      "type": "string",
+      "enum": []
+    },
+    "/methods/delete": {
+      "type": "string",
+      "enum": []
+    },
+    "/methods/get": {
+      "type": "string",
+      "enum": []
+    },
+    "/methods/patch": {
+      "type": "string",
+      "enum": []
+    },
+    "/methods/post": {
+      "type": "string",
+      "enum": []
+    },
+    "/methods/put": {
+      "type": "string",
+      "enum": []
+    }
+  }
+}

@@ -11,7 +11,11 @@ import colors from 'picocolors'
  */
 export function getCurSceneKey(ast: ASTNode) {
   // @ts-expect-error body in ast
-  const defaultExportDeclaration = ast.body.find((node: any) => node.type === 'ExportDefaultDeclaration').declaration
+  const exportDefaultNode = ast.body.find((node: any) => node.type === 'ExportDefaultDeclaration')
+  if (!exportDefaultNode) {
+    return ''
+  }
+  const defaultExportDeclaration = exportDefaultNode.declaration
   const objectExpression = defaultExportDeclaration.arguments[0]
 
   // modify to target scene
@@ -29,14 +33,27 @@ export async function getActiveScene(params: {
   const { filePath } = params
   const fileContent = await fs.readFile(filePath, 'utf-8')
 
-  const mod = parseModule(fileContent)
-  const ast = mod.$ast
+  try {
+    const mod = parseModule(fileContent)
+    const ast = mod.$ast
 
-  const curSceneKey = getCurSceneKey(ast)
-  if (curSceneKey)
-    return curSceneKey.value.value
-  else
+    try {
+      const curSceneKey = getCurSceneKey(ast)
+      if (curSceneKey)
+        return curSceneKey.value.value
+      else
+        return null
+    }
+    catch (e) {
+      consola.error('Failed to get active scene', e)
+    }
+  }
+  catch (e) {
+    consola.error(params)
+    consola.error(fileContent)
+    consola.error(e)
     return null
+  }
 }
 
 export async function toggleMockScene(params: {
@@ -58,11 +75,20 @@ export async function toggleMockScene(params: {
   }
 
   const curSceneKey = getCurSceneKey(ast)
+  if (!curSceneKey)
+    return
+
   curSceneKey.value.value = sceneName
 
-  const { code } = generateCode(ast)
-  await fs.writeFile(filePath, code, 'utf-8')
+  try {
+    const { code } = generateCode(ast)
+    await fs.writeFile(filePath, code, 'utf-8')
 
-  consola.success(`${colors.cyan(url)} Switched to scene: ${colors.yellow(sceneName)}`)
-  return code
+    consola.success(`${colors.cyan(url)} Switched to scene: ${colors.yellow(sceneName)}`)
+    return code
+  }
+  catch (e) {
+    consola.error(e)
+    return ''
+  }
 }

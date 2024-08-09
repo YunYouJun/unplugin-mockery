@@ -18,6 +18,7 @@ module.exports = defineConfig({
           port: 51223,
           open: true,
         },
+        mockDir: '../mock',
       }).devServer,
     },
   },

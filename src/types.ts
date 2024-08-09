@@ -9,6 +9,11 @@ export interface Options {
 
   /**
    * The directory where the mock files are located.
+   * @default 'mock'
+   * mock/api: mock files
+   * mock/scenes: scene files
+   * mock/scenes/schema.json: schema file
+   * mock/utils: utility files
    */
   mockDir: string
 
@@ -37,30 +42,44 @@ export interface RespThisType {
 
 type Recordable<T = any> = Record<string, T>
 
-export type MockResponse = ((this: RespThisType, opt: {
+export type MockResponse<T> = ((this: RespThisType, opt: {
   url: Recordable
   body: Recordable
   query: Recordable
   headers: Recordable
-}) => any) | any
+}) => T) | T
 
 export type RawResponse = (req: IncomingMessage, res: ServerResponse) => void | Promise<void>
 
-type MockScenes = Record<string, MockResponse>
-
-export interface MockeryRequest<T extends MockScenes | undefined = MockScenes> {
+export interface MockeryRequest<T = object> {
   url: string
+  /**
+   * 请求描述
+   */
+  description?: string
   method?: MethodType
+  /**
+   * 请求延迟时间
+   */
   timeout?: number
   statusCode?: number
-  response?: MockResponse
+  response?: MockResponse<T>
   rawResponse?: RawResponse
 
+  results?: Record<string, MockResponse<T>>
+  /**
+   * @deprecated let's use jsonc to combine scenes
+   */
   scenes?: T
+  /**
+   * @deprecated let's use jsonc to combine scenes
+   */
   curScene?: keyof T | ''
 }
 
-export interface MockeryItem {
+export type Mockery<T> = MockeryRequest<T>
+
+export interface MockeryItem<T> {
   path: string
-  mockery: MockeryRequest
+  mockery: MockeryRequest<T>
 }

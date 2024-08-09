@@ -9,9 +9,9 @@ const successResponse = {
 }
 
 /**
- * multiple scenes
+ * multiple results
  */
-const scenes = {
+const results = {
   '登录成功': successResponse,
   '登录失败-密码错误': {
     code: -1,
@@ -31,5 +31,5 @@ export default defineMockery({
   method: 'post',
 
   curScene: '登录失败-账号不存在',
-  scenes,
+  results,
 })

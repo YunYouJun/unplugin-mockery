@@ -37,9 +37,9 @@ export const usePreviewStore = defineStore('preview', () => {
     const response = mockery.response
       ? mockery.response
       : mockery.curScene
-        ? mockery.scenes?.[mockery.curScene]
-        : mockery.scenes
-    fileContent.value = JSON.stringify(response, null, 2)
+        ? mockery.results?.[mockery.curScene]
+        : mockery.results
+    fileContent.value = JSON.stringify(response || {}, null, 2)
   }
 
   /**
@@ -53,8 +53,8 @@ export const usePreviewStore = defineStore('preview', () => {
       },
     })
     Toast({
-      title: '打开文件',
-      description: `${filePath}`,
+      title: `打开文件`,
+      description: filePath,
       type: 'success',
     })
   }

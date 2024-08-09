@@ -21,6 +21,8 @@ export function serveClient(options: {
   function callback() {
     const { port } = listener.address() as AddressInfo
     const url = `http://localhost:${port}`
+    // eslint-disable-next-line no-console
+    console.log()
     consola.info(`  ${c.green('🤡')}  ${c.bold('Mockery Started')}: ${c.cyan(url)}`)
 
     if (globalState.userOptions?.client?.open)

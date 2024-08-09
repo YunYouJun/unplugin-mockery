@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 // @ts-expect-error launch-editor is not typed
 import launch from 'launch-editor'
 
-import { getMockFiles, jiti } from '../../utils'
+import { getMockApiFiles, jiti } from '../../utils'
 import { globalState } from '../../env'
 import { defaultOptions } from '../../options'
 
@@ -54,20 +54,19 @@ router.use('/toggle-scene', async (req, res) => {
     sceneName: string
     url: string
   })
-  res.send(code)
+  res.send(code || '')
 })
 
 router.use('/mock-list', (req, res) => {
-  const files = getMockFiles(globalState.userOptions?.mockDir || defaultOptions.mockDir)
-
+  const files = getMockApiFiles(globalState.userOptions?.mockDir || defaultOptions.mockDir)
   const list = files.map((file) => {
-    const mockery = jiti(file).default
-    if (mockery.scenes) {
+    const mockery = jiti(file).default || {}
+    if (mockery.results) {
       // parse function
-      Object.keys(mockery.scenes).forEach((sceneId) => {
-        const scene = mockery.scenes[sceneId]
+      Object.keys(mockery.results).forEach((sceneId) => {
+        const scene = mockery.results[sceneId]
         if (typeof scene === 'function') {
-          mockery.scenes[sceneId] = scene()
+          mockery.results[sceneId] = scene()
         }
       })
     }
