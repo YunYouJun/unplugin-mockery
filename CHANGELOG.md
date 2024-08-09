@@ -1,3 +1,12 @@
+## [0.1.12](https://github.com/YunYouJun/unplugin-mockery/compare/v0.1.11...v0.1.12) (2024-08-09)
+
+
+### Features
+
+* open json jiti for ts ([97a3c72](https://github.com/YunYouJun/unplugin-mockery/commit/97a3c7219b16c397fa79a5855a83fc690d010933))
+
+
+
 ## [0.1.11](https://github.com/YunYouJun/unplugin-mockery/compare/v0.1.10...v0.1.11) (2024-08-08)
 
 
