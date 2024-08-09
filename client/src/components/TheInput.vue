@@ -1,13 +1,14 @@
 <script setup lang="ts">
-const { modelValue } = defineModels<{
-  modelValue: string
-}>()
+const model = defineModel<string>({
+  required: true,
+  default: '',
+})
 </script>
 
 <template>
   <input
     id="input"
-    v-model="modelValue"
+    v-model="model"
     v-bind="$attrs"
     type="text"
     class="flex-grow"

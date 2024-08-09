@@ -30,6 +30,6 @@ export default defineMockery({
   url: '/api/login',
   method: 'post',
 
-  curScene: '登录成功',
+  curScene: '登录失败-账号不存在',
   scenes,
 })

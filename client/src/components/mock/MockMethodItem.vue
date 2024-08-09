@@ -3,7 +3,7 @@ import type { MockeryRequest } from 'unplugin-mockery'
 import { mockeryAxios } from '~/utils/axios'
 
 const props = defineProps<{
-  method: MockeryRequest
+  mockery: MockeryRequest
   path: string
 }>()
 
@@ -36,13 +36,20 @@ function getTimeoutClass(timeout: number = 0) {
 
 const activeScene = ref<string | null>(null)
 
-const httpMethod = computed(() => props.method.method || 'get')
+const httpMethod = computed(() => props.mockery.method || 'get')
+
+function toggleActiveScene(scene: string) {
+  activeScene.value = scene
+
+  if (previewStore.curMockeryRequest)
+    previewStore.curMockeryRequest.curScene = scene
+}
 
 onMounted(() => {
   mockeryAxios.get('/active-scene', {
     params: {
       filePath: props.path,
-      url: props.method.url,
+      url: props.mockery.url,
     },
   }).then((res) => {
     if (res.data.scene) {
@@ -60,26 +67,29 @@ onMounted(() => {
         <span class="font-bold uppercase" :class="getMethodClass(httpMethod)">{{ httpMethod }}</span>
         <span
           class="text-right"
-          :class="getTimeoutClass(method.timeout)"
+          :class="getTimeoutClass(mockery.timeout)"
         >
-          {{ method.timeout || 0 }}ms
+          {{ mockery.timeout || 0 }}ms
         </span>
       </span>
-      <span class="text-blue dark:text-blue-300" ml-2 cursor-pointer op-90 hover:op-100 @click="previewStore.previewMockMethod(method)">
-        {{ method.url }}
+      <span
+        class="text-blue dark:text-blue-300" ml-2 cursor-pointer op-90 hover:op-100
+        @click="previewStore.previewMockeryRequest(mockery)"
+      >
+        {{ mockery.url }}
       </span>
     </div>
 
-    <div v-if="method.scenes" class="mock-scene-container gap-2 pl-6" flex="~ wrap">
+    <div v-if="mockery.scenes" class="mock-scene-container gap-2 pl-6" flex="~ wrap">
       <MockSceneItem
-        v-for="(scene, key) in method.scenes"
+        v-for="(scene, key) in mockery.scenes"
         :id="key"
         :key="key"
-        :url="method.url"
+        :url="mockery.url"
         :scene="scene"
         :path="path"
         :active="activeScene === key"
-        @click="activeScene = key"
+        @click="toggleActiveScene(key)"
       />
     </div>
   </div>

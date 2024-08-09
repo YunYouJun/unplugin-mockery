@@ -16,6 +16,8 @@ import consola from 'consola'
 
 import colors from 'picocolors'
 
+import { componentsDir } from '@advjs/gui/node'
+
 const prefix = `monaco-editor/esm/vs`
 
 export default defineConfig(({ mode }) => {
@@ -100,6 +102,10 @@ export default defineConfig(({ mode }) => {
         // allow auto import and register components used in markdown
         include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
         dts: 'src/components.d.ts',
+        dirs: [
+          'src/components',
+          componentsDir,
+        ],
       }),
 
       // https://github.com/antfu/unocss

@@ -145,6 +145,7 @@
     "unplugin": "^1.12.1"
   },
   "devDependencies": {
+    "@advjs/gui": "0.0.7-beta.5",
     "@antfu/eslint-config": "^2.24.1",
     "@nuxt/kit": "^3.12.4",
     "@nuxt/schema": "^3.12.4",
@@ -160,6 +161,7 @@
     "nodemon": "^3.1.4",
     "rimraf": "^6.0.1",
     "rollup": "^4.20.0",
+    "sass": "^1.77.8",
     "simple-git-hooks": "^2.11.1",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",

@@ -59,3 +59,8 @@ export interface MockeryRequest<T extends MockScenes | undefined = MockScenes> {
   scenes?: T
   curScene?: keyof T | ''
 }
+
+export interface MockeryItem {
+  path: string
+  mockery: MockeryRequest
+}

@@ -9,6 +9,7 @@ defineOptions({
 const { t } = useI18n()
 const name = ref('')
 
+const appStore = useAppStore()
 const previewStore = usePreviewStore()
 
 const router = useRouter()
@@ -24,7 +25,7 @@ function go() {
       <!-- TODO search -->
       <div class="relative flex items-center justify-center gap-2 shadow">
         <TheInput
-          v-model="name"
+          v-model="appStore.searchKeywords"
           :placeholder="t('intro.search-mockery')"
           autocomplete="false"
           @keydown.enter="go"
@@ -46,9 +47,20 @@ function go() {
       <MockeryList />
     </Pane>
     <Pane class="flex flex-col border-l dark:border-l-dark-200">
-      <div class="flex cursor-pointer items-center p-1 text-xs op-80 hover:op-100" @click="previewStore.openFileInEditor(previewStore.curFilePath)">
+      <div
+        class="flex cursor-pointer items-center gap-2 p-1 text-xs op-80 hover:op-100"
+        @click="previewStore.openFileInEditor(previewStore.curFilePath)"
+      >
         <div i-vscode-icons:file-type-vscode />
-        <span class="text-left" ml-2 :title="previewStore.curFilePath">{{ previewStore.curFilePath }}</span>
+        <span class="text-left" :title="previewStore.curFilePath">{{ previewStore.curFilePath }}</span>
+        <div flex-1 />
+        <span v-if="previewStore.curMockeryRequest?.curScene" class="text-blue">
+          {{ previewStore.curMockeryRequest?.curScene }}
+        </span>
+        <span>
+          <div v-if="previewStore.language === 'typescript'" i-vscode-icons:file-type-typescript />
+          <div v-else-if="previewStore.language === 'json'" i-vscode-icons:file-type-json />
+        </span>
       </div>
       <PreviewFile />
     </Pane>
