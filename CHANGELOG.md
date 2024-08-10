@@ -1,3 +1,12 @@
+## [0.2.3](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.2...v0.2.3) (2024-08-10)
+
+
+### Bug Fixes
+
+* ensure schemas dir ([2c3c6ec](https://github.com/YunYouJun/unplugin-mockery/commit/2c3c6ec12332c5c04af384918e43de1857a39df9))
+
+
+
 ## [0.2.2](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.1...v0.2.2) (2024-08-10)
 
 
