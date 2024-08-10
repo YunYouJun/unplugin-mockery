@@ -27,12 +27,12 @@ export async function mockServer(devServer: Server, options: Options) {
    * @param app
    */
   function registerRoute(app: Application, mockery: MockeryRequest) {
-    const { method = 'get', url, response, rawResponse, results = {} } = mockery
-
     // not a mockery
     if (!isMockery(mockery)) {
       return
     }
+
+    const { method = 'get', url, response, rawResponse, results = {} } = mockery
 
     // unregister route
     app._router.stack = app._router.stack.filter((i: any) => {
