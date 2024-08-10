@@ -3,6 +3,7 @@
   "properties": {
     "/api/login": {
       "type": "string",
+      "description": "登录接口",
       "enum": [
         "登录成功",
         "登录失败-密码错误",
@@ -12,6 +13,13 @@
     "/api/ping": {
       "type": "string",
       "enum": []
+    },
+    "/api/proposal": {
+      "type": "string",
+      "enum": [
+        "同意",
+        "拒绝"
+      ]
     },
     "/api/test": {
       "type": "string",

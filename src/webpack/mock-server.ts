@@ -26,7 +26,7 @@ export async function mockServer(devServer: Server, options: Options) {
    * @param app
    */
   function registerRoute(app: Application, mockery: MockeryRequest) {
-    const { method = 'get', url, response, rawResponse, results = {}, curScene } = mockery
+    const { method = 'get', url, response, rawResponse, results = {} } = mockery
 
     // not a mockery
     if (!isMockery(mockery)) {
@@ -57,7 +57,8 @@ export async function mockServer(devServer: Server, options: Options) {
     }
     else if (Object.keys(results).length > 0) {
       app[method || 'get'](url, (req, res) => {
-        const resultKey = curScene || (Object.keys(results)[0])
+        const curKeyInScene = mockeryServer.sceneData[mockery.url]
+        const resultKey = curKeyInScene || (Object.keys(results)[0])
         const response = results[resultKey] || {}
 
         setTimeout(() => {

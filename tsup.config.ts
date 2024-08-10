@@ -8,11 +8,9 @@ export default <Options>{
   format: ['cjs', 'esm'],
   dts: true,
   cjsInterop: true,
-  splitting: true,
   // onSuccess: 'npm run build:fix',
 
   shims: true,
-
   external: [
     // in express
     'body-parser',

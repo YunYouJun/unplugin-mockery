@@ -1,3 +1,4 @@
 {
-  "$schema": "./schema.json"
+  "$schema": "./schema.json",
+  "/api/login": "登录失败-密码错误"
 }

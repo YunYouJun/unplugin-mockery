@@ -7,6 +7,7 @@ import { serveClient } from '../core/client'
 import { globalState } from '../core/env'
 import { clientDistFolder } from '../core/constants'
 
+import { MockeryServer } from '../mockery'
 import { mockServer } from './mock-server'
 
 /**
@@ -49,6 +50,8 @@ export function getWebpackConfig(options: Options = defaultOptions) {
   }
 
   globalState.userOptions = options
+  const mockeryServer = new MockeryServer(options)
+  mockeryServer.init()
   serveClient({
     staticPath: clientDistFolder,
     port: options.client?.port,

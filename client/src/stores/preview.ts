@@ -9,6 +9,10 @@ export const usePreviewStore = defineStore('preview', () => {
   const fileContent = ref('')
   const language = ref<'typescript' | 'json'>('json')
 
+  /**
+   * cur scene name
+   */
+  const curScene = ref<string>()
   const curMockeryRequest = ref<MockeryRequest>()
 
   async function previewRawFile(filePath: string) {
@@ -76,9 +80,26 @@ export const usePreviewStore = defineStore('preview', () => {
     })
   }
 
+  /**
+   * toggle mock result
+   */
+  function toggleMockResult(params: {
+    url: string
+    resultKey: string
+  }) {
+    language.value = 'json'
+    mockeryAxios.get('/toggle-result', {
+      params: {
+        ...params,
+        curScene: curScene.value,
+      },
+    })
+  }
+
   return {
     curFilePath,
     curMockeryRequest,
+    curScene,
 
     language,
 
@@ -88,6 +109,7 @@ export const usePreviewStore = defineStore('preview', () => {
     previewMockeryRequest,
     previewMockScene,
     toggleMockScene,
+    toggleMockResult,
 
     openFileInEditor,
   }

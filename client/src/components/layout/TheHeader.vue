@@ -15,6 +15,8 @@
       Unplugin Mockery
     </div>
 
+    <SelectScene />
+
     <div class="flex-1" />
     <div inline-flex gap="4">
       <ToggleDark />

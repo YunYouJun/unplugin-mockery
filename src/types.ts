@@ -14,6 +14,7 @@ export interface Options {
    * mock/scenes: scene files
    * mock/scenes/schema.json: schema file
    * mock/utils: utility files
+   * mock/config.json: configuration file
    */
   mockDir: string
 

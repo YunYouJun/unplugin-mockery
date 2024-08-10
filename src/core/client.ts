@@ -7,6 +7,9 @@ import { globalState } from './env'
 
 import { createMockClientServer } from './server'
 
+/**
+ * init mockery client & server
+ */
 export function serveClient(options: {
   mode?: 'development' | 'production'
   staticPath?: string

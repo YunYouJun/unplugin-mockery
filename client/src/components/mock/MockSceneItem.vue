@@ -13,10 +13,9 @@ const previewStore = usePreviewStore()
 function onClickScene() {
   previewStore.previewMockScene(props.scene)
 
-  previewStore.toggleMockScene({
-    filePath: props.path,
+  previewStore.toggleMockResult({
     url: props.url,
-    sceneName: props.id,
+    resultKey: props.id,
   })
 }
 </script>

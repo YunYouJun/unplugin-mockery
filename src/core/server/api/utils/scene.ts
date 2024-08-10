@@ -56,6 +56,10 @@ export async function getActiveScene(params: {
   }
 }
 
+/**
+ * toggle scene by modifying ts file
+ * @deprecated
+ */
 export async function toggleMockScene(params: {
   filePath: string
   url: string

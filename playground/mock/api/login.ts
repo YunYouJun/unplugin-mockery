@@ -28,8 +28,9 @@ const results = {
 
 export default defineMockery({
   url: '/api/login',
+  description: '登录接口',
   method: 'post',
 
-  curScene: '登录失败-账号不存在',
+  curScene: '登录失败-密码错误',
   results,
 })
