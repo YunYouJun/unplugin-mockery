@@ -25,6 +25,11 @@ export class MockeryDB {
   static async init(options: Options) {
     this.options = options
 
+    const sceneDir = path.resolve(options.mockDir, 'scenes')
+    const schemaDir = path.resolve(options.mockDir, 'schemas')
+    await fs.ensureDir(sceneDir)
+    await fs.ensureDir(schemaDir)
+
     await this.initSceneSchema()
     await this.updateConfigSchema()
 
@@ -39,8 +44,8 @@ export class MockeryDB {
   }
 
   static async initSceneSchema() {
-    this.sceneSchema = await fs.readJSON(this.sceneSchemaPath).catch(() => initSceneSchema())
     this.sceneSchemaPath = path.resolve(this.options.mockDir, 'schemas/scene.schema.json')
+    this.sceneSchema = await fs.readJSON(this.sceneSchemaPath).catch(() => initSceneSchema())
 
     const apiFiles = getMockApiFiles(this.options.mockDir)
     for (const file of apiFiles) {

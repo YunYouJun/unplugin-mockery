@@ -120,6 +120,8 @@ export async function mockServer(devServer: Server, options: Options) {
           }
           else if (path.endsWith('.scene.json')) {
             await MockeryDB.updateConfigSchema()
+            // reload all routes
+            registerRoutes(app)
           }
         }
         catch (error) {
