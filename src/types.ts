@@ -74,12 +74,12 @@ export interface MockeryRequest<T = object> {
   /**
    * @deprecated let's use jsonc to combine scenes
    */
-  curScene?: keyof T | ''
+  curScene?: string
 }
 
-export type Mockery<T> = MockeryRequest<T>
+export type Mockery<T = object> = MockeryRequest<T>
 
-export interface MockeryItem<T> {
+export interface MockeryItem<T = object> {
   path: string
   mockery: MockeryRequest<T>
 }

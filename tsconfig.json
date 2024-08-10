@@ -11,6 +11,7 @@
     },
     "resolveJsonModule": true,
     "types": [
+      "@types/wicg-file-system-access",
       "vitest",
       "vite/client",
       "vite-plugin-vue-layouts/client",
@@ -21,5 +22,5 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": ["dist", "eslint.config.js", ".vite-ssg-temp"]
+  "exclude": ["dist", "eslint.config.js", ".vite-ssg-temp", "milkio"]
 }

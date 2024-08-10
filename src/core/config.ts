@@ -9,7 +9,7 @@ export function defineMockeryRequest<T = object>(mockery: MockeryRequest<T>): Mo
   }
   // if curScene is not set, set it to the first key of scenes
   if (mockery.results && !mockery.curScene) {
-    mockery.curScene = Object.keys(mockery.results)[0] as keyof T
+    mockery.curScene = Object.keys(mockery.results)[0]
   }
   return mockery
 }
