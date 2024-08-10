@@ -1,3 +1,18 @@
+# [0.2.0](https://github.com/YunYouJun/unplugin-mockery/compare/v0.1.12...v0.2.0) (2024-08-10)
+
+
+### Bug Fixes
+
+* mockery schema async for register routes ([829566b](https://github.com/YunYouJun/unplugin-mockery/commit/829566b41b251993132e52216c07c5e15852ad74))
+
+
+### Features
+
+* add toggle scene url result ([2ead80d](https://github.com/YunYouJun/unplugin-mockery/commit/2ead80db25117274921e9aa4ca18a56bbf1c9d0e))
+* support toggle scene ([61cb692](https://github.com/YunYouJun/unplugin-mockery/commit/61cb6924e1532e66fbc19499143de2ea2e78765e))
+
+
+
 ## [0.1.12](https://github.com/YunYouJun/unplugin-mockery/compare/v0.1.11...v0.1.12) (2024-08-09)
 
 
