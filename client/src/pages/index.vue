@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import consola from 'consola'
 import { Pane, Splitpanes } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
+import { MockeryTRPCClient } from 'unplugin-mockery/client'
 
 defineOptions({
   name: 'IndexPage',
@@ -21,6 +23,14 @@ function go() {
 const displayedResultKey = computed(() => {
   return previewStore.curSceneData[previewStore.curMockeryRequest?.url || ''] || ''
 })
+
+if (import.meta.env.DEV) {
+  onMounted(() => {
+    MockeryTRPCClient.client.ping.query().then((res) => {
+      consola.info('Mockery server is running', res)
+    })
+  })
+}
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 {
   "$schema": "../schemas/scene.schema.json",
-  "/api/login": "登录失败-账号不存在",
+  "/api/login": "登录失败-密码错误",
   "/api/proposal": "拒绝"
 }

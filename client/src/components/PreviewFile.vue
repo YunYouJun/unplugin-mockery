@@ -46,6 +46,7 @@ const MONACO_EDITOR_OPTIONS = {
   formatOnPaste: true,
   wordWrap: 'on',
   fixedOverflowWidgets: true,
+  readOnly: true,
 }
 const previewStore = usePreviewStore()
 const theme = computed(() => {

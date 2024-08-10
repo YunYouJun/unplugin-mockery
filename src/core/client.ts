@@ -2,10 +2,9 @@ import type { AddressInfo } from 'node:net'
 import process from 'node:process'
 import c from 'picocolors'
 import consola from 'consola'
+import { createMockClientServer } from '../mockery/server'
 import { openBrowser } from './utils'
 import { globalState } from './env'
-
-import { createMockClientServer } from './server'
 
 /**
  * init mockery client & server

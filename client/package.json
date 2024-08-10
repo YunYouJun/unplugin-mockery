@@ -23,6 +23,7 @@
     "@vueuse/core": "^10.11.1",
     "@vueuse/head": "^2.0.0",
     "axios": "^1.7.3",
+    "consola": "^3.2.3",
     "nprogress": "^0.2.0",
     "pinia": "^2.2.1",
     "vue": "^3.4.37",

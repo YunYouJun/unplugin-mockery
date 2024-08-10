@@ -47,6 +47,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '~/': `${path.resolve(__dirname, 'src')}/`,
+        'unplugin-mockery/client': path.resolve(__dirname, '../src/mockery/client/index.ts'),
       },
     },
 
@@ -54,6 +55,10 @@ export default defineConfig(({ mode }) => {
       proxy: {
         // http://localhost:3000/_mockery_api_/xxx => http://localhost:51224/_mockery_api_/xxx
         '^/_mockery_api_/.*': {
+          target: 'http://localhost:51224',
+          changeOrigin: true,
+        },
+        '^/trpc/.*': {
           target: 'http://localhost:51224',
           changeOrigin: true,
         },

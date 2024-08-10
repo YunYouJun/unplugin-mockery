@@ -1,5 +1,9 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { MockeryTRPCClient } from 'unplugin-mockery/client'
 import { ref } from 'vue'
+
+// init trpc
+MockeryTRPCClient.init()
 
 export const useAppStore = defineStore('app', () => {
   const fileContent = ref('')

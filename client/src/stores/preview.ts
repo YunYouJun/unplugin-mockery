@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { MockeryItem, MockeryRequest } from 'unplugin-mockery'
 import { Toast } from '@advjs/gui'
+import { MockeryTRPCClient } from 'unplugin-mockery/client'
 import { mockeryAxios } from '~/utils/axios'
 
 export const usePreviewStore = defineStore('preview', () => {
@@ -20,8 +21,8 @@ export const usePreviewStore = defineStore('preview', () => {
     language.value = 'typescript'
     curFilePath.value = filePath
 
-    const res = await mockeryAxios.get<string>(`/raw-file?path=${filePath}`)
-    fileContent.value = res.data
+    const content = await MockeryTRPCClient.client.file.raw.query(filePath)
+    fileContent.value = content
   }
 
   /**
@@ -53,11 +54,7 @@ export const usePreviewStore = defineStore('preview', () => {
    * @param filePath
    */
   function openFileInEditor(filePath: string) {
-    mockeryAxios.get('/open-file', {
-      params: {
-        path: filePath,
-      },
-    })
+    MockeryTRPCClient.client.file.open.query(filePath)
     Toast({
       title: `打开文件`,
       description: filePath,
@@ -90,11 +87,10 @@ export const usePreviewStore = defineStore('preview', () => {
     resultKey: string
   }) {
     language.value = 'json'
-    mockeryAxios.get('/toggle-result', {
-      params: {
-        ...params,
-        curScene: curScene.value,
-      },
+    MockeryTRPCClient.client.result.toggle.mutate({
+      url: params.url,
+      resultKey: params.resultKey,
+      curScene: curScene.value || 'default',
     })
   }
 

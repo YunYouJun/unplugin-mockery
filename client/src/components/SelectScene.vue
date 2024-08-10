@@ -16,28 +16,24 @@ import {
   SelectValue,
   SelectViewport,
 } from 'radix-vue'
-import { mockeryAxios } from '~/utils/axios'
+import { MockeryTRPCClient } from 'unplugin-mockery/client'
 
 const selectSceneText = ref('选择场景')
 
-const { data } = useMockeryFetch<{
-  list: string[]
-}>('/scene-list').json()
-
 const previewStore = usePreviewStore()
-const options = computed(() => {
-  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-  previewStore.curScene = data.value?.curScene || 'default'
-  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-  previewStore.curSceneData = data.value?.sceneData || {}
-  return data.value?.list || []
+const options = ref<string[]>([])
+
+onBeforeMount(() => {
+  MockeryTRPCClient.client.scene.list.query().then(async (data) => {
+    previewStore.curScene = data.curScene || 'default'
+    previewStore.curSceneData = data.sceneData || {}
+    options.value = data.list || []
+  })
 })
 
-watch(() => previewStore.curScene, (curScene) => {
-  mockeryAxios.get('/set-scene', {
-    params: { sceneName: curScene },
-  }).then(({ data }) => {
-    previewStore.curSceneData = data.sceneData
+watch(() => previewStore.curScene, (sceneName) => {
+  MockeryTRPCClient.client.scene.set.mutate(sceneName!).then((res) => {
+    previewStore.curSceneData = res.sceneData
   })
 })
 </script>

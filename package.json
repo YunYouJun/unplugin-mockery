@@ -151,6 +151,8 @@
     "@antfu/eslint-config": "^2.25.0",
     "@nuxt/kit": "^3.12.4",
     "@nuxt/schema": "^3.12.4",
+    "@trpc/client": "11.0.0-rc.477",
+    "@trpc/server": "11.0.0-rc.477",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.2.0",
     "@unocss/eslint-config": "^0.61.9",
@@ -169,7 +171,8 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
     "vitest": "^2.0.5",
-    "webpack": "^5.93.0"
+    "webpack": "^5.93.0",
+    "zod": "^3.23.8"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

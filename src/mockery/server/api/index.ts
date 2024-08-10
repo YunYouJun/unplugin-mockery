@@ -1,5 +1,5 @@
 import type { Application } from 'express'
-import { router } from '../../router'
+import { router } from '../../../core/router'
 
 /**
  * Register the client API routes

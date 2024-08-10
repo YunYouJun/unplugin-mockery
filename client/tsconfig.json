@@ -8,7 +8,8 @@
     "moduleResolution": "Bundler",
     "paths": {
       "~/*": ["src/*"],
-      "unplugin-mockery": ["../src"]
+      "unplugin-mockery": ["../src"],
+      "unplugin-mockery/client": ["../src/mockery/client/index.ts"]
     },
     "resolveJsonModule": true,
     "types": [
