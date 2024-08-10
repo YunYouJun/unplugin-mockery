@@ -32,7 +32,7 @@ const previewStore = usePreviewStore()
 
     <div class="flex flex-col gap-2">
       <!-- <MockMethodItem v-for="method in item.methods" :key="method" :method="method" :path="item.path" /> -->
-      <MockMethodItem :mockery="item.mockery" :path="item.path" />
+      <MockeryItem :mockery="item.mockery" :path="item.path" />
     </div>
   </div>
 </template>

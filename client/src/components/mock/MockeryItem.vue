@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { MockeryRequest } from 'unplugin-mockery'
-import { mockeryAxios } from '~/utils/axios'
 
 const props = defineProps<{
   mockery: MockeryRequest
@@ -34,28 +33,18 @@ function getTimeoutClass(timeout: number = 0) {
   return 'text-green-500'
 }
 
-const activeScene = ref<string | null>(null)
+const activeResultKey = ref<string | null>(null)
 
 const httpMethod = computed(() => props.mockery.method || 'get')
 
-function toggleActiveScene(scene: string) {
-  activeScene.value = scene
-
-  if (previewStore.curMockeryRequest)
-    previewStore.curMockeryRequest.curScene = scene
+function toggleActiveResultKey(key: string) {
+  activeResultKey.value = key
 }
 
-onMounted(() => {
-  mockeryAxios.get('/active-scene', {
-    params: {
-      filePath: props.path,
-      url: props.mockery.url,
-    },
-  }).then((res) => {
-    if (res.data.scene) {
-      activeScene.value = res.data.scene
-    }
-  })
+watch(() => previewStore.curSceneData[props.mockery.url], (curScene) => {
+  activeResultKey.value = curScene
+}, {
+  immediate: true,
 })
 </script>
 
@@ -74,22 +63,22 @@ onMounted(() => {
       </span>
       <span
         class="text-blue dark:text-blue-300" ml-2 cursor-pointer op-90 hover:op-100
-        @click="previewStore.previewMockeryRequest(mockery)"
+        @click="previewStore.previewMockeryRequest(path, mockery)"
       >
         {{ mockery.url }}
       </span>
     </div>
 
     <div v-if="mockery.results" class="mock-scene-container gap-2 pl-6" flex="~ wrap">
-      <MockSceneItem
+      <MockeryResultItem
         v-for="(scene, key) in mockery.results"
         :id="key"
         :key="key"
         :url="mockery.url"
         :scene="scene"
         :path="path"
-        :active="activeScene === key"
-        @click="toggleActiveScene(key)"
+        :active="activeResultKey === key"
+        @click="toggleActiveResultKey(key)"
       />
     </div>
   </div>

@@ -11,8 +11,7 @@
       ]
     },
     "/api/ping": {
-      "type": "string",
-      "enum": []
+      "type": "string"
     },
     "/api/proposal": {
       "type": "string",
@@ -22,28 +21,22 @@
       ]
     },
     "/api/test": {
-      "type": "string",
-      "enum": []
+      "type": "string"
     },
     "/methods/delete": {
-      "type": "string",
-      "enum": []
+      "type": "string"
     },
     "/methods/get": {
-      "type": "string",
-      "enum": []
+      "type": "string"
     },
     "/methods/patch": {
-      "type": "string",
-      "enum": []
+      "type": "string"
     },
     "/methods/post": {
-      "type": "string",
-      "enum": []
+      "type": "string"
     },
     "/methods/put": {
-      "type": "string",
-      "enum": []
+      "type": "string"
     }
   }
 }

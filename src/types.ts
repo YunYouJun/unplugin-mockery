@@ -12,7 +12,9 @@ export interface Options {
    * @default 'mock'
    * mock/api: mock files
    * mock/scenes: scene files
-   * mock/scenes/schema.json: schema file
+   * mock/schemas: schema file
+   *   scene.schema.json: scene schema file
+   *   config.schema.json: config schema file
    * mock/utils: utility files
    * mock/config.json: configuration file
    */

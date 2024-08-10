@@ -8,6 +8,7 @@ export const usePreviewStore = defineStore('preview', () => {
   const curFilePath = ref('')
   const fileContent = ref('')
   const language = ref<'typescript' | 'json'>('json')
+  const curSceneData = ref<Record<string, string>>({})
 
   /**
    * cur scene name
@@ -34,14 +35,15 @@ export const usePreviewStore = defineStore('preview', () => {
     fileContent.value = JSON.stringify(item.mockery, null, 2)
   }
 
-  function previewMockeryRequest(mockery: MockeryRequest) {
+  function previewMockeryRequest(path: string, mockery: MockeryRequest) {
     language.value = 'json'
+    curFilePath.value = path
     curMockeryRequest.value = mockery
 
     const response = mockery.response
       ? mockery.response
-      : mockery.curScene
-        ? mockery.results?.[mockery.curScene]
+      : mockery.results
+        ? Object.values(mockery.results)[0]
         : mockery.results
     fileContent.value = JSON.stringify(response || {}, null, 2)
   }
@@ -100,6 +102,7 @@ export const usePreviewStore = defineStore('preview', () => {
     curFilePath,
     curMockeryRequest,
     curScene,
+    curSceneData,
 
     language,
 

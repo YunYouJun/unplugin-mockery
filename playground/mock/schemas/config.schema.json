@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "curScene": {
+      "type": "string",
+      "description": "当前场景",
+      "enum": [
+        "another",
+        "default"
+      ]
+    }
+  }
+}

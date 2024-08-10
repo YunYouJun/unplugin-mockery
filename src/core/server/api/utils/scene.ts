@@ -8,6 +8,7 @@ import colors from 'picocolors'
 /**
  * get `curScene` key
  * @param ast
+ * @deprecated
  */
 export function getCurSceneKey(ast: ASTNode) {
   // @ts-expect-error body in ast
@@ -25,6 +26,7 @@ export function getCurSceneKey(ast: ASTNode) {
 
 /**
  * get cur active scene
+ * @deprecated
  */
 export async function getActiveScene(params: {
   filePath: string

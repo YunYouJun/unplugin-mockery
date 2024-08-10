@@ -71,7 +71,7 @@ router.use('/toggle-result', async (req, res) => {
   const db = await JSONFilePreset<{
     [url: string]: string
   }>(sceneDataPath, {
-    $schema: './schema.json',
+    $schema: '../schemas/scene.schema.json',
   })
   db.data[url] = resultKey
   await db.write()
@@ -95,8 +95,14 @@ router.use('/scene-list', async (req, res) => {
     .map((file) => {
       return file.replace('.scene.json', '')
     })
+
+  const curScene = MockeryDB.configDB.data.curScene
+  const sceneDataPath = path.resolve(sceneDir, `${curScene}.scene.json`)
+  const sceneData = await fs.readJSON(sceneDataPath)
+
   res.json({
-    curScene: MockeryDB.configDB.data.curScene,
+    curScene,
+    sceneData,
     list,
   })
 })
@@ -108,8 +114,11 @@ router.use('/set-scene', async (req, res) => {
   const sceneName = req.query.sceneName as string
   MockeryDB.configDB.data.curScene = sceneName
   await MockeryDB.save()
+
+  const sceneData = await fs.readJSON(path.resolve(globalState.userOptions?.mockDir || '', 'scenes', `${sceneName}.scene.json`))
   res.json({
     sceneName,
+    sceneData,
   })
 })
 

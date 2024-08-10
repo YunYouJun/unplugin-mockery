@@ -32,9 +32,6 @@ importers:
       jiti:
         specifier: ^1.21.6
         version: 1.21.6
-      jsonc-parser:
-        specifier: ^3.3.1
-        version: 3.3.1
       launch-editor:
         specifier: ^2.8.1
         version: 2.8.1
@@ -61,7 +58,7 @@ importers:
         specifier: 0.0.7-beta.5
         version: 0.0.7-beta.5(vue@3.4.37(typescript@5.5.4))
       '@antfu/eslint-config':
-        specifier: ^2.24.1
+        specifier: ^2.25.0
         version: 2.25.0(@unocss/eslint-plugin@0.61.9(eslint@9.9.0(jiti@1.21.6))(typescript@5.5.4))(@vue/compiler-sfc@3.4.37)(eslint-plugin-format@0.1.2(eslint@9.9.0(jiti@1.21.6)))(eslint@9.9.0(jiti@1.21.6))(typescript@5.5.4)(vitest@2.0.5(@types/node@22.2.0)(jsdom@24.1.1)(sass@1.77.8)(terser@5.31.5))
       '@nuxt/kit':
         specifier: ^3.12.4
@@ -73,7 +70,7 @@ importers:
         specifier: ^11.0.4
         version: 11.0.4
       '@types/node':
-        specifier: ^22.1.0
+        specifier: ^22.2.0
         version: 22.2.0
       '@unocss/eslint-config':
         specifier: ^0.61.9
@@ -88,7 +85,7 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(conventional-commits-filter@5.0.0)
       eslint:
-        specifier: ^9.8.0
+        specifier: ^9.9.0
         version: 9.9.0(jiti@1.21.6)
       eslint-plugin-format:
         specifier: ^0.1.2
@@ -368,7 +365,7 @@ importers:
   playground/webpack:
     devDependencies:
       '@types/node':
-        specifier: ^22.1.0
+        specifier: ^22.2.0
         version: 22.2.0
       '@types/webpack':
         specifier: ^5.28.5
@@ -5172,9 +5169,6 @@ packages:
   jsonc-eslint-parser@2.4.0:
     resolution: {integrity: sha512-WYDyuc/uFcGp6YtM2H0uKmUwieOuzeE/5YocFJLnLfclZ4inf3mRn8ZVy1s7Hxji7Jxm6Ss8gqpexD/GlKoGgg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  jsonc-parser@3.3.1:
-    resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
 
   jsonfile@2.4.0:
     resolution: {integrity: sha512-PKllAqbgLgxHaj8TElYymKCAgrASebJrWpTnEkOaTowt23VKXXN0sUeriJ+eh7y6ufb/CC5ap11pz71/cM0hUw==}
@@ -13454,8 +13448,6 @@ snapshots:
       eslint-visitor-keys: 3.4.3
       espree: 9.6.1
       semver: 7.6.3
-
-  jsonc-parser@3.3.1: {}
 
   jsonfile@2.4.0:
     optionalDependencies:

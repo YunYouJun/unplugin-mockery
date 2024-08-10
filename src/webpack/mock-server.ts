@@ -8,6 +8,7 @@ import consola from 'consola'
 import colors from 'picocolors'
 
 import type { Application } from 'express'
+import { MockeryDB } from '../mockery/db'
 import type { MockeryRequest, Options } from '../types'
 import { getMockApiFiles, jiti } from '../core/utils'
 
@@ -78,8 +79,8 @@ export async function mockServer(devServer: Server, options: Options) {
       const mockeryRequest = jiti(file).default as MockeryRequest || {}
       consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
 
-      mockeryServer.updateSceneSchema(mockeryRequest)
       registerRoute(app, mockeryRequest)
+      MockeryDB.updateSceneSchema(mockeryRequest)
     }
   }
 
@@ -96,26 +97,30 @@ export async function mockServer(devServer: Server, options: Options) {
   )
 
   registerRoutes(app)
-  await mockeryServer.writeSceneSchema()
+  mockeryServer.writeSceneSchema()
 
   chokidar
-    .watch('**/*.ts', {
+    .watch('**/*.{ts,json}', {
       cwd: options.mockDir,
       ignoreInitial: true,
     })
     .on('all', async (event, path) => {
       if (event === 'change' || event === 'add') {
         try {
-          const filePath = resolve(options.mockDir, path)
+          if (path.endsWith('.ts')) {
+            const filePath = resolve(options.mockDir, path)
 
-          // clear route in register
-          const mockeryRequest = jiti(filePath).default as MockeryRequest || {}
-          consola.debug(`  Registering Mock Server: ${colors.dim(filePath)}`)
-
-          mockeryServer.updateSceneSchema(mockeryRequest)
-          registerRoute(app, mockeryRequest)
-          consola.success(`${colors.magenta('Mock Server hot reload success!')} changed: ${colors.dim(filePath)}`)
-          await mockeryServer.writeSceneSchema()
+            // clear route in register
+            const mockeryRequest = jiti(filePath).default as MockeryRequest || {}
+            consola.debug(`  Registering Mock Server: ${colors.dim(filePath)}`)
+            MockeryDB.updateSceneSchema(mockeryRequest)
+            registerRoute(app, mockeryRequest)
+            consola.success(`${colors.magenta('Mock Server hot reload success!')} changed: ${colors.dim(filePath)}`)
+            MockeryDB.saveSceneSchema()
+          }
+          else if (path.endsWith('.scene.json')) {
+            await MockeryDB.updateConfigSchema()
+          }
         }
         catch (error) {
           consola.error(error)

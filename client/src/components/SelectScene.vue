@@ -28,12 +28,16 @@ const previewStore = usePreviewStore()
 const options = computed(() => {
   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
   previewStore.curScene = data.value?.curScene || 'default'
+  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+  previewStore.curSceneData = data.value?.sceneData || {}
   return data.value?.list || []
 })
 
 watch(() => previewStore.curScene, (curScene) => {
   mockeryAxios.get('/set-scene', {
     params: { sceneName: curScene },
+  }).then(({ data }) => {
+    previewStore.curSceneData = data.sceneData
   })
 })
 </script>

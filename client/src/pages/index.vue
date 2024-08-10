@@ -17,6 +17,10 @@ function go() {
   if (name.value)
     router.push(`/hi/${encodeURIComponent(name.value)}`)
 }
+
+const displayedResultKey = computed(() => {
+  return previewStore.curSceneData[previewStore.curMockeryRequest?.url || ''] || ''
+})
 </script>
 
 <template>
@@ -54,8 +58,8 @@ function go() {
         <div i-vscode-icons:file-type-vscode />
         <span class="text-left" :title="previewStore.curFilePath">{{ previewStore.curFilePath }}</span>
         <div flex-1 />
-        <span v-if="previewStore.curMockeryRequest?.curScene" class="text-blue">
-          {{ previewStore.curMockeryRequest?.curScene }}
+        <span v-if="displayedResultKey" class="text-blue">
+          {{ displayedResultKey }}
         </span>
         <span>
           <div v-if="previewStore.language === 'typescript'" i-vscode-icons:file-type-typescript />

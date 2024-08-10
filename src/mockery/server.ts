@@ -4,9 +4,9 @@ import fs from 'fs-extra'
 import type { JSONSchemaType } from 'ajv'
 
 import { defaultOptions } from '../core/options'
-import type { MockeryRequest, Options } from '../types'
+import type { Options } from '../types'
 import type { SceneData } from './schema'
-import { initSceneSchema, updateSceneSchema } from './schema'
+import { initSceneSchema } from './schema'
 import { MockeryDB } from './db'
 
 export class MockeryServer {
@@ -17,7 +17,7 @@ export class MockeryServer {
 
   constructor(public options: Options = defaultOptions) {
     this.options = options
-    this.sceneSchemaPath = path.resolve(this.options.mockDir, 'scenes/schema.json')
+    this.sceneSchemaPath = path.resolve(this.options.mockDir, 'schemas/scene.schema.json')
 
     this.sceneData = this.readScene('default')
   }
@@ -30,10 +30,6 @@ export class MockeryServer {
   async initDB() {
     consola.debug('Init Mockery DB')
     await MockeryDB.init(this.options)
-  }
-
-  async updateSceneSchema(mockery: MockeryRequest) {
-    updateSceneSchema(this.sceneSchema, mockery)
   }
 
   async writeSceneSchema() {
