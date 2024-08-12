@@ -1,5 +1,8 @@
-import { createTRPCClient, httpLink } from '@trpc/client'
+import { createTRPCClient, httpBatchLink } from '@trpc/client'
+import NProgress from 'nprogress'
+import { tap } from '@trpc/server/observable'
 import type { AppRouter } from '../server'
+
 //     👆 **type-only** import
 
 // Pass AppRouter as generic here. 👇 This lets the `trpc` object know
@@ -10,7 +13,18 @@ export class MockeryTRPCClient {
   static init() {
     this.client = createTRPCClient<AppRouter>({
       links: [
-        httpLink({
+        () => ({ op, next }) => {
+          NProgress.start()
+
+          return next(op).pipe(
+            tap({
+              next() {
+                NProgress.done()
+              },
+            }),
+          )
+        },
+        httpBatchLink({
           url: `${window.location.origin}/trpc`,
         }),
       ],

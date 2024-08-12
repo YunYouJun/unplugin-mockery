@@ -36,16 +36,6 @@ function getTimeoutClass(timeout: number = 0) {
 const activeResultKey = ref<string | null>(null)
 
 const httpMethod = computed(() => props.mockery.method || 'get')
-
-function toggleActiveResultKey(key: string) {
-  activeResultKey.value = key
-}
-
-watch(() => previewStore.curSceneData[props.mockery.url], (curScene) => {
-  activeResultKey.value = curScene
-}, {
-  immediate: true,
-})
 </script>
 
 <template>
@@ -77,8 +67,7 @@ watch(() => previewStore.curSceneData[props.mockery.url], (curScene) => {
         :url="mockery.url"
         :scene="scene"
         :path="path"
-        :active="activeResultKey === key"
-        @click="toggleActiveResultKey(key)"
+        :active="previewStore.curSceneData[mockery.url] === key"
       />
     </div>
   </div>

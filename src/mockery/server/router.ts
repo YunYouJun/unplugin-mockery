@@ -135,6 +135,7 @@ export const appRouter = router({
 
       return {
         resultKey,
+        sceneData: db.data,
       }
     }),
   }),

@@ -91,6 +91,8 @@ export const usePreviewStore = defineStore('preview', () => {
       url: params.url,
       resultKey: params.resultKey,
       curScene: curScene.value || 'default',
+    }).then((res) => {
+      curSceneData.value = res.sceneData
     })
   }
 
