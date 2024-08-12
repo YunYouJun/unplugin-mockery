@@ -1,3 +1,12 @@
+## [0.2.4](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.3...v0.2.4) (2024-08-12)
+
+
+### Bug Fixes
+
+* preview mockery request ([30e3eb3](https://github.com/YunYouJun/unplugin-mockery/commit/30e3eb348180ce4b70caf7c0fb77e2c4ff0ab1ae))
+
+
+
 ## [0.2.3](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.2...v0.2.3) (2024-08-10)
 
 
