@@ -1,7 +1,4 @@
 import { Router } from 'express'
-
-// @ts-expect-error launch-editor is not typed
-
 import { getActiveScene, toggleMockScene } from '../mockery/server/api/utils'
 
 export const router = Router()

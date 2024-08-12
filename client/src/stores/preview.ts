@@ -36,16 +36,16 @@ export const usePreviewStore = defineStore('preview', () => {
     fileContent.value = JSON.stringify(item.mockery, null, 2)
   }
 
-  function previewMockeryRequest(path: string, mockery: MockeryRequest) {
+  function previewMockeryRequest(path: string, mockery: MockeryRequest, activeResultKey: string) {
     language.value = 'json'
     curFilePath.value = path
     curMockeryRequest.value = mockery
 
     const response = mockery.response
       ? mockery.response
-      : mockery.results
-        ? Object.values(mockery.results)[0]
-        : mockery.results
+      : mockery.results && mockery.results[activeResultKey]
+        ? mockery.results[activeResultKey]
+        : Object.values(mockery.results || [])[0]
     fileContent.value = JSON.stringify(response || {}, null, 2)
   }
 

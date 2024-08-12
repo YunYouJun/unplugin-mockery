@@ -63,7 +63,7 @@ watch(() => previewStore.curSceneData[props.mockery.url], (curScene) => {
       </span>
       <span
         class="text-blue dark:text-blue-300" ml-2 cursor-pointer op-90 hover:op-100
-        @click="previewStore.previewMockeryRequest(path, mockery)"
+        @click="previewStore.previewMockeryRequest(path, mockery, activeResultKey)"
       >
         {{ mockery.url }}
       </span>
