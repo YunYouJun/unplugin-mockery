@@ -4,6 +4,8 @@
 
 ## Features
 
+Now, only for webpack. Vite(developing...)
+
 - Hot Reload Routes on demand
 
 ## Install
@@ -110,6 +112,22 @@ import Mocker from 'unplugin-mockery/esbuild'
 build({
   plugins: [Mocker()],
 })
+```
+
+### Schema Setting in VSCode
+
+Edit `.vscode/settings.json`:
+
+```json
+{
+  // schema
+  "json.schemas": [
+    {
+      "fileMatch": ["*.scene.json"],
+      "url": "./mock/schemas/scene.schema.json"
+    }
+  ]
+}
 ```
 
 <br></details>

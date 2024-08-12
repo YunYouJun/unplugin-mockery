@@ -148,7 +148,7 @@
   },
   "devDependencies": {
     "@advjs/gui": "0.0.7-beta.5",
-    "@antfu/eslint-config": "^2.25.0",
+    "@antfu/eslint-config": "^2.25.1",
     "@nuxt/kit": "^3.12.4",
     "@nuxt/schema": "^3.12.4",
     "@trpc/client": "11.0.0-rc.477",
