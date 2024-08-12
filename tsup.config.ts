@@ -14,5 +14,6 @@ export default <Options>{
   external: [
     // in express
     'body-parser',
+    'escape-html',
   ],
 }

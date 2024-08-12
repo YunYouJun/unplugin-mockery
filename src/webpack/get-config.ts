@@ -49,7 +49,6 @@ export function getWebpackConfig(options: Options = defaultOptions) {
     },
   }
 
-  globalState.userOptions = options
   const mockeryServer = new MockeryServer(options)
   mockeryServer.init()
   serveClient({

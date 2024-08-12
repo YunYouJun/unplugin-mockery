@@ -86,6 +86,10 @@ export default defineNuxtConfig({
 但在 Vue Cli 中，`webpack-dev-server` 的启动时机有所不同，因此我们无法通过插件获取 Vue Cli 中的 `webpack-dev-server` `devServer` 的实例。
 而是通过获取 webpack 的方式进行设置。
 
+In Webpack, it works well.
+But in Vue Cli, the timing of starting `webpack-dev-server` is different, so we cannot get the instance of `webpack-dev-server` `devServer` in Vue Cli through the plugin.
+Instead, we set it by `getWebpackConfig`.
+
 ```ts
 // vue.config.js
 const { getWebpackConfig } = require('unplugin-mockery/webpack')
@@ -132,6 +136,17 @@ Edit `.vscode/settings.json`:
 
 <br></details>
 
-## TODO
+## Development
 
-- send request to get response & compare with jiti result
+```bash
+# run template
+
+# for vue-cli(webpack)
+pnpm play:vue-cli
+
+# for webpack
+pnpm play:webpack
+
+# for vite
+pnpm play:vite
+```

@@ -2,7 +2,7 @@ import consola from 'consola'
 import fg from 'fast-glob'
 import createJITI from 'jiti'
 
-import { filename } from './shims'
+import { filename } from '../shims'
 
 // shim for esm
 export const jiti = createJITI(filename, {

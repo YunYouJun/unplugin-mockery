@@ -13,6 +13,7 @@ export function serveClient(options: {
   mode?: 'development' | 'production'
   staticPath?: string
   port?: number
+  open?: boolean
 }) {
   const app = createMockClientServer({
     staticRoot: options.staticPath,
@@ -27,7 +28,7 @@ export function serveClient(options: {
     console.log()
     consola.info(`  ${c.green('🤡')}  ${c.bold('Mockery Started')}: ${c.cyan(url)}`)
 
-    if (globalState.userOptions?.client?.open)
+    if (options.open)
       openBrowser(url)
 
     if (globalState.startTimestamp) {
@@ -41,4 +42,9 @@ export function serveClient(options: {
     listener.close()
     process.exit(0)
   })
+
+  return {
+    app,
+    listener,
+  }
 }

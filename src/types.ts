@@ -1,6 +1,13 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
 export interface Options {
+  /**
+   * Base URL for inspector UI
+   *
+   * @default read from Vite's config
+   */
+  base?: string
+
   // define your plugin options here
   /**
    * Display debug information.

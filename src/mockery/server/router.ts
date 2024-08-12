@@ -6,7 +6,6 @@ import { z } from 'zod'
 import launch from 'launch-editor'
 
 import { TRPCError } from '@trpc/server'
-import { globalState } from '../../core/env'
 import { MockeryDB } from '../db'
 
 import { getMockApiFiles, jiti } from '../../core/utils'
@@ -53,7 +52,7 @@ export const appRouter = router({
      * List all scenes
      */
     list: publicProcedure.query(async () => {
-      const userOptions = globalState.userOptions
+      const userOptions = MockeryDB.options
       const sceneDir = path.resolve(userOptions?.mockDir || '', 'scenes')
       const files = await fs.readdir(sceneDir)
       const list = files
@@ -78,7 +77,7 @@ export const appRouter = router({
       MockeryDB.configDB.data.curScene = sceneName
       await MockeryDB.save()
 
-      const sceneData = await fs.readJSON(path.resolve(globalState.userOptions?.mockDir || '', 'scenes', `${sceneName}.scene.json`))
+      const sceneData = await fs.readJSON(path.resolve(MockeryDB.options?.mockDir || '', 'scenes', `${sceneName}.scene.json`))
       return {
         sceneName,
         sceneData,
@@ -88,7 +87,7 @@ export const appRouter = router({
 
   mockery: router({
     list: publicProcedure.query(async () => {
-      const files = getMockApiFiles(globalState.userOptions?.mockDir || defaultOptions.mockDir)
+      const files = getMockApiFiles(MockeryDB.options?.mockDir || defaultOptions.mockDir)
       const list = files.map((file) => {
         const mockery = (jiti(file).default || {}) as Mockery
         if (mockery.results) {
@@ -121,7 +120,7 @@ export const appRouter = router({
     })).mutation(async ({ input }) => {
       const { JSONFilePreset } = await import('lowdb/node')
       const { url, resultKey, curScene } = input
-      const userOptions = globalState.userOptions
+      const userOptions = MockeryDB.options
       const sceneDataPath = path.resolve(userOptions?.mockDir || '', 'scenes', `${curScene}.scene.json`)
       const db = await JSONFilePreset<{
         [url: string]: string
