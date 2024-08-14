@@ -1,3 +1,12 @@
+## [0.2.7](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.6...v0.2.7) (2024-08-14)
+
+
+### Features
+
+* add show description ([e622a93](https://github.com/YunYouJun/unplugin-mockery/commit/e622a93caa296d2cc10faa41881e05902bfbf503))
+
+
+
 ## [0.2.6](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.5...v0.2.6) (2024-08-14)
 
 
