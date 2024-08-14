@@ -13,8 +13,11 @@ const mockeryList = computed(() => {
   const list = fullMockeryList.value || []
   if (!appStore.searchKeywords)
     return list
+  // path/url/description
   return list.filter(item =>
-    item.path.includes(appStore.searchKeywords) || item.mockery.url.includes(appStore.searchKeywords),
+    item.path.includes(appStore.searchKeywords)
+    || item.mockery.url.includes(appStore.searchKeywords)
+    || item.mockery.description?.includes(appStore.searchKeywords),
   )
 })
 
