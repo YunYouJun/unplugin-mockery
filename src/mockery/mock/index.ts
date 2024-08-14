@@ -1,7 +1,11 @@
 import type { Application } from 'express'
+import colors from 'picocolors'
+import consola from 'consola'
 import { isMockery } from '../utils'
 import type { MockeryRequest } from '../../types'
 import { MockeryDB } from '../db'
+
+import { jiti } from '../../core/utils'
 
 /**
  * Register a mock route by file
@@ -20,30 +24,57 @@ export function registerRoute(app: Application, mockery: MockeryRequest) {
     return !(i.route && i.route.path === url)
   })
 
-  if (response || rawResponse) {
+  if (response) {
     app[method || 'get'](url, (req, res) => {
       setTimeout(async () => {
-        if (rawResponse) {
-          await rawResponse(
-            req,
-            res,
-          )
+        if (typeof response === 'function') {
+          const resData = await response(req)
+          res.json(resData)
         }
-
-        const resData = typeof response === 'function' ? await response(req) : response
-        res.json(resData)
+        else if (typeof response === 'object') {
+          res.json(response)
+        }
+        else {
+          throw new TypeError('response must be a function or object')
+        }
+      }, mockery.timeout || 0)
+    })
+  }
+  else if (rawResponse) {
+    if (typeof rawResponse !== 'function') {
+      throw new TypeError('rawResponse must be a function')
+    }
+    app[method || 'get'](url, (req, res) => {
+      setTimeout(async () => {
+        await rawResponse?.(
+          req,
+          res,
+        )
       }, mockery.timeout || 0)
     })
   }
   else if (Object.keys(results).length > 0) {
-    app[method || 'get'](url, (req, res) => {
-      const curKeyInScene = MockeryDB.sceneData[mockery.url]
-      const resultKey = curKeyInScene || (Object.keys(results)[0])
-      const response = results[resultKey] || {}
+    const curKeyInScene = MockeryDB.sceneData[mockery.url]
+    const resultKey = curKeyInScene || (Object.keys(results)[0])
+    const response = results[resultKey] || {}
 
+    app[method || 'get'](url, (req, res) => {
       setTimeout(() => {
         res.json(response)
       }, mockery.timeout || 0)
     })
+  }
+}
+
+export async function registerRoutes(app: Application, files: string[]) {
+  consola.info(`${colors.dim('Registering all routes') + colors.cyan(`(${files.length})`)} 📂 ${colors.cyan(MockeryDB.options.mockDir)}`)
+  consola.debug('files', files)
+  for (const file of files) {
+    // clear route in register
+    const mockeryRequest = jiti(file).default as MockeryRequest || {}
+    consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
+
+    registerRoute(app, mockeryRequest)
+    MockeryDB.updateSceneSchema(mockeryRequest)
   }
 }
