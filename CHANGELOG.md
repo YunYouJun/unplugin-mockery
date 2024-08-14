@@ -1,3 +1,18 @@
+## [0.2.5](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.4...v0.2.5) (2024-08-14)
+
+
+### Bug Fixes
+
+* async setupMiddlewares & reload routes ([eafb1e4](https://github.com/YunYouJun/unplugin-mockery/commit/eafb1e479aa8527eb379200f1be580c2041890a8))
+* toggle scene data & remove duplicate watch toggle ([ec53fa2](https://github.com/YunYouJun/unplugin-mockery/commit/ec53fa289240d889bef569737e4b3acb61419de9))
+
+
+### Features
+
+* support vite & dynamic port ([4c02a04](https://github.com/YunYouJun/unplugin-mockery/commit/4c02a041e1e073e9a7b6af651bc887012b5f9d8c))
+
+
+
 ## [0.2.4](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.3...v0.2.4) (2024-08-12)
 
 
