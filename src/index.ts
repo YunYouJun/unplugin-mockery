@@ -42,8 +42,8 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     },
 
     webpack(compiler) {
-      compiler.hooks.environment.tap(PLUGIN_NAME, () => {
-        const webpackConfig = getWebpackConfig(options)
+      compiler.hooks.environment.tap(PLUGIN_NAME, async () => {
+        const webpackConfig = await getWebpackConfig(options)
         compiler.options.devServer = {
           ...compiler.options.devServer,
           setupMiddleware: (middlewares: Server.Middleware[], devServer: Server) => {

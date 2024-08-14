@@ -14,10 +14,15 @@ import { mockServer } from './mock-server'
  * Get webpack config
  * @param options
  */
-export function getWebpackConfig(options: Options = defaultOptions) {
+export async function getWebpackConfig(options: Options = defaultOptions) {
   globalState.startTimestamp = performance.now()
 
   options = Object.assign({}, defaultOptions, options)
+
+  const startTimestamp = performance.now()
+  const mockeryServer = new MockeryServer(options)
+  // do not async to avoid register api failed
+  await mockeryServer.init()
 
   const webpackConfig: {
     devServer: Server.Configuration
@@ -38,8 +43,8 @@ export function getWebpackConfig(options: Options = defaultOptions) {
         console.log()
         consola.start('Mock Server Starting...')
 
-        const startTimestamp = performance.now()
-        mockServer(devServer, options).then(() => {
+        mockServer(devServer, options)
+        mockeryServer.writeSceneSchema().then(() => {
           const consumedTime = performance.now() - startTimestamp
           consola.success(`Mock Server Started: ${colors.green(`${consumedTime.toFixed(2)}ms`)}`)
         })
@@ -49,8 +54,6 @@ export function getWebpackConfig(options: Options = defaultOptions) {
     },
   }
 
-  const mockeryServer = new MockeryServer(options)
-  mockeryServer.init()
   serveClient({
     staticPath: clientDistFolder,
     port: options.client?.port,

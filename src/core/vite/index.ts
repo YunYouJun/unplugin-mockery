@@ -1,4 +1,5 @@
 import type { Connect } from 'vite'
+import type { NextHandleFunction } from 'connect'
 
 const timestampRE = /\bt=\d{13}&?\b/
 const trailingSeparatorRE = /[?&]$/
@@ -66,8 +67,19 @@ export function createVitePlugin() {
     })
   }
 
+  // TODO extract middleware for vite
+
+  function requestMiddleware() {
+    // eslint-disable-next-line unused-imports/no-unused-vars
+    const middleware: NextHandleFunction = (req, res, next) => {}
+
+    return middleware
+  }
+
   return {
     serverPerf,
     setupMiddlewarePerf,
+
+    requestMiddleware,
   }
 }

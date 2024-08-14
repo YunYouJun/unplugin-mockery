@@ -18,6 +18,7 @@ export class MockeryDB {
 
   static configPath = ''
   static configDB: Low<MockeryConfigData>
+  static sceneData: SceneData = {}
 
   static sceneSchema: JSONSchemaType<SceneData> = initSceneSchema()
   static sceneSchemaPath = ''
@@ -41,6 +42,36 @@ export class MockeryDB {
     this.configDB = await JSONFilePreset<MockeryConfigData>(configPath, {
       curScene: 'default',
     })
+    this.sceneData = this.readScene(this.configDB.data.curScene)
+  }
+
+  /**
+   * Update internal data
+   */
+  static async update() {
+    await this.configDB.read()
+  }
+
+  static getScenePath(sceneName?: string) {
+    const curScene = sceneName || this.configDB.data.curScene
+    const scenePath = path.resolve(this.options.mockDir, 'scenes', `${curScene}.scene.json`)
+    if (!fs.existsSync(scenePath)) {
+      throw new Error(`Scene file not found: ${scenePath}`)
+    }
+    return scenePath
+  }
+
+  /**
+   * Read scene data
+   * @param sceneName
+   */
+  static readScene(sceneName?: string) {
+    consola.info('Current Scene:', sceneName || this.configDB.data.curScene)
+    const scenePath = this.getScenePath(sceneName)
+    const sceneData = fs.readJSONSync(scenePath)
+    consola.debug('Scene Data:', sceneData)
+    this.sceneData = sceneData
+    return sceneData
   }
 
   static async initSceneSchema() {

@@ -50,14 +50,7 @@ export interface RespThisType {
   parseJson: () => any
 }
 
-type Recordable<T = any> = Record<string, T>
-
-export type MockResponse<T> = ((this: RespThisType, opt: {
-  url: Recordable
-  body: Recordable
-  query: Recordable
-  headers: Recordable
-}) => T) | T
+export type MockResponse<T> = ((req: IncomingMessage) => T) | T
 
 export type RawResponse = (req: IncomingMessage, res: ServerResponse) => void | Promise<void>
 

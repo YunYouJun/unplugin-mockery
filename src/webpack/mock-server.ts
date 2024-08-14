@@ -14,13 +14,7 @@ import { getMockApiFiles, jiti } from '../core/utils'
 
 import { isMockery } from '../mockery/utils'
 
-import { MockeryServer } from '../mockery'
-
-export async function mockServer(devServer: Server, options: Options) {
-  const mockeryServer = new MockeryServer(options)
-  // do not async to avoid register api failed
-  mockeryServer.init()
-
+export function mockServer(devServer: Server, options: Options) {
   const files = getMockApiFiles(options.mockDir)
   /**
    * Register a mock route by file
@@ -39,26 +33,38 @@ export async function mockServer(devServer: Server, options: Options) {
       return !(i.route && i.route.path === url)
     })
 
-    if (response || rawResponse) {
+    if (response) {
       app[method || 'get'](url, (req, res) => {
         setTimeout(async () => {
-          if (rawResponse) {
-            res.json(
-              await rawResponse(
-                req,
-                res,
-              ),
-            )
+          if (typeof response === 'function') {
+            const resData = await response(req)
+            res.json(resData)
           }
-          else if (response) {
+          else if (typeof response === 'object') {
             res.json(response)
           }
+          else {
+            throw new TypeError('response must be a function or object')
+          }
+        }, mockery.timeout || 0)
+      })
+    }
+    else if (rawResponse) {
+      if (typeof rawResponse !== 'function') {
+        throw new TypeError('rawResponse must be a function')
+      }
+      app[method || 'get'](url, (req, res) => {
+        setTimeout(async () => {
+          await rawResponse?.(
+            req,
+            res,
+          )
         }, mockery.timeout || 0)
       })
     }
     else if (Object.keys(results).length > 0) {
       app[method || 'get'](url, (req, res) => {
-        const curKeyInScene = mockeryServer.sceneData[mockery.url]
+        const curKeyInScene = MockeryDB.sceneData[mockery.url]
         const resultKey = curKeyInScene || (Object.keys(results)[0])
         const response = results[resultKey] || {}
 
@@ -97,7 +103,6 @@ export async function mockServer(devServer: Server, options: Options) {
   )
 
   registerRoutes(app)
-  mockeryServer.writeSceneSchema()
 
   chokidar
     .watch('**/*.{ts,json}', {
@@ -119,8 +124,18 @@ export async function mockServer(devServer: Server, options: Options) {
             MockeryDB.saveSceneSchema()
           }
           else if (path.endsWith('.scene.json')) {
-            await MockeryDB.updateConfigSchema()
+            await MockeryDB.update()
+            MockeryDB.readScene()
             // reload all routes
+            consola.info(`${colors.dim('Scene file changed, reloading all routes')}`)
+            registerRoutes(app)
+            await MockeryDB.updateConfigSchema()
+          }
+          else if (path.endsWith('config.json')) {
+            await MockeryDB.update()
+            MockeryDB.readScene()
+            // reload all routes
+            consola.info(`${colors.dim('Config file changed, reloading all routes')}`)
             registerRoutes(app)
           }
         }

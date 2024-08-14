@@ -75,9 +75,11 @@ export const appRouter = router({
     set: publicProcedure.input(z.string()).mutation(async ({ input }) => {
       const sceneName = input
       MockeryDB.configDB.data.curScene = sceneName
+      const sceneDataPath = MockeryDB.getScenePath()
+      const sceneData = await fs.readJSON(sceneDataPath)
+      // trigger hot reload
       await MockeryDB.save()
 
-      const sceneData = await fs.readJSON(path.resolve(MockeryDB.options?.mockDir || '', 'scenes', `${sceneName}.scene.json`))
       return {
         sceneName,
         sceneData,

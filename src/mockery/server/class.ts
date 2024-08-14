@@ -18,8 +18,6 @@ export class MockeryServer {
   constructor(public options: Options = defaultOptions) {
     this.options = options
     this.sceneSchemaPath = path.resolve(this.options.mockDir, 'schemas/scene.schema.json')
-
-    this.sceneData = this.readScene('default')
   }
 
   async init() {
@@ -34,15 +32,5 @@ export class MockeryServer {
 
   async writeSceneSchema() {
     await fs.writeJSON(this.sceneSchemaPath, this.sceneSchema, { spaces: 2 })
-  }
-
-  /**
-   * Read scene data
-   * @param sceneName
-   */
-  readScene(sceneName: string) {
-    const scenePath = path.resolve(this.options.mockDir, 'scenes', `${sceneName}.scene.json`)
-    const sceneData = fs.readJSONSync(scenePath)
-    return sceneData
   }
 }
