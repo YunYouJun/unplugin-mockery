@@ -33,8 +33,7 @@ function getTimeoutClass(timeout: number = 0) {
   return 'text-green-500'
 }
 
-const activeResultKey = ref<string | null>(null)
-
+const activeResultKey = ref<string>()
 const httpMethod = computed(() => props.mockery.method || 'get')
 </script>
 

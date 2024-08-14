@@ -78,7 +78,9 @@ export class MockeryDB {
     this.sceneSchemaPath = path.resolve(this.options.mockDir, 'schemas/scene.schema.json')
     this.sceneSchema = await fs.readJSON(this.sceneSchemaPath).catch(() => initSceneSchema())
 
-    const apiFiles = getMockApiFiles(this.options.mockDir)
+    const apiFiles = getMockApiFiles({
+      mockDir: this.options.mockDir,
+    })
     for (const file of apiFiles) {
       const mockery = jiti(file).default as Mockery
       this.updateSceneSchema(mockery)

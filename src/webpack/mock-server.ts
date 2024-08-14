@@ -13,8 +13,9 @@ import type { MockeryRequest, Options } from '../types'
 import { getMockApiFiles, jiti } from '../core/utils'
 
 export function mockServer(devServer: Server, options: Options) {
-  const files = getMockApiFiles(options.mockDir)
-
+  const files = getMockApiFiles({
+    mockDir: options.mockDir,
+  })
   const app = devServer.app
   if (!app) {
     throw new Error('No app found')

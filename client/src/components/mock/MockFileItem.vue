@@ -22,7 +22,10 @@ const previewStore = usePreviewStore()
         @click="previewStore.previewMockeryItem(item)"
       >
         <div i-vscode-icons:file-type-typescript />
-        <span op-80 hover:op-100>{{ item.path }}</span>
+        <span v-if="item.mockery.description" class="text-sm font-bold" op-90 hover:op-100>
+          {{ item.mockery.description }}
+        </span>
+        <span text-xs op-80 hover:op-100>{{ item.path }}</span>
       </div>
       <div
         class="cursor-pointer" i-vscode-icons:file-type-vscode

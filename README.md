@@ -150,3 +150,8 @@ pnpm play:webpack
 # for vite
 pnpm play:vite
 ```
+
+## Todo
+
+- filename as url when url not set
+- click settings icon show config in dialog

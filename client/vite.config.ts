@@ -18,10 +18,13 @@ import colors from 'picocolors'
 
 import { componentsDir } from '@advjs/gui/node'
 
+import { proxyPort } from '../playground/config'
+
 const prefix = `monaco-editor/esm/vs`
 
 export default defineConfig(({ mode }) => {
   consola.info(`[client] Running in ${colors.green(mode)} mode`)
+  // for dev
 
   return {
     build: {
@@ -55,11 +58,11 @@ export default defineConfig(({ mode }) => {
       proxy: {
         // http://localhost:3000/_mockery_api_/xxx => http://localhost:51224/_mockery_api_/xxx
         '^/_mockery_api_/.*': {
-          target: 'http://localhost:51224',
+          target: `http://localhost:${proxyPort}`,
           changeOrigin: true,
         },
         '^/trpc/.*': {
-          target: 'http://localhost:51224',
+          target: `http://localhost:${proxyPort}`,
           changeOrigin: true,
         },
       },

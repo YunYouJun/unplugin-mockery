@@ -22,10 +22,16 @@ export async function openBrowser(address: string) {
  * Get all mock files
  * @param mockDir
  */
-export function getMockApiFiles(mockDir: string) {
+export function getMockApiFiles(options: {
+  mockDir: string
+  /**
+   * Absolute path
+   */
+  absolute?: boolean
+}) {
   const files = fg.sync('api/**/*.ts', {
-    cwd: mockDir,
-    absolute: true,
+    cwd: options.mockDir,
+    absolute: options.absolute ?? true,
   })
   return files
 }

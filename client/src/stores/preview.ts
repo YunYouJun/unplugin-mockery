@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import type { MockeryItem, MockeryRequest } from 'unplugin-mockery'
 import { Toast } from '@advjs/gui'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
+import pathe from 'pathe'
 import { mockeryAxios } from '~/utils/axios'
 
 export const usePreviewStore = defineStore('preview', () => {
@@ -10,6 +11,7 @@ export const usePreviewStore = defineStore('preview', () => {
   const fileContent = ref('')
   const language = ref<'typescript' | 'json'>('json')
   const curSceneData = ref<Record<string, string>>({})
+  const mockDir = ref('')
 
   /**
    * cur scene name
@@ -17,12 +19,19 @@ export const usePreviewStore = defineStore('preview', () => {
   const curScene = ref<string>()
   const curMockeryRequest = ref<MockeryRequest>()
 
+  /**
+   * @deprecated
+   */
   async function previewRawFile(filePath: string) {
     language.value = 'typescript'
     curFilePath.value = filePath
 
     const content = await MockeryTRPCClient.client.file.raw.query(filePath)
     fileContent.value = content
+  }
+
+  function getAbsoluteFilePath(filePath: string) {
+    return filePath.startsWith('/') ? filePath : pathe.resolve(mockDir.value, filePath)
   }
 
   /**
@@ -32,18 +41,18 @@ export const usePreviewStore = defineStore('preview', () => {
   function previewMockeryItem(item: MockeryItem) {
     language.value = 'json'
 
-    curFilePath.value = item.path
+    curFilePath.value = getAbsoluteFilePath(item.path)
     fileContent.value = JSON.stringify(item.mockery, null, 2)
   }
 
-  function previewMockeryRequest(path: string, mockery: MockeryRequest, activeResultKey: string) {
+  function previewMockeryRequest(path: string, mockery: MockeryRequest, activeResultKey?: string) {
     language.value = 'json'
-    curFilePath.value = path
+    curFilePath.value = getAbsoluteFilePath(path)
     curMockeryRequest.value = mockery
 
     const response = mockery.response
       ? mockery.response
-      : mockery.results && mockery.results[activeResultKey]
+      : mockery.results && activeResultKey && mockery.results[activeResultKey]
         ? mockery.results[activeResultKey]
         : Object.values(mockery.results || [])[0]
     fileContent.value = JSON.stringify(response || {}, null, 2)
@@ -54,10 +63,11 @@ export const usePreviewStore = defineStore('preview', () => {
    * @param filePath
    */
   function openFileInEditor(filePath: string) {
-    MockeryTRPCClient.client.file.open.query(filePath)
+    const absoluteFilePath = filePath.startsWith('/') ? filePath : pathe.resolve(mockDir.value, filePath)
+    MockeryTRPCClient.client.file.open.query(absoluteFilePath)
     Toast({
       title: `打开文件`,
-      description: filePath,
+      description: absoluteFilePath,
       type: 'success',
     })
   }
@@ -67,6 +77,9 @@ export const usePreviewStore = defineStore('preview', () => {
     fileContent.value = JSON.stringify(scene, null, 2)
   }
 
+  /**
+   * @deprecated
+   */
   function toggleMockScene(params: {
     filePath: string
     sceneName: string
@@ -101,6 +114,7 @@ export const usePreviewStore = defineStore('preview', () => {
     curMockeryRequest,
     curScene,
     curSceneData,
+    mockDir,
 
     language,
 

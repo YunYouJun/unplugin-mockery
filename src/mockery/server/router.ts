@@ -89,7 +89,10 @@ export const appRouter = router({
 
   mockery: router({
     list: publicProcedure.query(async () => {
-      const files = getMockApiFiles(MockeryDB.options?.mockDir || defaultOptions.mockDir)
+      const mockDir = MockeryDB.options?.mockDir || defaultOptions.mockDir
+      const files = getMockApiFiles({
+        mockDir,
+      })
       const list = files.map((file) => {
         const mockery = (jiti(file).default || {}) as Mockery
         if (mockery.results) {
@@ -103,13 +106,14 @@ export const appRouter = router({
         }
 
         return {
-          path: file,
+          path: path.relative(mockDir, file),
           mockery,
         } as MockeryItem
       })
 
       return {
         list,
+        mockDir,
       }
     }),
   }),
