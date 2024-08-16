@@ -89,7 +89,8 @@ export const appRouter = router({
 
   mockery: router({
     list: publicProcedure.query(async () => {
-      const mockDir = MockeryDB.options?.mockDir || defaultOptions.mockDir
+      // resolve absolute path
+      const mockDir = path.resolve(MockeryDB.options?.mockDir || defaultOptions.mockDir)
       const files = getMockApiFiles({
         mockDir,
       })
