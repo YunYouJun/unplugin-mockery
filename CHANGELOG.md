@@ -1,3 +1,18 @@
+## [0.2.8](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.7...v0.2.8) (2024-08-19)
+
+
+### Bug Fixes
+
+* use absolute path ([a343120](https://github.com/YunYouJun/unplugin-mockery/commit/a343120e7ebf98e705dc53dc6ae41bc4c2247f56))
+
+
+### Features
+
+* add client.enable for client ([d224ea8](https://github.com/YunYouJun/unplugin-mockery/commit/d224ea8b936e1ff31558c3a5ccf7b6a7727bbb54))
+* search mockery description ([9b333a0](https://github.com/YunYouJun/unplugin-mockery/commit/9b333a0b4c437f9ab299102a6a02f712df57372a))
+
+
+
 ## [0.2.7](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.6...v0.2.7) (2024-08-14)
 
 
