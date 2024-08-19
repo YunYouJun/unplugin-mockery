@@ -20,7 +20,14 @@ export * from './types'
 const PLUGIN_NAME = 'unplugin:webpack'
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
-  options = { ...defaultOptions, ...options }
+  options = {
+    ...defaultOptions,
+    ...options,
+    client: {
+      ...defaultOptions.client,
+      ...options?.client,
+    },
+  }
 
   let viteConfig: ResolvedConfig
 

@@ -54,10 +54,12 @@ export async function getWebpackConfig(options: Options = defaultOptions) {
     },
   }
 
-  serveClient({
-    staticPath: clientDistFolder,
-    port: options.client?.port,
-  })
+  if (options.client?.enable) {
+    serveClient({
+      staticPath: clientDistFolder,
+      port: options.client?.port,
+    })
+  }
 
   return webpackConfig
 }

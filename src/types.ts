@@ -32,6 +32,11 @@ export interface Options {
    */
   client?: {
     /**
+     * enable client
+     * @default true
+     */
+    enable?: boolean
+    /**
      * The port to run the client server.
      */
     port?: number

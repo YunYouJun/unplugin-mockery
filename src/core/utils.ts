@@ -20,7 +20,6 @@ export async function openBrowser(address: string) {
 
 /**
  * Get all mock files
- * @param mockDir
  */
 export function getMockApiFiles(options: {
   mockDir: string
