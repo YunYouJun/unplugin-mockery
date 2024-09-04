@@ -13,6 +13,7 @@ export class MockeryTRPCClient {
   static init() {
     this.client = createTRPCClient<AppRouter>({
       links: [
+        // eslint-disable-next-line unicorn/consistent-function-scoping
         () => ({ op, next }) => {
           NProgress.start()
 

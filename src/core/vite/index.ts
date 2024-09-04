@@ -4,6 +4,15 @@ import type { NextHandleFunction } from 'connect'
 const timestampRE = /\bt=\d{13}&?\b/
 const trailingSeparatorRE = /[?&]$/
 
+// TODO extract middleware for vite
+
+function requestMiddleware() {
+  // eslint-disable-next-line unused-imports/no-unused-vars, unicorn/consistent-function-scoping
+  const middleware: NextHandleFunction = (req, res, next) => {}
+
+  return middleware
+}
+
 export function createVitePlugin() {
   const serverPerf: {
     middleware?: Record<string, { name: string, total: number, self: number }[]>
@@ -65,15 +74,6 @@ export function createVitePlugin() {
 
       return middleware
     })
-  }
-
-  // TODO extract middleware for vite
-
-  function requestMiddleware() {
-    // eslint-disable-next-line unused-imports/no-unused-vars
-    const middleware: NextHandleFunction = (req, res, next) => {}
-
-    return middleware
   }
 
   return {
