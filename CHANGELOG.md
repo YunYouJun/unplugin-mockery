@@ -1,3 +1,12 @@
+## [0.2.10](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.9...v0.2.10) (2024-09-04)
+
+
+### Bug Fixes
+
+* serveClient export type ([a956fb8](https://github.com/YunYouJun/unplugin-mockery/commit/a956fb8fc19d2aa9186d001952f435f878ba50a9))
+
+
+
 ## [0.2.9](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.8...v0.2.9) (2024-09-04)
 
 
