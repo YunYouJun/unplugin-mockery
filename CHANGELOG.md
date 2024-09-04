@@ -1,3 +1,12 @@
+## [0.2.11](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.10...v0.2.11) (2024-09-04)
+
+
+### Bug Fixes
+
+* remove deprecated magicast method ([2e6e0ed](https://github.com/YunYouJun/unplugin-mockery/commit/2e6e0ed40fa31682d85356de2cd9347d4f520e4e))
+
+
+
 ## [0.2.10](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.9...v0.2.10) (2024-09-04)
 
 
