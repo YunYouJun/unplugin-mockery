@@ -155,3 +155,4 @@ pnpm play:vite
 
 - filename as url when url not set
 - click settings icon show config in dialog
+- open file launch-editor

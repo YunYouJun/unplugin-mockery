@@ -8,6 +8,10 @@ import { mockeryAxios } from '~/utils/axios'
 
 export const usePreviewStore = defineStore('preview', () => {
   const curFilePath = ref('')
+  const curAbsoluteFilePath = computed(() => {
+    return getAbsoluteFilePath(curFilePath.value)
+  })
+
   const fileContent = ref('')
   const language = ref<'typescript' | 'json'>('json')
   const curSceneData = ref<Record<string, string>>({})
@@ -41,7 +45,7 @@ export const usePreviewStore = defineStore('preview', () => {
   function previewMockeryItem(item: MockeryItem) {
     language.value = 'json'
 
-    curFilePath.value = getAbsoluteFilePath(item.path)
+    curFilePath.value = item.path
     fileContent.value = JSON.stringify(item.mockery, null, 2)
   }
 
@@ -111,6 +115,7 @@ export const usePreviewStore = defineStore('preview', () => {
 
   return {
     curFilePath,
+    curAbsoluteFilePath,
     curMockeryRequest,
     curScene,
     curSceneData,

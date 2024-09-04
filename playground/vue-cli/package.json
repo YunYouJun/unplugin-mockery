@@ -8,8 +8,8 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "core-js": "^3.38.0",
-    "vue": "^3.4.38"
+    "core-js": "^3.38.1",
+    "vue": "^3.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

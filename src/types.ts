@@ -1,4 +1,4 @@
-import type { IncomingMessage, ServerResponse } from 'node:http'
+import type Express from 'express'
 
 export interface Options {
   /**
@@ -49,15 +49,9 @@ export interface Options {
 
 export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
-export interface RespThisType {
-  req: IncomingMessage
-  res: ServerResponse
-  parseJson: () => any
-}
+export type MockResponse<T> = ((req: Express.Request) => T) | T
 
-export type MockResponse<T> = ((req: IncomingMessage) => T) | T
-
-export type RawResponse = (req: IncomingMessage, res: ServerResponse) => void | Promise<void>
+export type RawResponse = (req: Express.Request, res: Express.Response) => void | Promise<void>
 
 export interface MockeryRequest<T = object> {
   url: string

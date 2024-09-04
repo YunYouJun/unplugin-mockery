@@ -25,7 +25,15 @@ const previewStore = usePreviewStore()
         <span v-if="item.mockery.description" class="text-sm font-bold" op-90 hover:op-100>
           {{ item.mockery.description }}
         </span>
-        <span text-xs op-80 hover:op-100>{{ item.path }}</span>
+        <span
+          text-xs hover:op-100
+          :class="{
+            'text-blue-600 dark:text-blue-200 op-100 font-medium': active,
+            'op-80': !active,
+          }"
+        >
+          {{ item.path }}
+        </span>
       </div>
       <div
         class="cursor-pointer" i-vscode-icons:file-type-vscode

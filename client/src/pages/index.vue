@@ -66,7 +66,7 @@ if (import.meta.env.DEV) {
         @click="previewStore.openFileInEditor(previewStore.curFilePath)"
       >
         <div i-vscode-icons:file-type-vscode />
-        <span class="text-left" :title="previewStore.curFilePath">{{ previewStore.curFilePath }}</span>
+        <span class="text-left" :title="previewStore.curAbsoluteFilePath">{{ previewStore.curFilePath }}</span>
         <div flex-1 />
         <span v-if="displayedResultKey" class="text-blue">
           {{ displayedResultKey }}
