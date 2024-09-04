@@ -1,3 +1,12 @@
+## [0.2.12](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.11...v0.2.12) (2024-09-04)
+
+
+### Bug Fixes
+
+* mockery request promise types ([dd1c2a1](https://github.com/YunYouJun/unplugin-mockery/commit/dd1c2a1a98f32887f2b93e982b36cb5505bab093))
+
+
+
 ## [0.2.11](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.10...v0.2.11) (2024-09-04)
 
 
