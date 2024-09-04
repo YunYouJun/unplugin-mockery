@@ -49,7 +49,7 @@ export interface Options {
 
 export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
-export type MockResponse<T> = ((req: Request) => T) | T
+export type MockResponse<T> = ((req: Request) => T | Promise<T>) | T
 
 export type RawResponse = (req: Request, res: Response) => void | Promise<void>
 

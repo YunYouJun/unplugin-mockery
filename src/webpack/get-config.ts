@@ -60,6 +60,9 @@ export async function getWebpackConfig(options: Options = defaultOptions) {
       port: options.client?.port,
     })
   }
+  else {
+    consola.info('Mockery Client is disabled')
+  }
 
   return webpackConfig
 }

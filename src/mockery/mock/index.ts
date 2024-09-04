@@ -1,11 +1,9 @@
 import type { Application } from 'express'
 import colors from 'picocolors'
 import consola from 'consola'
-import { isMockery } from '../utils'
+import { isMockery, parseMockeryRequest } from '../utils'
 import type { MockeryRequest } from '../../types'
 import { MockeryDB } from '../db'
-
-import { jiti } from '../../core/utils'
 
 /**
  * Register a mock route by file
@@ -71,9 +69,7 @@ export async function registerRoutes(app: Application, files: string[]) {
   consola.debug('files', files)
   for (const file of files) {
     // clear route in register
-    const mockeryRequest = jiti(file).default as MockeryRequest || {}
-    consola.debug(`  Registering Mock Server: ${colors.dim(file)}`)
-
+    const mockeryRequest = await parseMockeryRequest(file)
     registerRoute(app, mockeryRequest)
     MockeryDB.updateSceneSchema(mockeryRequest)
   }

@@ -7,10 +7,10 @@ import chokidar from 'chokidar'
 import consola from 'consola'
 import colors from 'picocolors'
 
-import { registerRoute, registerRoutes } from '../mockery'
+import { parseMockeryRequest, registerRoute, registerRoutes } from '../mockery'
 import { MockeryDB } from '../mockery/db'
-import type { MockeryRequest, Options } from '../types'
-import { getMockApiFiles, jiti } from '../core/utils'
+import type { Options } from '../types'
+import { getMockApiFiles } from '../core/utils'
 
 export function mockServer(devServer: Server, options: Options) {
   const files = getMockApiFiles({
@@ -42,8 +42,7 @@ export function mockServer(devServer: Server, options: Options) {
             const filePath = resolve(options.mockDir, path)
 
             // clear route in register
-            const mockeryRequest = jiti(filePath).default as MockeryRequest || {}
-            consola.debug(`  Registering Mock Server: ${colors.dim(filePath)}`)
+            const mockeryRequest = await parseMockeryRequest(filePath)
             registerRoute(app, mockeryRequest)
             consola.success(`${colors.magenta('Mock Server hot reload success!')} changed: ${colors.dim(filePath)}`)
             MockeryDB.updateSceneSchema(mockeryRequest)
