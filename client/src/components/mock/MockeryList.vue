@@ -23,14 +23,12 @@ const mockeryList = computed(() => {
 
 const error = ref<string | null>(null)
 function queryList() {
-  MockeryTRPCClient.client.mockery.list.query()
-    .then((data) => {
-      previewStore.mockDir = data.mockDir
-      fullMockeryList.value = data.list
-    })
-    .catch((err) => {
-      error.value = err.message
-    })
+  MockeryTRPCClient.client.mockery.list.query().then((data) => {
+    previewStore.mockDir = data.mockDir
+    fullMockeryList.value = data.list
+  }).catch((err) => {
+    error.value = err.message
+  })
 }
 
 onBeforeMount(() => {

@@ -143,13 +143,13 @@
     "open": "^8.4.2",
     "picocolors": "^1.1.0",
     "serve-static": "^1.15.0",
-    "unplugin": "^1.12.3"
+    "unplugin": "^1.13.1"
   },
   "devDependencies": {
     "@advjs/gui": "0.0.7-beta.5",
-    "@antfu/eslint-config": "^3.0.0",
-    "@nuxt/kit": "^3.13.0",
-    "@nuxt/schema": "^3.13.0",
+    "@antfu/eslint-config": "^3.1.0",
+    "@nuxt/kit": "^3.13.1",
+    "@nuxt/schema": "^3.13.1",
     "@trpc/client": "11.0.0-rc.477",
     "@trpc/server": "11.0.0-rc.477",
     "@types/escape-html": "^1.0.4",

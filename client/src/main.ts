@@ -19,8 +19,7 @@ export const createApp = ViteSSG(
   },
   (ctx) => {
     // install all modules under `modules/`
-    Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true }))
-      .forEach(i => i.install?.(ctx))
+    Object.values(import.meta.glob<{ install: UserModule }>('./modules/*.ts', { eager: true })).forEach(i => i.install?.(ctx))
     // ctx.app.use(Previewer)
   },
 )

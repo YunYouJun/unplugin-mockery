@@ -50,18 +50,17 @@ export function createVitePlugin() {
         // @ts-expect-error handle needs 3 or 4 arguments
         const result = originalHandle(...middlewareArgs)
 
-        Promise.resolve(result)
-          .then(() => {
-            const total = Date.now() - start
-            const metrics = serverPerf.middleware![url]
+        Promise.resolve(result).then(() => {
+          const total = Date.now() - start
+          const metrics = serverPerf.middleware![url]
 
-            // middleware selfTime = totalTime - next.totalTime
-            serverPerf.middleware![url].push({
-              self: metrics.length ? Math.max(total - metrics[metrics.length - 1].total, 0) : total,
-              total,
-              name: originalHandle.name,
-            })
+          // middleware selfTime = totalTime - next.totalTime
+          serverPerf.middleware![url].push({
+            self: metrics.length ? Math.max(total - metrics[metrics.length - 1].total, 0) : total,
+            total,
+            name: originalHandle.name,
           })
+        })
 
         return result
       }

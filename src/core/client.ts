@@ -27,7 +27,7 @@ export function serveClient(options: {
   const listener = app.listen(options.port || 0, callback)
 
   function callback() {
-    const { port } = listener.address() as AddressInfo
+    const { port = 0 } = listener.address() as AddressInfo
     const url = `http://localhost:${port}`
     // eslint-disable-next-line no-console
     console.log()
