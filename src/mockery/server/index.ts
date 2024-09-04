@@ -1,6 +1,5 @@
 // server for mock client
 import express from 'express'
-
 import serveStatic from 'serve-static'
 
 import { registerClientAPI } from '../../mockery/server/api'

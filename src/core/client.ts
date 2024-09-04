@@ -1,7 +1,9 @@
 import type { AddressInfo } from 'node:net'
 import process from 'node:process'
+import type * as http from 'node:http'
 import c from 'picocolors'
 import consola from 'consola'
+import type { Express } from 'express'
 import { createMockClientServer } from '../mockery/server'
 import { openBrowser } from './utils'
 import { globalState } from './env'
@@ -14,7 +16,10 @@ export function serveClient(options: {
   staticPath?: string
   port?: number
   open?: boolean
-}) {
+}): {
+    app: Express
+    listener: http.Server
+  } {
   const app = createMockClientServer({
     staticRoot: options.staticPath,
   })

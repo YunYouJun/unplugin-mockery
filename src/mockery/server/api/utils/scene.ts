@@ -1,4 +1,6 @@
+// @ts-expect-error magicast deprecated
 import type { ASTNode } from 'magicast'
+// @ts-expect-error magicast deprecated
 import { generateCode, parseModule } from 'magicast'
 import fs from 'fs-extra'
 
@@ -11,7 +13,6 @@ import colors from 'picocolors'
  * @deprecated
  */
 export function getCurSceneKey(ast: ASTNode) {
-  // @ts-expect-error body in ast
   const exportDefaultNode = ast.body.find((node: any) => node.type === 'ExportDefaultDeclaration')
   if (!exportDefaultNode) {
     return ''
@@ -75,7 +76,6 @@ export async function toggleMockScene(params: {
   const mod = parseModule(fileContent)
   const ast = mod.$ast
 
-  // @ts-expect-error body in ast
   if (!ast.body) {
     throw new Error('Invalid file content')
   }

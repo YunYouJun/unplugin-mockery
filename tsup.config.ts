@@ -15,5 +15,6 @@ export default <Options>{
     // in express
     'body-parser',
     'escape-html',
+    'magicast',
   ],
 }

@@ -1,4 +1,4 @@
-import type Express from 'express'
+import type { Request, Response } from 'express'
 
 export interface Options {
   /**
@@ -49,9 +49,9 @@ export interface Options {
 
 export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch'
 
-export type MockResponse<T> = ((req: Express.Request) => T) | T
+export type MockResponse<T> = ((req: Request) => T) | T
 
-export type RawResponse = (req: Express.Request, res: Express.Response) => void | Promise<void>
+export type RawResponse = (req: Request, res: Response) => void | Promise<void>
 
 export interface MockeryRequest<T = object> {
   url: string
