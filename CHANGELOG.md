@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.12...v0.3.0) (2024-09-05)
+
+
+### Features
+
+* support for vite ([17afba3](https://github.com/YunYouJun/unplugin-mockery/commit/17afba34f755b262250883cd636469306dfa426a))
+
+
+
 ## [0.2.12](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.11...v0.2.12) (2024-09-04)
 
 
