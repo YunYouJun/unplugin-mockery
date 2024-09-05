@@ -9,8 +9,8 @@ import { TRPCError } from '@trpc/server'
 import { MockeryDB } from '../db'
 
 import { getMockApiFiles, jiti } from '../../core/utils'
-import { defaultOptions } from '../../core/options'
 import type { Mockery, MockeryItem } from '../../types'
+import { resolveMockDir } from '../utils'
 import { publicProcedure, router } from './trpc'
 
 export const appRouter = router({
@@ -90,7 +90,7 @@ export const appRouter = router({
   mockery: router({
     list: publicProcedure.query(async () => {
       // resolve absolute path
-      const mockDir = path.resolve(MockeryDB.options?.mockDir || defaultOptions.mockDir)
+      const mockDir = resolveMockDir()
       const files = getMockApiFiles({
         mockDir,
       })

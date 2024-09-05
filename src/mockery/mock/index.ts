@@ -1,7 +1,7 @@
 import type { Application } from 'express'
 import colors from 'picocolors'
 import consola from 'consola'
-import { isMockery, parseMockeryRequest } from '../utils'
+import { isMockery, resolveMockeryRequest } from '../utils'
 import type { MockeryRequest } from '../../types'
 import { MockeryDB } from '../db'
 
@@ -69,7 +69,7 @@ export async function registerRoutes(app: Application, files: string[]) {
   consola.debug('files', files)
   for (const file of files) {
     // clear route in register
-    const mockeryRequest = await parseMockeryRequest(file)
+    const mockeryRequest = await resolveMockeryRequest(file)
     registerRoute(app, mockeryRequest)
     MockeryDB.updateSceneSchema(mockeryRequest)
   }

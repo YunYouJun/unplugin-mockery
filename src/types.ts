@@ -1,3 +1,4 @@
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Request, Response } from 'express'
 
 export interface Options {
@@ -66,7 +67,7 @@ export interface MockeryRequest<T = object> {
   timeout?: number
   statusCode?: number
   response?: MockResponse<T>
-  rawResponse?: RawResponse
+  rawResponse?: RawResponse | ((req: IncomingMessage, res: ServerResponse) => Promise<void>)
 
   results?: Record<string, MockResponse<T>>
   /**

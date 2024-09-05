@@ -2,7 +2,7 @@ import type Server from 'webpack-dev-server'
 
 import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
-import excapeHtml from 'escape-html'
+import escapeHtml from 'escape-html'
 import type { ResolvedConfig, ViteDevServer } from 'vite'
 import c from 'picocolors'
 import type { Options } from './types'
@@ -10,7 +10,7 @@ import { defaultOptions } from './core/options'
 import { getWebpackConfig } from './webpack/get-config'
 
 import { clientDistFolder } from './core/constants'
-import { createVitePlugin } from './core/vite'
+import { createMockServer, createVitePlugin } from './core/vite'
 import { serveClient } from './core/client'
 import { MockeryServer } from './mockery'
 
@@ -33,6 +33,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 
   const {
     setupMiddlewarePerf,
+    requestMiddleware,
   } = createVitePlugin()
 
   return {
@@ -43,7 +44,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     transform(code) {
       const htmlCodeLines = [
         '<h1>Hello Unplugin!</h1>',
-        `<pre><code>${excapeHtml(JSON.stringify(options || {}))}</code></pre>`,
+        `<pre><code>${escapeHtml(JSON.stringify(options || {}))}</code></pre>`,
       ]
       return code.replace('__UNPLUGIN__', htmlCodeLines.join(''))
     },
@@ -78,6 +79,7 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 
       configResolved(config) {
         viteConfig = config
+        createMockServer(options, config)
       },
 
       async configureServer(server: ViteDevServer) {
@@ -108,6 +110,10 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
           const colorUrl = (url: string) => c.magenta(url.replace(/:(\d+)\//, (_, port) => `:${c.bold(port)}/`))
           viteConfig.logger.info(`  ${c.green('➜')}  ${c.bold('Mockery')}: ${colorUrl(`${host}${base}`)}`)
         }
+
+        // middleware
+        const middleware = await requestMiddleware(options)
+        server.middlewares.use(middleware)
 
         return () => {
           setupMiddlewarePerf(server.middlewares.stack)

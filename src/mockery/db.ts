@@ -4,6 +4,7 @@ import fs from 'fs-extra'
 
 import consola from 'consola'
 import type { JSONSchemaType } from 'ajv'
+import colors from 'picocolors'
 import { getMockApiFiles, jiti } from '../core/utils'
 import type { Mockery, Options } from '../types'
 import { type SceneData, initSceneSchema } from './schema'
@@ -66,7 +67,9 @@ export class MockeryDB {
    * @param sceneName
    */
   static readScene(sceneName?: string) {
-    consola.info('Current Scene:', sceneName || this.configDB.data.curScene)
+    // eslint-disable-next-line no-console
+    console.log()
+    consola.info('Current Scene:', colors.yellow(sceneName || this.configDB.data.curScene))
     const scenePath = this.getScenePath(sceneName)
     const sceneData = fs.readJSONSync(scenePath)
     consola.debug('Scene Data:', sceneData)

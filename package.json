@@ -141,6 +141,7 @@
     "launch-editor": "^2.8.2",
     "lowdb": "^7.0.1",
     "open": "^8.4.2",
+    "path-to-regexp": "^8.0.0",
     "picocolors": "^1.1.0",
     "serve-static": "^1.15.0",
     "unplugin": "^1.13.1"
