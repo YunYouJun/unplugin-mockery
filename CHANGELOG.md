@@ -1,3 +1,12 @@
+## [0.3.2](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.1...v0.3.2) (2024-09-06)
+
+
+### Bug Fixes
+
+* vite watch scene config.json changed ([d7bb9b5](https://github.com/YunYouJun/unplugin-mockery/commit/d7bb9b579e88194e2b32d3b55606097a14f7a5df))
+
+
+
 ## [0.3.1](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.0...v0.3.1) (2024-09-06)
 
 
