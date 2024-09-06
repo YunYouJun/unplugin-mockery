@@ -3,10 +3,13 @@ import { URL } from 'node:url'
 import chokidar from 'chokidar'
 import consola from 'consola'
 import { match } from 'path-to-regexp'
+import colors from 'picocolors'
 import type { NextHandleFunction } from 'connect'
 import type { Connect, ResolvedConfig } from 'vite'
+import { MockeryDB } from '../../mockery/db'
 import { getCurResponse, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
 import { getMockApiFiles, isFunction, sleep } from '../utils'
+
 import { parseJson } from './utils'
 import type { MethodType, MockeryRequest, Options } from '../../types'
 
@@ -147,8 +150,26 @@ export function createWatch(options: Options, config: ResolvedConfig) {
       cwd: options.mockDir,
       ignoreInitial: true,
     })
-    .on('all', async (_event, _path) => {
-      mockData = await getMockConfig(options, config)
+    .on('all', async (event, path) => {
+      if (event === 'change' || event === 'add') {
+        if (path.endsWith('.ts')) {
+          consola.info(`${colors.cyan('[MOCKERY]')} File changed, reloading all routes`)
+          mockData = await getMockConfig(options, config)
+        }
+        else if (path.endsWith('.scene.json')) {
+          await MockeryDB.update()
+          MockeryDB.readScene()
+          consola.info(`${colors.cyan('[MOCKERY]')} scene.json changed, reloading all routes`)
+          mockData = await getMockConfig(options, config)
+          await MockeryDB.updateConfigSchema()
+        }
+        else if (path.endsWith('config.json')) {
+          await MockeryDB.update()
+          MockeryDB.readScene()
+          consola.info(`${colors.cyan('[MOCKERY]')} config.json changed, reloading all routes`)
+          mockData = await getMockConfig(options, config)
+        }
+      }
     })
 }
 

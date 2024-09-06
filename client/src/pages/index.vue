@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import consola from 'consola'
 import { Pane, Splitpanes } from 'splitpanes'
-import 'splitpanes/dist/splitpanes.css'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
+import 'splitpanes/dist/splitpanes.css'
 
 defineOptions({
   name: 'IndexPage',
