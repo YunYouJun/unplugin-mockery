@@ -10,8 +10,8 @@ import { clientDistFolder } from './core/constants'
 import { defaultOptions } from './core/options'
 
 import { createMockServer, createVitePlugin } from './core/vite'
+import { getWebpackConfig } from './core/webpack'
 import { MockeryServer } from './mockery'
-import { getWebpackConfig } from './webpack/get-config'
 import type { Options } from './types'
 
 export * from './core'

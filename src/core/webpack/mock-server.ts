@@ -7,10 +7,9 @@ import consola from 'consola'
 import colors from 'picocolors'
 import type Server from 'webpack-dev-server'
 
-import { getMockApiFiles } from '../core/utils'
-import { registerRoute, registerRoutes, resolveMockeryRequest } from '../mockery'
-import { MockeryDB } from '../mockery/db'
-import type { Options } from '../types'
+import { getMockApiFiles } from '../../core/utils'
+import { MockeryDB, registerRoute, registerRoutes, resolveMockeryRequest } from '../../mockery'
+import type { Options } from '../../types'
 
 /**
  * adapt webpack-dev-server app

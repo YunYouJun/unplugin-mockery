@@ -1,14 +1,14 @@
 import consola from 'consola'
 import colors from 'picocolors'
 import type Server from 'webpack-dev-server'
-import { serveClient } from '../core/client'
-import { clientDistFolder } from '../core/constants'
-import { globalState } from '../core/env'
-import { defaultOptions } from '../core/options'
-import { MockeryServer } from '../mockery'
+import { serveClient } from '../../core/client'
+import { clientDistFolder } from '../../core/constants'
+import { globalState } from '../../core/env'
+import { defaultOptions } from '../../core/options'
+import { MockeryServer } from '../../mockery'
 
 import { mockServer } from './mock-server'
-import type { Options } from '../types'
+import type { Options } from '../../types'
 
 /**
  * Get webpack config

@@ -3,11 +3,11 @@ import c from 'picocolors'
 import type { MethodType } from '../../types'
 
 const METHOD_COLOR = {
-  get: c.green,
-  post: c.blue,
-  put: c.yellow,
-  delete: c.red,
-  patch: c.magenta,
+  get: c.bgGreen,
+  post: c.bgBlue,
+  put: c.bgYellow,
+  delete: c.bgRed,
+  patch: c.bgMagenta,
 }
 
 /**
@@ -19,5 +19,5 @@ export function printRequestLog(params: {
   url: string
 }) {
   const methodColor = METHOD_COLOR[params.method] || c.cyan
-  consola.info(`${c.cyan('[MOCK]')} ${methodColor(` ${params.method} `)} ${c.green(params.url)}`)
+  consola.info(`${c.magenta('[MOCKERY]')} ${methodColor(` ${params.method} `)} ${c.cyan(params.url)}`)
 }
