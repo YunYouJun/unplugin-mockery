@@ -1,6 +1,6 @@
 import { createTRPCClient, httpBatchLink } from '@trpc/client'
-import NProgress from 'nprogress'
 import { tap } from '@trpc/server/observable'
+import NProgress from 'nprogress'
 import type { AppRouter } from '../server'
 
 //     👆 **type-only** import
@@ -13,7 +13,7 @@ export class MockeryTRPCClient {
   static init() {
     this.client = createTRPCClient<AppRouter>({
       links: [
-        // eslint-disable-next-line unicorn/consistent-function-scoping
+
         () => ({ op, next }) => {
           NProgress.start()
 

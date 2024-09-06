@@ -1,14 +1,14 @@
 import path from 'node:path'
-import type { Low } from 'lowdb/lib'
+import consola from 'consola'
 import fs from 'fs-extra'
 
-import consola from 'consola'
-import type { JSONSchemaType } from 'ajv'
 import colors from 'picocolors'
+import type { JSONSchemaType } from 'ajv'
+import type { Low } from 'lowdb/lib'
 import { getMockApiFiles, jiti } from '../core/utils'
-import type { Mockery, Options } from '../types'
-import { type SceneData, initSceneSchema } from './schema'
+import { initSceneSchema, type SceneData } from './schema'
 import { isMockery } from './utils'
+import type { Mockery, Options } from '../types'
 
 export interface MockeryConfigData {
   curScene?: string

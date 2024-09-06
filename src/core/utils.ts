@@ -2,8 +2,8 @@ import consola from 'consola'
 import fg from 'fast-glob'
 import createJITI from 'jiti'
 
-import { filename } from '../shims'
 import { resolveMockDir } from '../mockery'
+import { filename } from '../shims'
 
 /**
  * await sleep(1000)

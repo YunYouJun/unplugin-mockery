@@ -1,12 +1,12 @@
-import type { AddressInfo } from 'node:net'
 import process from 'node:process'
-import type * as http from 'node:http'
-import c from 'picocolors'
 import consola from 'consola'
+import c from 'picocolors'
 import type { Express } from 'express'
+import type * as http from 'node:http'
+import type { AddressInfo } from 'node:net'
 import { createMockClientServer } from '../mockery/server'
-import { openBrowser } from './utils'
 import { globalState } from './env'
+import { openBrowser } from './utils'
 
 /**
  * init mockery client & server

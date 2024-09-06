@@ -1,17 +1,17 @@
 import path from 'node:path'
+import { TRPCError } from '@trpc/server'
 import fs from 'fs-extra'
-import { z } from 'zod'
 
 // @ts-expect-error launch-editor is not typed
 import launch from 'launch-editor'
 
-import { TRPCError } from '@trpc/server'
-import { MockeryDB } from '../db'
-
+import { z } from 'zod'
 import { getMockApiFiles, jiti } from '../../core/utils'
-import type { Mockery, MockeryItem } from '../../types'
+
+import { MockeryDB } from '../db'
 import { resolveMockDir } from '../utils'
 import { publicProcedure, router } from './trpc'
+import type { Mockery, MockeryItem } from '../../types'
 
 export const appRouter = router({
   ping: publicProcedure.query(() => ({

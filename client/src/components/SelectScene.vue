@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
 import {
   SelectContent,
   SelectGroup,
@@ -17,6 +16,7 @@ import {
   SelectViewport,
 } from 'radix-vue'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
+import { ref } from 'vue'
 
 const selectSceneText = ref('选择场景')
 

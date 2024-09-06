@@ -3,5 +3,5 @@ import { unpluginFactory } from '.'
 
 export default createWebpackPlugin(unpluginFactory)
 
-export * from './webpack/mock-server'
 export * from './webpack/get-config'
+export * from './webpack/mock-server'

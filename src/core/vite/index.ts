@@ -1,15 +1,14 @@
-import { URL } from 'node:url'
 import { parse } from 'node:querystring'
-import type { Connect, ResolvedConfig } from 'vite'
-import type { NextHandleFunction } from 'connect'
-import { match } from 'path-to-regexp'
-import consola from 'consola'
+import { URL } from 'node:url'
 import chokidar from 'chokidar'
-import c from 'picocolors'
-import { getCurResponse, resolveMockeryRequest } from '../../mockery'
-import type { MockeryRequest, Options } from '../../types'
+import consola from 'consola'
+import { match } from 'path-to-regexp'
+import type { NextHandleFunction } from 'connect'
+import type { Connect, ResolvedConfig } from 'vite'
+import { getCurResponse, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
 import { getMockApiFiles, isFunction, sleep } from '../utils'
 import { parseJson } from './utils'
+import type { MethodType, MockeryRequest, Options } from '../../types'
 
 const timestampRE = /\bt=\d{13}&?\b/
 const trailingSeparatorRE = /[?&]$/
@@ -63,7 +62,6 @@ export async function createMockServer(options: Options, config: ResolvedConfig)
  * ref https://github.com/vbenjs/vite-plugin-mock
  */
 export async function requestMiddleware(_options: Options) {
-  // eslint-disable-next-line unicorn/consistent-function-scoping
   const middleware: NextHandleFunction = async (req, res, next) => {
     if (!req.url)
       return next()
@@ -129,7 +127,10 @@ export async function requestMiddleware(_options: Options) {
         res.end(JSON.stringify(mockResponse || {}))
       }
 
-      consola.info(`${c.cyan('[MOCK]')} ${req.method} ${req.url}`)
+      printRequestLog({
+        method: req.method as MethodType || 'get',
+        url: req.url,
+      })
       return
     }
     next()

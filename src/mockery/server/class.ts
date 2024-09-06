@@ -4,10 +4,10 @@ import fs from 'fs-extra'
 import type { JSONSchemaType } from 'ajv'
 
 import { defaultOptions } from '../../core/options'
+import { MockeryDB } from '../db'
+import { initSceneSchema } from '../schema'
 import type { Options } from '../../types'
 import type { SceneData } from '../schema'
-import { initSceneSchema } from '../schema'
-import { MockeryDB } from '../db'
 
 export class MockeryServer {
   sceneSchema: JSONSchemaType<SceneData> = initSceneSchema()

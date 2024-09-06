@@ -26,7 +26,7 @@
     "consola": "^3.2.3",
     "nprogress": "^0.2.0",
     "pinia": "^2.2.2",
-    "vue": "^3.5.0",
+    "vue": "^3.5.2",
     "vue-demi": "^0.14.10",
     "vue-i18n": "^9.14.0",
     "vue-router": "^4.4.3"
@@ -37,7 +37,7 @@
     "@iconify-json/ri": "^1.2.0",
     "@iconify-json/vscode-icons": "^1.2.0",
     "@intlify/unplugin-vue-i18n": "^4.0.0",
-    "@shikijs/markdown-it": "^1.16.1",
+    "@shikijs/markdown-it": "^1.16.2",
     "@types/markdown-it-link-attributes": "^3.0.5",
     "@types/nprogress": "^0.2.3",
     "@types/splitpanes": "^2.2.6",
@@ -51,7 +51,7 @@
     "npm-run-all": "^4.1.5",
     "pathe": "^1.1.2",
     "rollup": "^4.21.2",
-    "shiki": "^1.16.1",
+    "shiki": "^1.16.2",
     "simple-git-hooks": "^2.11.1",
     "splitpanes": "^3.1.5",
     "tsx": "^4.19.0",
@@ -64,10 +64,10 @@
     "vite": "^5.4.3",
     "vite-bundle-visualizer": "^1.2.1",
     "vite-plugin-inspect": "^0.8.7",
-    "vite-plugin-vue-devtools": "^7.4.3",
+    "vite-plugin-vue-devtools": "^7.4.4",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vite-ssg": "^0.23.8",
     "vitest": "^2.0.5",
-    "vue-tsc": "^2.1.5"
+    "vue-tsc": "^2.1.6"
   }
 }

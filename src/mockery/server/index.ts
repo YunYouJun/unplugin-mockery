@@ -3,9 +3,9 @@ import express from 'express'
 import serveStatic from 'serve-static'
 
 import { registerClientAPI } from '../../mockery/server/api'
-import { createContext, trpcExpress } from './trpc'
-
 import { appRouter } from './router'
+
+import { createContext, trpcExpress } from './trpc'
 
 export * from './class'
 export * from './router'

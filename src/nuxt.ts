@@ -1,9 +1,9 @@
 import { addVitePlugin, addWebpackPlugin, defineNuxtModule } from '@nuxt/kit'
+import '@nuxt/schema'
+import { defaultOptions } from './core/options'
 import vite from './vite'
 import webpack from './webpack'
 import type { Options } from './types'
-import '@nuxt/schema'
-import { defaultOptions } from './core/options'
 
 export interface ModuleOptions extends Options {
 
