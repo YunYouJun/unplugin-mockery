@@ -1,3 +1,12 @@
+## [0.3.4](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.3...v0.3.4) (2024-09-06)
+
+
+### Bug Fixes
+
+* add statusCode support ([f48f7d1](https://github.com/YunYouJun/unplugin-mockery/commit/f48f7d1c2b641cee82ef4679cea35f00634cec64))
+
+
+
 ## [0.3.3](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.2...v0.3.3) (2024-09-06)
 
 
