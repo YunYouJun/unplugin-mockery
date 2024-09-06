@@ -1,3 +1,12 @@
+## [0.3.3](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.2...v0.3.3) (2024-09-06)
+
+
+### Bug Fixes
+
+* webpack export ([fae63d3](https://github.com/YunYouJun/unplugin-mockery/commit/fae63d3797dea01c12fdac5963b8732897990c7e))
+
+
+
 ## [0.3.2](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.1...v0.3.2) (2024-09-06)
 
 
