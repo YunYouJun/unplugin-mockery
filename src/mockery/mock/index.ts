@@ -25,6 +25,10 @@ export function registerRoute(app: Application, mockery: MockeryRequest) {
   if (response) {
     app[method || 'get'](url, (req, res) => {
       setTimeout(async () => {
+        // set status code
+        if (mockery.statusCode) {
+          res.statusCode = mockery.statusCode
+        }
         if (typeof response === 'function') {
           const resData = await response(req)
           res.json(resData)
