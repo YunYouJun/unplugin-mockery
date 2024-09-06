@@ -1,7 +1,7 @@
 import type { Application } from 'express'
 import colors from 'picocolors'
 import consola from 'consola'
-import { isMockery, resolveMockeryRequest } from '../utils'
+import { getCurResponse, isMockery, resolveMockeryRequest } from '../utils'
 import type { MockeryRequest } from '../../types'
 import { MockeryDB } from '../db'
 
@@ -52,10 +52,7 @@ export function registerRoute(app: Application, mockery: MockeryRequest) {
     })
   }
   else if (Object.keys(results).length > 0) {
-    const curKeyInScene = MockeryDB.sceneData[mockery.url]
-    const resultKey = curKeyInScene || (Object.keys(results)[0])
-    const response = results[resultKey] || {}
-
+    const response = getCurResponse(mockery)
     app[method || 'get'](url, (req, res) => {
       setTimeout(() => {
         res.json(response)

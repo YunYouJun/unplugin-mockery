@@ -40,3 +40,13 @@ export async function resolveMockeryRequest(filePath: string) {
     throw new TypeError('mockery must be a function or object')
   }
 }
+
+/**
+ * get current response from results
+ */
+export function getCurResponse(mockery: MockeryRequest) {
+  const results = mockery.results || {}
+  const curKeyInScene = MockeryDB.sceneData[mockery.url]
+  const resultKey = curKeyInScene || (Object.keys(results)[0])
+  return results[resultKey] || {}
+}

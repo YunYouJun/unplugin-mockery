@@ -6,7 +6,7 @@ import { match } from 'path-to-regexp'
 import consola from 'consola'
 import chokidar from 'chokidar'
 import c from 'picocolors'
-import { resolveMockeryRequest } from '../../mockery'
+import { getCurResponse, resolveMockeryRequest } from '../../mockery'
 import type { MockeryRequest, Options } from '../../types'
 import { getMockApiFiles, isFunction, sleep } from '../utils'
 import { parseJson } from './utils'
@@ -85,7 +85,7 @@ export async function requestMiddleware(_options: Options) {
 
     if (matchRequest) {
       const isGet = req.method && req.method.toUpperCase() === 'GET'
-      const { response, rawResponse, timeout, statusCode, url } = matchRequest
+      const { response, rawResponse, timeout, statusCode, url, results = {} } = matchRequest
 
       if (timeout) {
         await sleep(timeout)
@@ -111,15 +111,22 @@ export async function requestMiddleware(_options: Options) {
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*')
 
         res.statusCode = statusCode || 200
-        const mockResponse = isFunction(response)
-          ? response({
-            url: req.url as any,
-            body,
-            query,
-            headers: req.headers,
-          } as any)
-          : response
-        res.end(JSON.stringify(mockResponse))
+
+        let mockResponse = response
+        if (response) {
+          mockResponse = isFunction(response)
+            ? response({
+              url: req.url as any,
+              body,
+              query,
+              headers: req.headers,
+            } as any)
+            : response
+        }
+        else if (Object.keys(results).length > 0) {
+          mockResponse = getCurResponse(matchRequest)
+        }
+        res.end(JSON.stringify(mockResponse || {}))
       }
 
       consola.info(`${c.cyan('[MOCK]')} ${req.method} ${req.url}`)

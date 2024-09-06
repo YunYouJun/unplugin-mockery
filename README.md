@@ -155,4 +155,5 @@ pnpm play:vite
 
 - filename as url when url not set
 - click settings icon show config in dialog
-- open file launch-editor
+- mock log color for `POST` `GET` `PUT` `DELETE` `PATCH`
+- vite support multiple results
