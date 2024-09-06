@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.0...v0.3.1) (2024-09-06)
+
+
+### Features
+
+* **vite:** support mockery result ([0cf9087](https://github.com/YunYouJun/unplugin-mockery/commit/0cf908798d368de5967c6af6dbadb747b1033d26))
+
+
+
 # [0.3.0](https://github.com/YunYouJun/unplugin-mockery/compare/v0.2.12...v0.3.0) (2024-09-05)
 
 
