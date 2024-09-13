@@ -1,6 +1,8 @@
+import type { MethodType } from '../../types'
 import consola from 'consola'
 import c from 'picocolors'
-import type { MethodType } from '../../types'
+
+export const MOCKERY_NAMESPACE = '[🤡]'
 
 const METHOD_COLOR = {
   get: c.bgGreen,
@@ -19,5 +21,5 @@ export function printRequestLog(params: {
   url: string
 }) {
   const methodColor = METHOD_COLOR[params.method] || c.cyan
-  consola.info(`${c.magenta('[MOCKERY]')} ${methodColor(` ${params.method} `)} ${c.cyan(params.url)}`)
+  consola.info(`${c.magenta(MOCKERY_NAMESPACE)} ${methodColor(` ${params.method} `)} ${c.cyan(params.url)}`)
 }

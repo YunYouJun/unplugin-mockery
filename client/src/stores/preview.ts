@@ -1,27 +1,29 @@
+import type { MockeryItem, MockeryRequest } from 'unplugin-mockery'
 import { Toast } from '@advjs/gui'
 import pathe from 'pathe'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
 import { ref } from 'vue'
-import type { MockeryItem, MockeryRequest } from 'unplugin-mockery'
 import { mockeryAxios } from '~/utils/axios'
 
 export const usePreviewStore = defineStore('preview', () => {
-  const curFilePath = ref('')
+  const curFilePath = useStorage('curFilePath', '')
   const curAbsoluteFilePath = computed(() => {
     return getAbsoluteFilePath(curFilePath.value)
   })
 
-  const fileContent = ref('')
-  const language = ref<'typescript' | 'json'>('json')
+  const fileContent = useStorage('fileContent', '')
+  const language = useStorage<'typescript' | 'json'>('language', 'json')
   const curSceneData = ref<Record<string, string>>({})
   const mockDir = ref('')
 
   /**
    * cur scene name
    */
-  const curScene = ref<string>()
-  const curMockeryRequest = ref<MockeryRequest>()
+  const curScene = useStorage('curScene', '')
+  const curMockeryRequest = useStorage<MockeryRequest>('curMockeryRequest', {
+    url: '',
+  })
 
   /**
    * @deprecated

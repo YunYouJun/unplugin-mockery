@@ -1,17 +1,17 @@
+import type { NextHandleFunction } from 'connect'
+import type { Connect, ResolvedConfig } from 'vite'
+import type { MethodType, MockeryRequest, Options } from '../../types'
 import { parse } from 'node:querystring'
 import { URL } from 'node:url'
 import chokidar from 'chokidar'
 import consola from 'consola'
 import { match } from 'path-to-regexp'
 import colors from 'picocolors'
-import type { NextHandleFunction } from 'connect'
-import type { Connect, ResolvedConfig } from 'vite'
 import { MockeryDB } from '../../mockery/db'
-import { getCurResponse, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
-import { getMockApiFiles, isFunction, sleep } from '../utils'
+import { getCurResponse, MOCKERY_NAMESPACE, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
 
+import { getMockApiFiles, isFunction, sleep } from '../utils'
 import { parseJson } from './utils'
-import type { MethodType, MockeryRequest, Options } from '../../types'
 
 const timestampRE = /\bt=\d{13}&?\b/
 const trailingSeparatorRE = /[?&]$/
@@ -35,7 +35,7 @@ async function getMockConfig(options: Options, _config: ResolvedConfig) {
     for (let index = 0; index < mockFiles.length; index++) {
       const mockFile = mockFiles[index]
       resolveMockeryPromiseList.push(resolveMockeryRequest(mockFile))
-      consola.debug(`[MOCK] load ${mockFile}`)
+      consola.debug(`${MOCKERY_NAMESPACE} load ${mockFile}`)
     }
 
     const loadAllResult = await Promise.all(resolveMockeryPromiseList)

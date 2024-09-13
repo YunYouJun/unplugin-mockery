@@ -10,7 +10,7 @@
     "@types/node": "^22.5.4",
     "@types/webpack": "^5.28.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4",
+    "typescript": "^5.6.2",
     "unplugin-mockery": "workspace:*",
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
