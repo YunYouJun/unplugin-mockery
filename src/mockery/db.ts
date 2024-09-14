@@ -1,14 +1,13 @@
+import type { JSONSchemaType } from 'ajv'
+import type { Mockery, Options } from '../types'
+
 import path from 'node:path'
 import consola from 'consola'
 import fs from 'fs-extra'
-
 import colors from 'picocolors'
-import type { JSONSchemaType } from 'ajv'
-import type { Low } from 'lowdb/lib'
 import { getMockApiFiles, jiti } from '../core/utils'
 import { initSceneSchema, type SceneData } from './schema'
 import { isMockery } from './utils'
-import type { Mockery, Options } from '../types'
 
 export interface MockeryConfigData {
   curScene?: string
@@ -18,7 +17,7 @@ export class MockeryDB {
   static options: Options
 
   static configPath = ''
-  static configDB: Low<MockeryConfigData>
+  static configDB: MockeryConfigData
   static sceneData: SceneData = {}
 
   static sceneSchema: JSONSchemaType<SceneData> = initSceneSchema()
@@ -35,26 +34,34 @@ export class MockeryDB {
     await this.initSceneSchema()
     await this.updateConfigSchema()
 
-    const { JSONFilePreset } = await import('lowdb/node')
     const configPath = path.resolve(options.mockDir || '', 'config.json')
     this.configPath = configPath
     consola.debug('Init Mockery DB', configPath)
 
-    this.configDB = await JSONFilePreset<MockeryConfigData>(configPath, {
-      curScene: 'default',
-    })
-    this.sceneData = this.readScene(this.configDB.data.curScene)
+    if (await fs.exists(configPath)) {
+      this.configDB = await fs.readJSON(configPath)
+    }
+    else {
+      this.configDB = {
+        curScene: 'default',
+      }
+      await fs.writeJSON(configPath, this.configDB, { spaces: 2 })
+    }
+    // this.configDB = await JSONFilePreset<MockeryConfigData>(configPath, {
+    //   curScene: 'default',
+    // })
+    this.sceneData = this.readScene(this.configDB.curScene)
   }
 
   /**
    * Update internal data
    */
   static async update() {
-    await this.configDB.read()
+    this.configDB = await fs.readJSON(this.configPath)
   }
 
   static getScenePath(sceneName?: string) {
-    const curScene = sceneName || this.configDB.data.curScene
+    const curScene = sceneName || this.configDB.curScene
     const scenePath = path.resolve(this.options.mockDir, 'scenes', `${curScene}.scene.json`)
     if (!fs.existsSync(scenePath)) {
       throw new Error(`Scene file not found: ${scenePath}`)
@@ -69,7 +76,7 @@ export class MockeryDB {
   static readScene(sceneName?: string) {
     // eslint-disable-next-line no-console
     console.log()
-    consola.info('Current Scene:', colors.yellow(sceneName || this.configDB.data.curScene))
+    consola.info('Current Scene:', colors.yellow(sceneName || this.configDB.curScene))
     const scenePath = this.getScenePath(sceneName)
     const sceneData = fs.readJSONSync(scenePath)
     consola.debug('Scene Data:', sceneData)

@@ -1,17 +1,17 @@
+import type { Mockery, MockeryItem } from '../../types'
 import path from 'node:path'
 import { TRPCError } from '@trpc/server'
+
 import fs from 'fs-extra'
 
 // @ts-expect-error launch-editor is not typed
 import launch from 'launch-editor'
-
 import { z } from 'zod'
-import { getMockApiFiles, jiti } from '../../core/utils'
 
+import { getMockApiFiles, jiti } from '../../core/utils'
 import { MockeryDB } from '../db'
 import { resolveMockDir } from '../utils'
 import { publicProcedure, router } from './trpc'
-import type { Mockery, MockeryItem } from '../../types'
 
 export const appRouter = router({
   ping: publicProcedure.query(() => ({
@@ -61,7 +61,7 @@ export const appRouter = router({
           return file.replace('.scene.json', '')
         })
 
-      const curScene = MockeryDB.configDB.data.curScene
+      const curScene = MockeryDB.configDB.curScene
       const sceneDataPath = path.resolve(sceneDir, `${curScene}.scene.json`)
       const sceneData = await fs.readJSON(sceneDataPath)
 
@@ -74,7 +74,7 @@ export const appRouter = router({
 
     set: publicProcedure.input(z.string()).mutation(async ({ input }) => {
       const sceneName = input
-      MockeryDB.configDB.data.curScene = sceneName
+      MockeryDB.configDB.curScene = sceneName
       const sceneDataPath = MockeryDB.getScenePath()
       const sceneData = await fs.readJSON(sceneDataPath)
       // trigger hot reload
@@ -125,23 +125,27 @@ export const appRouter = router({
       resultKey: z.string(),
       curScene: z.string(),
     })).mutation(async ({ input }) => {
-      const { JSONFilePreset } = await import('lowdb/node')
       const { url, resultKey, curScene } = input
       const userOptions = MockeryDB.options
       const sceneDataPath = path.resolve(userOptions?.mockDir || '', 'scenes', `${curScene}.scene.json`)
-      const db = await JSONFilePreset<{
-        [url: string]: string
-      }>(sceneDataPath, {
+
+      let sceneData: Record<string, string> = {
         $schema: '../schemas/scene.schema.json',
-      })
-      db.data[url] = resultKey
-      await db.write()
+      }
+      if (await fs.exists(sceneDataPath)) {
+        sceneData = await fs.readJSON(sceneDataPath)
+      }
+      else {
+        await fs.writeJSON(sceneDataPath, sceneData, { spaces: 2 })
+      }
+      sceneData[url] = resultKey
+      await fs.writeJSON(sceneDataPath, sceneData, { spaces: 2 })
       // append \n
       await fs.appendFile(sceneDataPath, '\n')
 
       return {
         resultKey,
-        sceneData: db.data,
+        sceneData,
       }
     }),
   }),

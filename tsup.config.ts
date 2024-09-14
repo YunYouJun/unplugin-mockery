@@ -10,6 +10,7 @@ export default <Options>{
   cjsInterop: true,
   // onSuccess: 'npm run build:fix',
 
+  splitting: true,
   shims: true,
   external: [
     // in express

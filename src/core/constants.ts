@@ -4,7 +4,7 @@ import { filename } from '../shims'
 
 export const DIR_DIST = typeof __dirname !== 'undefined'
   ? __dirname
-  : dirname(fileURLToPath(import.meta.url))
+  : dirname(fileURLToPath(filename))
 
 /**
  * build client dist folder

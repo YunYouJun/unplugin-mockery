@@ -3,7 +3,8 @@
   "private": true,
   "packageManager": "pnpm@9.10.0",
   "scripts": {
-    "build": "vite build",
+    "build": "npm run build:lib && vite build",
+    "build:lib": "tsup",
     "dev": "run-p dev:*",
     "dev:client": "vite --port 3000 --open",
     "dev:server": "nodemon -w ../src -x tsx src/server.ts",
@@ -26,7 +27,7 @@
     "consola": "^3.2.3",
     "nprogress": "^0.2.0",
     "pinia": "^2.2.2",
-    "vue": "^3.5.4",
+    "vue": "^3.5.5",
     "vue-demi": "^0.14.10",
     "vue-i18n": "^10.0.1",
     "vue-router": "^4.4.5"
@@ -37,7 +38,7 @@
     "@iconify-json/ri": "^1.2.0",
     "@iconify-json/vscode-icons": "^1.2.1",
     "@intlify/unplugin-vue-i18n": "^5.0.0",
-    "@shikijs/markdown-it": "^1.17.5",
+    "@shikijs/markdown-it": "^1.17.6",
     "@types/markdown-it-link-attributes": "^3.0.5",
     "@types/nprogress": "^0.2.3",
     "@types/splitpanes": "^2.2.6",
@@ -51,9 +52,10 @@
     "npm-run-all": "^4.1.5",
     "pathe": "^1.1.2",
     "rollup": "^4.21.3",
-    "shiki": "^1.17.5",
+    "shiki": "^1.17.6",
     "simple-git-hooks": "^2.11.1",
     "splitpanes": "^3.1.5",
+    "tsup": "^8.2.4",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
     "unocss": "^0.62.3",
@@ -67,7 +69,7 @@
     "vite-plugin-vue-devtools": "^7.4.5",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vite-ssg": "^0.23.8",
-    "vitest": "^2.1.0",
+    "vitest": "^2.1.1",
     "vue-tsc": "^2.1.6"
   }
 }

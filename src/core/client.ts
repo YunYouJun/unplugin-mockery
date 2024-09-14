@@ -1,9 +1,10 @@
-import process from 'node:process'
-import consola from 'consola'
-import c from 'picocolors'
 import type { Express } from 'express'
 import type * as http from 'node:http'
 import type { AddressInfo } from 'node:net'
+import process from 'node:process'
+import consola from 'consola'
+import c from 'picocolors'
+import { MockeryDB } from '../mockery'
 import { createMockClientServer } from '../mockery/server'
 import { globalState } from './env'
 import { openBrowser } from './utils'
@@ -28,6 +29,15 @@ export function serveClient(options: {
 
   function callback() {
     const { port = 0 } = listener.address() as AddressInfo
+    // set port
+    if (!MockeryDB.options.client) {
+      MockeryDB.options.client = {
+        port,
+      }
+    }
+    else {
+      MockeryDB.options.client.port = port
+    }
     const url = `http://localhost:${port}`
     // eslint-disable-next-line no-console
     console.log()

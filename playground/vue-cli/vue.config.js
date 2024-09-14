@@ -6,6 +6,7 @@ module.exports = defineConfig(async () => {
   const { devServer } = await getWebpackConfig({
     debug: true,
     client: {
+      enable: true,
       port: 51223,
       open: true,
     },

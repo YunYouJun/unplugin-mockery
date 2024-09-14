@@ -1,18 +1,18 @@
-import escapeHtml from 'escape-html'
-
-import c from 'picocolors'
-import { createUnplugin } from 'unplugin'
 import type { UnpluginFactory } from 'unplugin'
+
 import type { ResolvedConfig, ViteDevServer } from 'vite'
 import type Server from 'webpack-dev-server'
+import type { Options } from './types'
+import escapeHtml from 'escape-html'
+import c from 'picocolors'
+import { createUnplugin } from 'unplugin'
 import { serveClient } from './core/client'
 import { clientDistFolder } from './core/constants'
-import { defaultOptions } from './core/options'
 
+import { defaultOptions } from './core/options'
 import { createMockServer, createVitePlugin } from './core/vite'
 import { getWebpackConfig } from './core/webpack'
-import { MockeryServer } from './mockery'
-import type { Options } from './types'
+import { MockeryDB, MockeryServer } from './mockery'
 
 export * from './core'
 export * from './types'
@@ -61,6 +61,41 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 
             return middlewares
           },
+        }
+      })
+
+      /**
+       * add script to html
+       */
+      function addScriptToHtml(html: string) {
+        const script = [
+          `<script src="http://localhost:${MockeryDB.options.client?.port}/"></script>`,
+          `<script>`,
+          `  window.__MOCKERY__ = ${JSON.stringify(MockeryDB.options)};`,
+          `</script>`,
+        ].join('\n')
+        return html.replace('</head>', `${script}</head>`)
+      }
+
+      // mount tools for page
+      compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
+        // @ts-expect-error html webpack plugin api
+        const htmlWebpackPluginBeforeHtmlProcessing = compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing
+        if (htmlWebpackPluginBeforeHtmlProcessing) {
+          htmlWebpackPluginBeforeHtmlProcessing.tapAsync(PLUGIN_NAME, async (data: { html: string }, cb: (arg0: null, arg1: any) => void) => {
+            data.html = addScriptToHtml(data.html)
+            cb(null, data)
+          })
+        }
+        else {
+          // eslint-disable-next-line ts/no-require-imports
+          require('html-webpack-plugin')
+            .getHooks(compilation)
+            .beforeEmit
+            .tapAsync(PLUGIN_NAME, async (data: { html: string }, cb: (arg0: null, arg1: any) => void) => {
+              data.html = addScriptToHtml(data.html)
+              cb(null, data)
+            })
         }
       })
     },
