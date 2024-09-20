@@ -1,6 +1,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
-import { initTRPC } from '@trpc/server'
 import type * as trpcExpress from '@trpc/server/adapters/express'
+import { initTRPC } from '@trpc/server'
 
 export * as trpcExpress from '@trpc/server/adapters/express'
 

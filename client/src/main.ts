@@ -1,9 +1,9 @@
+import type { UserModule } from './types'
 import { setupLayouts } from 'virtual:generated-layouts'
-import { ViteSSG } from 'vite-ssg'
 
+import { ViteSSG } from 'vite-ssg'
 import { routes } from 'vue-router/auto-routes'
 import App from './App.vue'
-import type { UserModule } from './types'
 
 import './styles/css-vars.css'
 import './styles/main.css'

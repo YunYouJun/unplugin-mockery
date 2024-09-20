@@ -26,6 +26,7 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./client": "./dist/client.js",
     "./astro": {
       "types": "./dist/astro.d.ts",
       "import": "./dist/astro.js",

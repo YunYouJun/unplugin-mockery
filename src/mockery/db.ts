@@ -141,7 +141,7 @@ export class MockeryDB {
   }
 
   static async save() {
-    await MockeryDB.configDB.write()
+    await fs.writeJSON(this.configPath, this.configDB, { spaces: 2 })
     await fs.appendFile(this.configPath, '\n')
   }
 }

@@ -1,15 +1,15 @@
+import type Server from 'webpack-dev-server'
+import type { Options } from '../../types'
 import { resolve } from 'node:path'
-import bodyParser from 'body-parser'
-import chokidar from 'chokidar'
 
+import bodyParser from 'body-parser'
+
+import chokidar from 'chokidar'
 import consola from 'consola'
 
 import colors from 'picocolors'
-import type Server from 'webpack-dev-server'
-
 import { getMockApiFiles } from '../../core/utils'
 import { MockeryDB, registerRoute, registerRoutes, resolveMockeryRequest } from '../../mockery'
-import type { Options } from '../../types'
 
 /**
  * adapt webpack-dev-server app

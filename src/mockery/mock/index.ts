@@ -1,9 +1,9 @@
+import type { Application } from 'express'
+import type { MockeryRequest } from '../../types'
 import consola from 'consola'
 import colors from 'picocolors'
-import type { Application } from 'express'
 import { MockeryDB } from '../db'
 import { getCurResponse, isMockery, resolveMockeryRequest } from '../utils'
-import type { MockeryRequest } from '../../types'
 
 /**
  * Register a mock route by file

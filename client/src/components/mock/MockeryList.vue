@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { MockeryTRPCClient } from 'unplugin-mockery/client'
 import type { MockeryItem } from '../../../../src/types'
+import { MockeryTRPCClient } from 'unplugin-mockery/client'
 
 const previewStore = usePreviewStore()
 

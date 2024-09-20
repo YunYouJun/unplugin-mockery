@@ -2,7 +2,7 @@ import type { Options } from 'tsup'
 
 export default <Options>{
   entryPoints: [
-    'src/lib.ts',
+    'src/client.ts',
   ],
   outDir: '../dist',
   format: ['esm'],

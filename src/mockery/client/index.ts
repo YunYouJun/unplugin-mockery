@@ -1,7 +1,7 @@
+import type { AppRouter } from '../server'
 import { createTRPCClient, httpBatchLink } from '@trpc/client'
 import { tap } from '@trpc/server/observable'
 import NProgress from 'nprogress'
-import type { AppRouter } from '../server'
 
 //     👆 **type-only** import
 

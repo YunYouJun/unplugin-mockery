@@ -1,7 +1,7 @@
+import type { Options } from 'unplugin-mockery'
 import path from 'node:path'
 import consola from 'consola'
 import colors from 'picocolors'
-import type { Options } from 'unplugin-mockery'
 import { proxyPort } from '../../playground/config'
 import { serveClient } from '../../src/core/client'
 import { MockeryServer } from '../../src/mockery'

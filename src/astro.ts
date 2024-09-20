@@ -1,6 +1,6 @@
-import unplugin from '.'
-
 import type { Options } from './types'
+
+import unplugin from '.'
 
 export default (options: Options) => ({
   name: 'unplugin-mockery',

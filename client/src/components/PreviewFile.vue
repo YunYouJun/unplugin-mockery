@@ -1,10 +1,10 @@
 <!-- eslint-disable new-cap -->
 <script lang="ts" setup>
-import { loader, useMonaco } from '@guolao/vue-monaco-editor'
-
-import { computed, shallowRef } from 'vue'
 // import type { MonacoEditor } from '@guolao/vue-monaco-editor'
 import type { MonacoEditor } from '@guolao/vue-monaco-editor'
+
+import { loader, useMonaco } from '@guolao/vue-monaco-editor'
+import { computed, shallowRef } from 'vue'
 // for monaco editor type definition
 
 import * as monaco from 'monaco-editor'

@@ -1,10 +1,10 @@
+import type { MockeryRequest } from '../../types'
 import path from 'node:path'
 import consola from 'consola'
 import colors from 'picocolors'
 import { defaultOptions } from '../../core/options'
 import { jiti } from '../../core/utils'
 import { MockeryDB } from '../db'
-import type { MockeryRequest } from '../../types'
 
 export * from './logger'
 

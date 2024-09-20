@@ -1,13 +1,13 @@
+import type { JSONSchemaType } from 'ajv'
+import type { Options } from '../../types'
+import type { SceneData } from '../schema'
 import path from 'node:path'
+
 import consola from 'consola'
 import fs from 'fs-extra'
-import type { JSONSchemaType } from 'ajv'
-
 import { defaultOptions } from '../../core/options'
 import { MockeryDB } from '../db'
 import { initSceneSchema } from '../schema'
-import type { Options } from '../../types'
-import type { SceneData } from '../schema'
 
 export class MockeryServer {
   sceneSchema: JSONSchemaType<SceneData> = initSceneSchema()
