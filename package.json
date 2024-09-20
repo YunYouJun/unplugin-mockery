@@ -1,7 +1,7 @@
 {
   "name": "unplugin-mockery",
   "type": "module",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "packageManager": "pnpm@9.11.0",
   "description": "",
   "license": "MIT",
@@ -81,6 +81,7 @@
     }
   },
   "files": [
+    "client/client.js",
     "dist",
     "dist-client"
   ],
