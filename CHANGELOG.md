@@ -1,3 +1,13 @@
+## [0.3.5](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.4...v0.3.5) (2024-09-20)
+
+
+### Features
+
+* add client mount ([dca81f6](https://github.com/YunYouJun/unplugin-mockery/commit/dca81f65762781fcc6ca1d3c8b0838d390d89776))
+* remove esm lowdb & add mount iframe build ([351a943](https://github.com/YunYouJun/unplugin-mockery/commit/351a9430677f1a080847d7fd6f5509910d3553a2))
+
+
+
 ## [0.3.4](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.3...v0.3.4) (2024-09-06)
 
 
