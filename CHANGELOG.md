@@ -1,3 +1,12 @@
+## [0.3.7](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.6...v0.3.7) (2024-09-20)
+
+
+### Features
+
+* export client entry ([4dc8a45](https://github.com/YunYouJun/unplugin-mockery/commit/4dc8a455e9d338a419bf2a308e2dd3b137271e1d))
+
+
+
 ## [0.3.6](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.5...v0.3.6) (2024-09-20)
 
 
