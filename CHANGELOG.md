@@ -1,3 +1,7 @@
+## [0.3.6](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.5...v0.3.6) (2024-09-20)
+
+
+
 ## [0.3.5](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.4...v0.3.5) (2024-09-20)
 
 
