@@ -7,3 +7,17 @@ export const defaultOptions: Options = {
   },
   mockDir: 'mock',
 }
+
+/**
+ * Resolve options with default values
+ */
+export function resolveOptions(options: Options | undefined): Options {
+  return {
+    ...defaultOptions,
+    ...options,
+    client: {
+      ...defaultOptions.client,
+      ...options?.client,
+    },
+  }
+}

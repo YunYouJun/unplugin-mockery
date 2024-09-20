@@ -1,5 +1,7 @@
 import type { MockeryRequest } from '../types'
 
+export const PLUGIN_NAME = 'unplugin-mockery:webpack'
+
 /**
  * curScene only can be one of the keys of scenes
  */

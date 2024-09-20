@@ -3,31 +3,25 @@ import type { UnpluginFactory } from 'unplugin'
 import type { ResolvedConfig, ViteDevServer } from 'vite'
 import type Server from 'webpack-dev-server'
 import type { Options } from './types'
+import process from 'node:process'
 import escapeHtml from 'escape-html'
 import c from 'picocolors'
 import { createUnplugin } from 'unplugin'
+import { PLUGIN_NAME } from './core'
+
 import { serveClient } from './core/client'
 import { clientDistFolder } from './core/constants'
-
-import { defaultOptions } from './core/options'
+import { resolveOptions } from './core/options'
 import { createMockServer, createVitePlugin } from './core/vite'
-import { getWebpackConfig } from './core/webpack'
-import { MockeryDB, MockeryServer } from './mockery'
+import { getWebpackConfig, MockeryMountIFramePlugin } from './core/webpack'
+
+import { MockeryServer } from './mockery'
 
 export * from './core'
 export * from './types'
 
-const PLUGIN_NAME = 'unplugin:webpack'
-
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
-  options = {
-    ...defaultOptions,
-    ...options,
-    client: {
-      ...defaultOptions.client,
-      ...options?.client,
-    },
-  }
+  options = resolveOptions(options)
 
   let viteConfig: ResolvedConfig
 
@@ -50,54 +44,23 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
     },
 
     webpack(compiler) {
-      compiler.hooks.environment.tap(PLUGIN_NAME, async () => {
-        const webpackConfig = await getWebpackConfig(options)
-        compiler.options.devServer = {
-          ...compiler.options.devServer,
-          setupMiddleware: (middlewares: Server.Middleware[], devServer: Server) => {
-            webpackConfig.devServer.setupMiddlewares?.(middlewares, devServer)
-            // @ts-expect-error use private API
-            compiler.options.devServer?.setupMiddlewares?.(middlewares, devServer)
+      if (process.env.NODE_ENV === 'development') {
+        compiler.hooks.environment.tap(PLUGIN_NAME, async () => {
+          const webpackConfig = await getWebpackConfig(options)
+          compiler.options.devServer = {
+            ...compiler.options.devServer,
+            setupMiddleware: (middlewares: Server.Middleware[], devServer: Server) => {
+              webpackConfig.devServer.setupMiddlewares?.(middlewares, devServer)
+              // @ts-expect-error use private API
+              compiler.options.devServer?.setupMiddlewares?.(middlewares, devServer)
 
-            return middlewares
-          },
-        }
-      })
-
-      /**
-       * add script to html
-       */
-      function addScriptToHtml(html: string) {
-        const script = [
-          `<script src="http://localhost:${MockeryDB.options.client?.port}/"></script>`,
-          `<script>`,
-          `  window.__MOCKERY__ = ${JSON.stringify(MockeryDB.options)};`,
-          `</script>`,
-        ].join('\n')
-        return html.replace('</head>', `${script}</head>`)
+              return middlewares
+            },
+          }
+        })
+        const mountIframe = new MockeryMountIFramePlugin(options)
+        mountIframe.apply(compiler)
       }
-
-      // mount tools for page
-      compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {
-        // @ts-expect-error html webpack plugin api
-        const htmlWebpackPluginBeforeHtmlProcessing = compilation.hooks.htmlWebpackPluginBeforeHtmlProcessing
-        if (htmlWebpackPluginBeforeHtmlProcessing) {
-          htmlWebpackPluginBeforeHtmlProcessing.tapAsync(PLUGIN_NAME, async (data: { html: string }, cb: (arg0: null, arg1: any) => void) => {
-            data.html = addScriptToHtml(data.html)
-            cb(null, data)
-          })
-        }
-        else {
-          // eslint-disable-next-line ts/no-require-imports
-          require('html-webpack-plugin')
-            .getHooks(compilation)
-            .beforeEmit
-            .tapAsync(PLUGIN_NAME, async (data: { html: string }, cb: (arg0: null, arg1: any) => void) => {
-              data.html = addScriptToHtml(data.html)
-              cb(null, data)
-            })
-        }
-      })
     },
 
     vite: {

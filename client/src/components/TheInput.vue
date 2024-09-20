@@ -11,10 +11,9 @@ const model = defineModel<string>({
     v-model="model"
     v-bind="$attrs"
     type="text"
-    class="flex-grow"
+    class="flex-grow backdrop-blur"
     p="2"
     text="leftt"
-    bg="transparent"
     border="b gray-200 dark:b-dark-200"
     outline="none active:none"
   >
