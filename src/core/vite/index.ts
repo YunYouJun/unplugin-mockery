@@ -151,9 +151,11 @@ export function createWatch(options: Options, config: ResolvedConfig) {
       consola.info(`${colors.cyan('[MOCKERY]')} File changed, reloading all routes`)
       mockData = await getMockConfig(options, config)
     },
-    onSceneFileChange: async () => {
+    onSceneFileChange: async (path) => {
       await MockeryDB.update()
-      MockeryDB.readScene()
+      // *.scene.json
+      const sceneName = path.replace(/\.scene\.json$/, '')
+      MockeryDB.readScene(sceneName)
       consola.info(`${colors.cyan('[MOCKERY]')} scene.json changed, reloading all routes`)
       mockData = await getMockConfig(options, config)
       await MockeryDB.updateConfigSchema()
