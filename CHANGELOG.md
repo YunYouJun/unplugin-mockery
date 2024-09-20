@@ -1,3 +1,12 @@
+## [0.3.8](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.7...v0.3.8) (2024-09-20)
+
+
+### Bug Fixes
+
+* createWatcher for watch & upgrade chokidar ([b44c236](https://github.com/YunYouJun/unplugin-mockery/commit/b44c2361c0da2efa12a62c304bf31ed533725fa0))
+
+
+
 ## [0.3.7](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.6...v0.3.7) (2024-09-20)
 
 
