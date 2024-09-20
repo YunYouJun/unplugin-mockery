@@ -4,9 +4,16 @@
 
 ## Features
 
-Now, only for webpack. Vite(developing...)
+- Vue CLI (webpack)
+- Vite
+- Hot Reload Routes
 
-- Hot Reload Routes on demand
+![Preview Video](https://github.com/user-attachments/assets/e48d8ce2-292b-4f0a-bf97-e83e190af8ef)
+
+## Why unplugin-mockery?
+
+- A visual mock management devtool.
+- We have some old projects that need to be compatible with Vue CLI and Vite.
 
 ## Install
 
@@ -156,9 +163,58 @@ pnpm play:webpack
 pnpm play:vite
 ```
 
+## Options
+
+```ts
+export interface Options {
+  /**
+   * Base URL for inspector UI
+   *
+   * @default read from Vite's config
+   */
+  base?: string
+
+  // define your plugin options here
+  /**
+   * Display debug information.
+   */
+  debug?: boolean
+
+  /**
+   * The directory where the mock files are located.
+   * @default 'mock'
+   * mock/api: mock files
+   * mock/scenes: scene files
+   * mock/schemas: schema file
+   *   scene.schema.json: scene schema file
+   *   config.schema.json: config schema file
+   * mock/utils: utility files
+   * mock/config.json: configuration file
+   */
+  mockDir: string
+
+  /**
+   * mock client ui
+   */
+  client?: {
+    /**
+     * enable client
+     * @default true
+     */
+    enable?: boolean
+    /**
+     * The port to run the client server.
+     */
+    port?: number
+    /**
+     * auto open browser.
+     */
+    open?: boolean
+  }
+}
+```
+
 ## Todo
 
 - filename as url when url not set
 - click settings icon show config in dialog
-- mock log color for `POST` `GET` `PUT` `DELETE` `PATCH`
-- vite support multiple results
