@@ -1,15 +1,14 @@
 import type Server from 'webpack-dev-server'
 import type { Options } from '../../types'
-import { resolve } from 'node:path'
+import path, { resolve } from 'node:path'
 
 import bodyParser from 'body-parser'
-
-import chokidar from 'chokidar'
 import consola from 'consola'
 
 import colors from 'picocolors'
 import { getMockApiFiles } from '../../core/utils'
 import { MockeryDB, registerRoute, registerRoutes, resolveMockeryRequest } from '../../mockery'
+import { createWatcher } from '../../mockery/utils/watch'
 
 /**
  * adapt webpack-dev-server app
@@ -34,43 +33,31 @@ export function mockServer(devServer: Server, options: Options) {
 
   registerRoutes(app, files)
 
-  chokidar
-    .watch('**/*.{ts,json}', {
-      cwd: options.mockDir,
-      ignoreInitial: true,
-    })
-    .on('all', async (event, path) => {
-      if (event === 'change' || event === 'add') {
-        try {
-          if (path.endsWith('.ts')) {
-            const filePath = resolve(options.mockDir, path)
+  const mockDir = path.resolve(options.mockDir)
+  createWatcher({
+    mockDir,
+    onTSFileChange: async (path) => {
+      const filePath = resolve(options.mockDir, path)
 
-            // clear route in register
-            const mockeryRequest = await resolveMockeryRequest(filePath)
-            registerRoute(app, mockeryRequest)
-            consola.success(`${colors.magenta('Mock Server hot reload success!')} changed: ${colors.dim(filePath)}`)
-            MockeryDB.updateSceneSchema(mockeryRequest)
-            await MockeryDB.saveSceneSchema()
-          }
-          else if (path.endsWith('.scene.json')) {
-            await MockeryDB.update()
-            MockeryDB.readScene()
-            // reload all routes
-            consola.info(`${colors.dim('Scene file changed, reloading all routes')}`)
-            registerRoutes(app, files)
-            await MockeryDB.updateConfigSchema()
-          }
-          else if (path.endsWith('config.json')) {
-            await MockeryDB.update()
-            MockeryDB.readScene()
-            // reload all routes
-            consola.info(`${colors.dim('Config file changed, reloading all routes')}`)
-            registerRoutes(app, files)
-          }
-        }
-        catch (error) {
-          consola.error(error)
-        }
-      }
-    })
+      // clear route in register
+      const mockeryRequest = await resolveMockeryRequest(filePath)
+      registerRoute(app, mockeryRequest)
+      consola.success(`${colors.magenta('Mock Server hot reload success!')} changed: ${colors.dim(filePath)}`)
+      MockeryDB.updateSceneSchema(mockeryRequest)
+      await MockeryDB.saveSceneSchema()
+    },
+    onSceneFileChange: async () => {
+      await MockeryDB.update()
+      MockeryDB.readScene()
+      // reload all routes
+      registerRoutes(app, files)
+      await MockeryDB.updateConfigSchema()
+    },
+    onConfigFileChange: async () => {
+      await MockeryDB.update()
+      MockeryDB.readScene()
+      // reload all routes
+      registerRoutes(app, files)
+    },
+  })
 }

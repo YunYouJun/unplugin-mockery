@@ -4,6 +4,6 @@ export default <Options>{
   entryPoints: [
     'src/client.ts',
   ],
-  outDir: '../dist',
+  outDir: '.',
   format: ['esm'],
 }

@@ -1,6 +1,6 @@
 const process = require('node:process')
 const { defineConfig } = require('@vue/cli-service')
-const { getWebpackConfig, MockeryMountIFramePlugin } = require('unplugin-mockery/webpack')
+const { getWebpackConfig } = require('unplugin-mockery/webpack')
 
 const mockeryOptions = {
   debug: true,
@@ -32,9 +32,6 @@ module.exports = defineConfig(async () => {
       devServer: {
         ...devServer,
       },
-      plugins: [
-        new MockeryMountIFramePlugin(mockeryOptions),
-      ],
     },
   }
 })

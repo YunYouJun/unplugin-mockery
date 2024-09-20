@@ -3,13 +3,13 @@ import type { Connect, ResolvedConfig } from 'vite'
 import type { MethodType, MockeryRequest, Options } from '../../types'
 import { parse } from 'node:querystring'
 import { URL } from 'node:url'
-import chokidar from 'chokidar'
 import consola from 'consola'
 import { match } from 'path-to-regexp'
 import colors from 'picocolors'
 import { MockeryDB } from '../../mockery/db'
 import { getCurResponse, MOCKERY_NAMESPACE, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
 
+import { createWatcher } from '../../mockery/utils/watch'
 import { getMockApiFiles, isFunction, sleep } from '../utils'
 import { parseJson } from './utils'
 
@@ -145,32 +145,27 @@ export async function requestMiddleware(_options: Options) {
  * create watch mock
  */
 export function createWatch(options: Options, config: ResolvedConfig) {
-  chokidar
-    .watch('**/*.{ts,json}', {
-      cwd: options.mockDir,
-      ignoreInitial: true,
-    })
-    .on('all', async (event, path) => {
-      if (event === 'change' || event === 'add') {
-        if (path.endsWith('.ts')) {
-          consola.info(`${colors.cyan('[MOCKERY]')} File changed, reloading all routes`)
-          mockData = await getMockConfig(options, config)
-        }
-        else if (path.endsWith('.scene.json')) {
-          await MockeryDB.update()
-          MockeryDB.readScene()
-          consola.info(`${colors.cyan('[MOCKERY]')} scene.json changed, reloading all routes`)
-          mockData = await getMockConfig(options, config)
-          await MockeryDB.updateConfigSchema()
-        }
-        else if (path.endsWith('config.json')) {
-          await MockeryDB.update()
-          MockeryDB.readScene()
-          consola.info(`${colors.cyan('[MOCKERY]')} config.json changed, reloading all routes`)
-          mockData = await getMockConfig(options, config)
-        }
-      }
-    })
+  const watcher = createWatcher({
+    mockDir: options.mockDir,
+    onTSFileChange: async () => {
+      consola.info(`${colors.cyan('[MOCKERY]')} File changed, reloading all routes`)
+      mockData = await getMockConfig(options, config)
+    },
+    onSceneFileChange: async () => {
+      await MockeryDB.update()
+      MockeryDB.readScene()
+      consola.info(`${colors.cyan('[MOCKERY]')} scene.json changed, reloading all routes`)
+      mockData = await getMockConfig(options, config)
+      await MockeryDB.updateConfigSchema()
+    },
+    onConfigFileChange: async () => {
+      await MockeryDB.update()
+      MockeryDB.readScene()
+      consola.info(`${colors.cyan('[MOCKERY]')} config.json changed, reloading all routes`)
+      mockData = await getMockConfig(options, config)
+    },
+  })
+  return watcher
 }
 
 export function createVitePlugin() {
