@@ -13,7 +13,6 @@ const mockeryOptions = {
 }
 
 module.exports = defineConfig(async () => {
-  // eslint-disable-next-line no-console
   console.table({
     NODE_ENV: process.env.NODE_ENV,
   })

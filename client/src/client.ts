@@ -1,3 +1,5 @@
+import consola from 'consola'
+
 // for dev client
 const mockeryCSS = `
 #unplugin-mockery_iframe {
@@ -94,8 +96,7 @@ export function mountIframe() {
 }
 
 function main() {
-  // eslint-disable-next-line no-console
-  console.log('DOMContentLoaded', 'Inject Mockery Client')
+  consola.info('DOMContentLoaded', 'Inject Mockery Client')
   mountIframe()
 }
 

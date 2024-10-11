@@ -1,5 +1,6 @@
-import type { Application } from 'express'
-import { router } from '../../../core/router'
+import { type Application, Router } from 'express'
+
+const router = Router()
 
 /**
  * Register the client API routes

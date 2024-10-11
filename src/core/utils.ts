@@ -1,9 +1,14 @@
 import consola from 'consola'
 import fg from 'fast-glob'
-import createJITI from 'jiti'
+import { createJiti } from 'jiti'
 
 import { resolveMockDir } from '../mockery'
 import { filename } from '../shims'
+// shim for esm
+export const jiti = createJiti(filename, {
+  // clear cache
+  moduleCache: false,
+})
 
 /**
  * await sleep(1000)
@@ -16,12 +21,6 @@ export function sleep(time: number) {
     }, time)
   })
 }
-
-// shim for esm
-export const jiti = createJITI(filename, {
-  // clear cache
-  requireCache: false,
-})
 
 export async function openBrowser(address: string) {
   await import('open')
