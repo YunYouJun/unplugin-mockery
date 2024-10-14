@@ -16,6 +16,12 @@ export function defineMockeryRequest<T = object>(mockery: MockeryRequest<T>): Mo
  * Define a mockery request
  * @alias defineMockeryRequest
  */
+export const defineHttpMockery = defineMockeryRequest
+
+/**
+ * Define a mockery request
+ * @alias defineMockeryRequest
+ */
 export const defineMockery = defineMockeryRequest
 
 /**
