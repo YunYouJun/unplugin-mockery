@@ -174,5 +174,13 @@ export default defineConfig(({ mode }) => {
       // TODO: workaround until they support native ESM
       noExternal: ['workbox-window', /vue-i18n/],
     },
+
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
   }
 })

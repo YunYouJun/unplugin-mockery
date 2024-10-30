@@ -43,19 +43,20 @@ function execute() {
 
 <template>
   <div
-    class="flex flex-grow overflow-auto bg-gray-100 p-2 dark:bg-transparent"
+    flex="~ col"
+    class="flex-grow gap-2 overflow-auto bg-gray-100 p-2 dark:bg-transparent"
   >
     <div v-if="isLoading">
       Loading...
     </div>
-    <div v-if="mockeryList" class="w-full flex flex-col gap-2">
+    <template v-if="mockeryList">
       <MockFileItem
         v-for="item in mockeryList"
         :key="item.path"
         :item="item"
         :active="item.path === previewStore.curFilePath"
       />
-    </div>
+    </template>
 
     <div v-if="error">
       Error: {{ error }}

@@ -38,6 +38,14 @@
     },
     "/methods/put": {
       "type": "string"
+    },
+    "/api/help": {
+      "type": "string",
+      "description": "帮助"
+    },
+    "/api/examples": {
+      "type": "string",
+      "description": "示例"
     }
   }
 }
