@@ -1,3 +1,12 @@
+## [0.3.11](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.10...v0.3.11) (2024-10-30)
+
+
+### Features
+
+* auto set client port by options ([e8db906](https://github.com/YunYouJun/unplugin-mockery/commit/e8db9062c64c1819fc93b44aee6b76802d89a220))
+
+
+
 ## [0.3.10](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.9...v0.3.10) (2024-09-20)
 
 
