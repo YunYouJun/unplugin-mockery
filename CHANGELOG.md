@@ -1,3 +1,12 @@
+## [0.3.12](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.11...v0.3.12) (2024-10-30)
+
+
+### Bug Fixes
+
+* scroll mockery list padding ([1a77760](https://github.com/YunYouJun/unplugin-mockery/commit/1a777608c051587f6616a2c6c60c0ca2282f950c))
+
+
+
 ## [0.3.11](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.10...v0.3.11) (2024-10-30)
 
 
