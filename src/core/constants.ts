@@ -12,6 +12,7 @@ export const DIR_DIST = typeof __dirname !== 'undefined'
 export const clientDistFolder = resolve(filename, '../../dist-client')
 export const DIR_CLIENT = clientDistFolder
 /**
- * client widget
+ * widget client entry
+ * 挂件，用于在其他网站上嵌入
  */
-export const clientWidgetEntry = resolve(filename, '../../client', 'client.js')
+export const widgetClientEntry = resolve(filename, '../../widget', 'dist/index.mjs')

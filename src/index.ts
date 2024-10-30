@@ -11,7 +11,7 @@ import { createUnplugin } from 'unplugin'
 
 import { PLUGIN_NAME } from './core'
 import { serveClient } from './core/client'
-import { clientDistFolder, clientWidgetEntry } from './core/constants'
+import { clientDistFolder, widgetClientEntry } from './core/constants'
 import { resolveOptions } from './core/options'
 import { createMockServer, createVitePlugin } from './core/vite'
 
@@ -123,13 +123,13 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 
       async load(id) {
         if (id === 'unplugin-mockery/client') {
-          return await fs.readFile(clientWidgetEntry, 'utf-8')
+          return await fs.readFile(widgetClientEntry, 'utf-8')
         }
       },
 
       transformIndexHtml(html) {
         const script = `
-import('${clientWidgetEntry}').then(({ main }) => {
+import('${widgetClientEntry}').then(({ main }) => {
   main({
     port: ${options.client?.port || MockeryDB.options.client?.port},
   })

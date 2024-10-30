@@ -129,8 +129,6 @@ module.exports = {
 ```bash
 # .env custom client port
 VUE_APP_MOCKERY_CLIENT_PORT=51224
-# for nuxt
-NUXT_MOCKERY_CLIENT_PORT=51224
 ```
 
 <br></details>

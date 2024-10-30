@@ -8,5 +8,3 @@ node_modules
 .idea/
 *.log
 cypress/downloads
-
-client.js

@@ -26,7 +26,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
-    "./client": "./client/client.js",
+    "./widget": {
+      "types": "./widget/dist/index.d.ts",
+      "import": "./widget/dist/index.mjs"
+    },
     "./astro": {
       "types": "./dist/astro.d.ts",
       "import": "./dist/astro.js",
@@ -81,14 +84,16 @@
     }
   },
   "files": [
-    "client/client.js",
+    "client/dist",
     "dist",
-    "dist-client"
+    "dist-client",
+    "widget/dist"
   ],
   "scripts": {
-    "build": "npm run build:unplugin && npm run build:client",
+    "build": "npm run build:unplugin && npm run build:client && npm run build:widget",
     "build:unplugin": "tsup",
     "build:client": "pnpm -C client run build",
+    "build:widget": "pnpm -C widget run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "dev": "tsup --watch src",
     "dev:client": "pnpm -C client run dev",

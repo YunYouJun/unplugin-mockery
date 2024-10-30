@@ -82,6 +82,3 @@ dist-client/
 .vite-ssg-temp
 
 .astro
-
-# custom
-client/client.js
