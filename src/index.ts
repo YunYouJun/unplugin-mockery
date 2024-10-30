@@ -5,17 +5,18 @@ import type Server from 'webpack-dev-server'
 import type { Options } from './types'
 import process from 'node:process'
 import escapeHtml from 'escape-html'
+import fs from 'fs-extra'
 import c from 'picocolors'
 import { createUnplugin } from 'unplugin'
-import { PLUGIN_NAME } from './core'
 
+import { PLUGIN_NAME } from './core'
 import { serveClient } from './core/client'
-import { clientDistFolder } from './core/constants'
+import { clientDistFolder, clientWidgetEntry } from './core/constants'
 import { resolveOptions } from './core/options'
 import { createMockServer, createVitePlugin } from './core/vite'
-import { getWebpackConfig, MockeryMountIFramePlugin } from './core/webpack'
 
-import { MockeryServer } from './mockery'
+import { getWebpackConfig, MockeryMountIFramePlugin } from './core/webpack'
+import { MockeryDB, MockeryServer } from './mockery'
 
 export * from './core'
 export * from './types'
@@ -70,8 +71,10 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
       apply(_, { command }) {
         if (command === 'serve')
           return true
+
+        // do not run in build
         if (command === 'build')
-          return true
+          return false
         return false
       },
 
@@ -115,6 +118,36 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 
         return () => {
           setupMiddlewarePerf(server.middlewares.stack)
+        }
+      },
+
+      async load(id) {
+        if (id === 'unplugin-mockery/client') {
+          return await fs.readFile(clientWidgetEntry, 'utf-8')
+        }
+      },
+
+      transformIndexHtml(html) {
+        const script = `
+import('${clientWidgetEntry}').then(({ main }) => {
+  main({
+    port: ${options.client?.port || MockeryDB.options.client?.port},
+  })
+})
+        `
+
+        return {
+          html,
+          tags: [
+            {
+              tag: 'script',
+              injectTo: 'body',
+              attrs: {
+                type: 'module',
+              },
+              children: script,
+            },
+          ],
         }
       },
     },

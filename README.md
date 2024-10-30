@@ -129,6 +129,8 @@ module.exports = {
 ```bash
 # .env custom client port
 VUE_APP_MOCKERY_CLIENT_PORT=51224
+# for nuxt
+NUXT_MOCKERY_CLIENT_PORT=51224
 ```
 
 <br></details>
@@ -236,3 +238,4 @@ export interface Options {
 - click settings icon show config in dialog
 - 修复亮色模式背景色
 - 添加 UI 创建场景合集功能
+- 左侧列表底部滚动

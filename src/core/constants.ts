@@ -11,3 +11,7 @@ export const DIR_DIST = typeof __dirname !== 'undefined'
  */
 export const clientDistFolder = resolve(filename, '../../dist-client')
 export const DIR_CLIENT = clientDistFolder
+/**
+ * client widget
+ */
+export const clientWidgetEntry = resolve(filename, '../../client', 'client.js')

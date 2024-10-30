@@ -120,6 +120,8 @@ export class MockeryMountIFramePlugin {
     process.env.MOCKERY_CLIENT_PORT = port
     // eslint-disable-next-line node/prefer-global/process
     process.env.VUE_APP_MOCKERY_CLIENT_PORT = port
+    // eslint-disable-next-line node/prefer-global/process
+    process.env.NUXT_MOCKERY_CLIENT_PORT = port
 
     // mount tools for page
     compiler.hooks.compilation.tap(PLUGIN_NAME, (compilation) => {

@@ -43,13 +43,15 @@ function injectCSS(css: string) {
 /**
  * Mount an iframe to the document body.
  */
-export function mountIframe() {
+export function mountIframe(options: {
+  port: number
+}) {
   injectCSS(mockeryCSS)
 
   // eslint-disable-next-line node/prefer-global/process
-  const port = process.env.VUE_APP_MOCKERY_CLIENT_PORT
+  const port = options.port || process.env.VUE_APP_MOCKERY_CLIENT_PORT || process.env.NUXT_MOCKERY_CLIENT_PORT
   if (!port) {
-    console.error('VUE_APP_MOCKERY_CLIENT_PORT is not defined')
+    console.error('PORT is not defined')
     return
   }
 
@@ -95,9 +97,12 @@ export function mountIframe() {
   toggleBtn.draggable = true
 }
 
-function main() {
+export function main(options: {
+  /**
+   * The port of the mockery server.
+   */
+  port: number
+}) {
   consola.info('DOMContentLoaded', 'Inject Mockery Client')
-  mountIframe()
+  mountIframe(options)
 }
-
-main()
