@@ -15,9 +15,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
+          registry-url: https://registry.npmjs.org/
 
       - name: Create GitHub Release
         run: npx changelogithub
