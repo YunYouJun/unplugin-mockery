@@ -1,3 +1,13 @@
+## [0.3.13](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.12...v0.3.13) (2024-11-09)
+
+
+### Features
+
+* add nuxt example ([f0b93b3](https://github.com/YunYouJun/unplugin-mockery/commit/f0b93b3460742e2ca1f67efcf54be86e1c33a6fb))
+* support method all & log more info for request ([2a07c21](https://github.com/YunYouJun/unplugin-mockery/commit/2a07c21a4a390281dd3d7caab09d589c63bcd434))
+
+
+
 ## [0.3.12](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.11...v0.3.12) (2024-10-30)
 
 

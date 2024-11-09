@@ -17,19 +17,21 @@ export interface Options {
 
   /**
    * The directory where the mock files are located.
+   *
+   * - `<mockDir>/api/`: mock files
+   * - `<mockDir>/scenes/`: scene files
+   * - `<mockDir>/schemas/`: schema file
+   *   - `scene.schema.json`: scene schema file
+   *   - `config.schema.json`: config schema file
+   * - `<mockDir>/config.json`: configuration file
+   *
    * @default 'mock'
-   * mock/api: mock files
-   * mock/scenes: scene files
-   * mock/schemas: schema file
-   *   scene.schema.json: scene schema file
-   *   config.schema.json: config schema file
-   * mock/utils: utility files
-   * mock/config.json: configuration file
    */
   mockDir: string
 
   /**
    * mock client ui
+   * @see http://localhost:<port>
    */
   client?: {
     /**

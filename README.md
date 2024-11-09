@@ -75,30 +75,18 @@ module.exports = {
 
 ```ts
 export default defineNuxtConfig({
-  vite: {
-    plugins: [
-      // do not use it in production
-      import.meta.env.DEV && Mockery({
-        mockDir: 'mock',
-        client: {
-          enable: true,
-        },
-      }),
-    ]
-  }
+  modules: [
+    'unplugin-mockery/nuxt',
+  ],
+
+  unpluginMockery: {
+    mockDir,
+    client: {
+      port: 51223,
+    },
+  },
 })
 ```
-
-```ts
-// nuxt.config.js
-// export default defineNuxtConfig({
-//   modules: [
-//     ['unplugin-mockery/nuxt', { /* options */ }],
-//   ],
-// })
-```
-
-> This module works for both Nuxt 2 and [Nuxt Vite](https://github.com/nuxt/vite)
 
 <br></details>
 
