@@ -11,7 +11,7 @@ export interface ModuleOptions extends Options {
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'nuxt-unplugin-mockery',
-    configKey: 'unpluginMocker',
+    configKey: 'unpluginMockery',
   },
   defaults: {
     // ...default options

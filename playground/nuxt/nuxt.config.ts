@@ -8,13 +8,19 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
-    ['unplugin-mockery/nuxt', {
-      mockDir,
-      client: {
-        port: 51223,
-      },
-    }],
+    // in prod
+    // 'unplugin-mockery/nuxt',
+
+    // for dev
+    '../../src/nuxt',
   ],
+
+  unpluginMockery: {
+    mockDir,
+    client: {
+      port: 51223,
+    },
+  },
 
   // vite: {
   //   plugins: [

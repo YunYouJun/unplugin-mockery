@@ -3,13 +3,14 @@
 html,
 body,
 #app {
+  background-color: var(--um-c-bg);
+
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
 html.dark {
-  background: #121212;
   color-scheme: dark;
 }
 

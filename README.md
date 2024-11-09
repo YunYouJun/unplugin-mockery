@@ -234,6 +234,4 @@ export interface Options {
 
 - filename as url when url not set
 - click settings icon show config in dialog
-- 修复亮色模式背景色
 - 添加 UI 创建场景合集功能
-- 左侧列表底部滚动

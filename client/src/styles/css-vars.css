@@ -1,3 +1,9 @@
 :root {
   --um-c-brand: #ff6f61;
+
+  --um-c-bg: white;
+}
+
+html.dark {
+  --um-c-bg: #121212;
 }
