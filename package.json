@@ -105,7 +105,8 @@
     "play:vue-cli": "pnpm -C playground/vue-cli run serve",
     "play:nuxt": "pnpm -C playground/nuxt run dev",
     "prepublishOnly": "npm run build",
-    "release": "bumpp --execute 'npm run changelog' --all && npm publish",
+    "release": "bumpp --execute 'npm run changelog' --all",
+    "release:local": "bump --no-commit --no-tag && npm publish",
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit"

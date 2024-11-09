@@ -19,6 +19,15 @@ jobs:
         with:
           node-version: lts/*
 
-      - run: npx changelogithub
+      - name: Create GitHub Release
+        run: npx changelogithub
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      # NPM_CONFIG_PROVENANCE is required for open-source projects
+      - run: pnpm install
+      - name: Publish to npm
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_CONFIG_PROVENANCE: true
