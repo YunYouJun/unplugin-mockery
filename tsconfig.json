@@ -24,5 +24,10 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "exclude": ["dist", "eslint.config.js", ".vite-ssg-temp"]
+  "exclude": [
+    "dist",
+    "eslint.config.js",
+    ".vite-ssg-temp",
+    "playground/nuxt"
+  ]
 }

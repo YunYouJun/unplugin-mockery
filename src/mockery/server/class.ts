@@ -9,6 +9,9 @@ import { defaultOptions } from '../../core/options'
 import { MockeryDB } from '../db'
 import { initSceneSchema } from '../schema'
 
+/**
+ * for server
+ */
 export class MockeryServer {
   sceneSchema: JSONSchemaType<SceneData> = initSceneSchema()
   sceneSchemaPath: string

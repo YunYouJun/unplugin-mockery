@@ -44,11 +44,22 @@ export async function resolveMockeryRequest(filePath: string) {
 }
 
 /**
- * get current response from results
+ * get cur key in scene
  */
-export function getCurResponse(mockery: MockeryRequest) {
+export function getCurKey(mockery: MockeryRequest) {
   const results = mockery.results || {}
   const curKeyInScene = MockeryDB.sceneData[mockery.url]
   const resultKey = curKeyInScene || (Object.keys(results)[0])
-  return results[resultKey] || {}
+  return resultKey
+}
+
+/**
+ * get current response from results
+ */
+export function getCurResponse(mockery: MockeryRequest, curKey?: string) {
+  const results = mockery.results || {}
+  if (!curKey)
+    curKey = getCurKey(mockery)
+
+  return results[curKey] || {}
 }

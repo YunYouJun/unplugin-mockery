@@ -1,10 +1,9 @@
 import { defineMockery } from 'unplugin-mockery'
 
 export default defineMockery({
-  url: '/methods/get',
-  method: 'get',
-  timeout: 200,
+  url: '/methods/all',
+  method: 'all',
   response: {
-    message: 'I am a GET method',
+    message: 'I support GET/POST/DELETE/PUT/PATCH methods.',
   },
 })

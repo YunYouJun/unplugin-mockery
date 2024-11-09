@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MockeryRequest } from 'unplugin-mockery'
+import type { MethodType, MockeryRequest } from 'unplugin-mockery'
 
 const props = defineProps<{
   mockery: MockeryRequest
@@ -8,21 +8,32 @@ const props = defineProps<{
 
 const previewStore = usePreviewStore()
 
-function getMethodClass(method: string) {
-  switch (method) {
-    case 'get':
-      return 'text-green-500'
-    case 'post':
-      return 'text-blue-500'
-    case 'put':
-      return 'text-yellow-500'
-    case 'delete':
-      return 'text-red-500'
-    case 'patch':
-      return 'text-purple-500'
-    default:
-      return 'text-gray-500'
-  }
+const methodInfo: Record<MethodType, {
+  className: string
+}> = {
+  all: {
+    className: 'text-cyan-500',
+  },
+  get: {
+    className: 'text-green-500',
+  },
+  post: {
+    className: 'text-blue-500',
+  },
+  put: {
+    className: 'text-yellow-500',
+  },
+  delete: {
+    className: 'text-red-500',
+  },
+  patch: {
+    className: 'text-purple-500',
+  },
+}
+
+function getMethodClass(method: MethodType) {
+  const className = methodInfo[method].className || 'text-gray-500'
+  return className
 }
 
 function getTimeoutClass(timeout: number = 0) {

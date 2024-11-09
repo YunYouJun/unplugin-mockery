@@ -48,7 +48,7 @@ export interface Options {
   }
 }
 
-export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch'
+export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'all'
 
 export type MockResponse<T> = ((req: Request) => T | Promise<T>) | T
 
@@ -60,6 +60,9 @@ export interface MockeryRequest<T = object> {
    * 请求描述
    */
   description?: string
+  /**
+   * @default all support(get/post/put/delete/patch)
+   */
   method?: MethodType
   /**
    * 请求延迟时间
@@ -76,8 +79,15 @@ export interface MockeryRequest<T = object> {
   scenes?: T
   /**
    * @deprecated let's use jsonc to combine scenes
+   * @inner
    */
   curScene?: string
+
+  /**
+   * cur result key
+   * @inner
+   */
+  _curKey?: string
 }
 
 export type Mockery<T = object> = MockeryRequest<T>

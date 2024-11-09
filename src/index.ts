@@ -78,20 +78,21 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
         return false
       },
 
-      configResolved(config) {
+      async configResolved(config) {
         viteConfig = config
         createMockServer(options, config)
+
+        // init
+        const mockeryServer = new MockeryServer(options)
+        await mockeryServer.init()
       },
 
       async configureServer(server: ViteDevServer) {
         const base = (options.base ?? server.config.base) || '/'
 
-        // init
-        const mockeryServer = new MockeryServer(options)
-        await mockeryServer.init()
-
         const { listener } = serveClient({
           staticPath: clientDistFolder,
+          port: options.client?.port,
         })
         const address = listener.address()
         const port = typeof address === 'string' ? 0 : address?.port

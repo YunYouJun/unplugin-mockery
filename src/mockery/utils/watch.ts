@@ -2,6 +2,7 @@ import chokidar from 'chokidar'
 import consola from 'consola'
 
 import colors from 'picocolors'
+import { logger } from './logger'
 
 /**
  * Create a watcher to watch for changes in the mock server files
@@ -32,15 +33,15 @@ export function createWatcher(options: {
       try {
         if (event === 'change' || event === 'add') {
           if (path.endsWith('.ts')) {
-            consola.info(`TS file changed: ${colors.dim(path)}`)
+            logger.info(`${colors.bold(colors.blue('TS'))} file changed: ${colors.dim(path)}`)
             await options.onTSFileChange?.(path)
           }
           else if (path.endsWith('.scene.json')) {
-            consola.info(`Scene file changed: ${colors.dim(path)}`)
+            logger.info(`${colors.green('Scene')} file changed: ${colors.dim(path)}`)
             await options.onSceneFileChange?.(path)
           }
           else if (path.endsWith('config.json')) {
-            consola.info(`Config file changed: ${colors.dim(path)}`)
+            logger.info(`${colors.cyan('Config')} file changed: ${colors.dim(path)}`)
             await options.onConfigFileChange?.(path)
           }
         }

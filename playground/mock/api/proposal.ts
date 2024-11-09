@@ -16,6 +16,7 @@ const results = {
 
 export default defineMockery({
   url: '/api/proposal',
+  description: '提案',
   method: 'post',
   results,
 })

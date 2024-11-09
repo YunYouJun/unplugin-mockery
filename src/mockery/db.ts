@@ -12,7 +12,15 @@ export interface MockeryConfigData {
   curScene?: string
 }
 
+/**
+ * global state
+ */
 export class MockeryDB {
+  /**
+   * Server Start timestamp
+   */
+  static startTimestamp = performance.now()
+
   static options: Options
 
   static configPath = ''

@@ -4,9 +4,8 @@ import type { AddressInfo } from 'node:net'
 import process from 'node:process'
 import consola from 'consola'
 import c from 'picocolors'
-import { MockeryDB } from '../mockery'
+import { MOCKERY_NAMESPACE, MockeryDB } from '../mockery'
 import { createMockClientServer } from '../mockery/server'
-import { globalState } from './env'
 import { openBrowser } from './utils'
 
 /**
@@ -41,15 +40,13 @@ export function serveClient(options: {
     const url = `http://localhost:${port}`
     // eslint-disable-next-line no-console
     console.log()
-    consola.info(`  ${c.green('🤡')}  ${c.bold('Mockery Started')}: ${c.cyan(url)}`)
+    consola.info(`  ${MOCKERY_NAMESPACE}  ${c.bold('Mockery Started')}: ${c.cyan(url)}`)
 
     if (options.open)
       openBrowser(url)
 
-    if (globalState.startTimestamp) {
-      const consumedTime = performance.now() - globalState.startTimestamp
-      consola.success(`  ${c.green('🚀')}  ${c.bold('Mockery Ready')}: ${c.green(`${consumedTime.toFixed(2)}ms`)}\n`)
-    }
+    const consumedTime = performance.now() - MockeryDB.startTimestamp
+    consola.success(`  ${c.green('[🚀]')}  ${c.bold('Mockery Ready')}: ${c.green(`${consumedTime.toFixed(2)}ms`)}\n`)
   }
 
   // exit

@@ -1,13 +1,12 @@
 import type { NextHandleFunction } from 'connect'
 import type { Connect, ResolvedConfig } from 'vite'
-import type { MethodType, MockeryRequest, Options } from '../../types'
+import type { MockeryRequest, Options } from '../../types'
 import { parse } from 'node:querystring'
 import { URL } from 'node:url'
 import consola from 'consola'
 import { match } from 'path-to-regexp'
-import colors from 'picocolors'
 import { MockeryDB } from '../../mockery/db'
-import { getCurResponse, MOCKERY_NAMESPACE, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
+import { getCurKey, getCurResponse, logger, MOCKERY_NAMESPACE, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
 
 import { createWatcher } from '../../mockery/utils/watch'
 import { getMockApiFiles, isFunction, sleep } from '../utils'
@@ -63,6 +62,9 @@ export async function createMockServer(options: Options, config: ResolvedConfig)
 
 /**
  * ref https://github.com/vbenjs/vite-plugin-mock
+ *
+ * custom middleware
+ * not same with express middleware app
  */
 export async function requestMiddleware(_options: Options) {
   const middleware: NextHandleFunction = async (req, res, next) => {
@@ -74,18 +76,27 @@ export async function requestMiddleware(_options: Options) {
 
     const reqUrl = url.pathname
 
+    // console.log('mockData', mockData)
     const matchRequest = mockData.find((item) => {
       if (!reqUrl || !item || !item.url) {
         return false
       }
-      if (item.method && item.method.toUpperCase() !== req.method) {
-        return false
+      if (item.method) {
+        // support all method
+        if (item.method === 'all') {
+          return true
+        }
+        if (item.method.toUpperCase() !== req.method) {
+          return false
+        }
       }
       return match(item.url)(reqUrl)
     })
 
     if (matchRequest) {
-      const isGet = req.method && req.method.toUpperCase() === 'GET'
+      const isGet = req.method
+        ? ['ALL', 'GET'].includes(req.method.toUpperCase())
+        : true
       const { response, rawResponse, timeout, statusCode, url, results = {} } = matchRequest
 
       if (timeout) {
@@ -125,15 +136,14 @@ export async function requestMiddleware(_options: Options) {
             : response
         }
         else if (Object.keys(results).length > 0) {
-          mockResponse = getCurResponse(matchRequest)
+          const curKey = getCurKey(matchRequest)
+          matchRequest._curKey = curKey
+          mockResponse = getCurResponse(matchRequest, curKey)
         }
         res.end(JSON.stringify(mockResponse || {}))
       }
 
-      printRequestLog({
-        method: req.method as MethodType || 'get',
-        url: req.url,
-      })
+      printRequestLog(matchRequest)
       return
     }
     next()
@@ -148,7 +158,7 @@ export function createWatch(options: Options, config: ResolvedConfig) {
   const watcher = createWatcher({
     mockDir: options.mockDir,
     onTSFileChange: async () => {
-      consola.info(`${colors.cyan('[MOCKERY]')} File changed, reloading all routes`)
+      logger.info(`File changed, reloading all routes`)
       mockData = await getMockConfig(options, config)
     },
     onSceneFileChange: async (path) => {
@@ -156,14 +166,14 @@ export function createWatch(options: Options, config: ResolvedConfig) {
       // *.scene.json
       const sceneName = path.replace(/\.scene\.json$/, '')
       MockeryDB.readScene(sceneName)
-      consola.info(`${colors.cyan('[MOCKERY]')} scene.json changed, reloading all routes`)
+      logger.info(`scene.json changed, reloading all routes`)
       mockData = await getMockConfig(options, config)
       await MockeryDB.updateConfigSchema()
     },
     onConfigFileChange: async () => {
       await MockeryDB.update()
       MockeryDB.readScene()
-      consola.info(`${colors.cyan('[MOCKERY]')} config.json changed, reloading all routes`)
+      logger.info(`config.json changed, reloading all routes`)
       mockData = await getMockConfig(options, config)
     },
   })

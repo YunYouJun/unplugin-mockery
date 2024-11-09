@@ -5,7 +5,6 @@ import consola from 'consola'
 import colors from 'picocolors'
 import { serveClient } from '../../core/client'
 import { clientDistFolder } from '../../core/constants'
-import { globalState } from '../../core/env'
 
 import { defaultOptions, resolveOptions } from '../../core/options'
 import { MockeryDB, MockeryServer } from '../../mockery'
@@ -17,7 +16,7 @@ import { mockServer } from './mock-server'
  * @param options
  */
 export async function getWebpackConfig(options: Options = defaultOptions) {
-  globalState.startTimestamp = performance.now()
+  MockeryDB.startTimestamp = performance.now()
 
   options = Object.assign({}, defaultOptions, options)
 

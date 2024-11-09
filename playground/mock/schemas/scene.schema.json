@@ -16,6 +16,7 @@
     },
     "/api/proposal": {
       "type": "string",
+      "description": "提案",
       "enum": [
         "同意",
         "拒绝"
@@ -46,6 +47,9 @@
     "/api/examples": {
       "type": "string",
       "description": "示例"
+    },
+    "/methods/all": {
+      "type": "string"
     }
   }
 }
