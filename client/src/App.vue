@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toastRef } from '@advjs/gui'
+// import { toastRef } from '@advjs/gui'
 
 // https://github.com/vueuse/head
 // you can use this to manipulate the document head in any components,
@@ -29,5 +29,5 @@ useHead({
 
 <template>
   <RouterView />
-  <AGUIToast ref="toastRef" class="z-9" />
+  <!-- todo toast -->
 </template>

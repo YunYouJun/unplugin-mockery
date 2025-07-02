@@ -1,4 +1,5 @@
-import { type Application, Router } from 'express'
+import type { Application } from 'express'
+import { Router } from 'express'
 
 const router = Router()
 

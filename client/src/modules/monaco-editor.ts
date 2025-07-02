@@ -1,5 +1,5 @@
-import { install as VueMonacoEditorPlugin } from '@guolao/vue-monaco-editor'
 import type { UserModule } from '~/types'
+import { install as VueMonacoEditorPlugin } from '@guolao/vue-monaco-editor'
 
 // Setup Pinia
 // https://pinia.vuejs.org/

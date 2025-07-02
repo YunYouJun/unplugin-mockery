@@ -1,4 +1,4 @@
-import consola from 'consola'
+import { consola } from 'consola'
 import fg from 'fast-glob'
 import { createJiti } from 'jiti'
 

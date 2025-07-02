@@ -1,5 +1,5 @@
 import type { MethodType, MockeryRequest } from '../../types'
-import consola from 'consola'
+import { consola } from 'consola'
 import { colors } from 'consola/utils'
 
 // export const MOCKERY_NAMESPACE = colors.dim('🤡' + ' |')

@@ -2,3 +2,7 @@ packages:
   - client/
   - widget/
   - 'playground/*'
+
+catalogs:
+  build:
+    vite: ^7.0.0

@@ -1,11 +1,12 @@
 import type { JSONSchemaType } from 'ajv'
 import type { Mockery, Options } from '../types'
 
+import type { SceneData } from './schema'
 import path from 'node:path'
-import consola from 'consola'
+import { consola } from 'consola'
 import fs from 'fs-extra'
 import { getMockApiFiles, jiti } from '../core/utils'
-import { initSceneSchema, type SceneData } from './schema'
+import { initSceneSchema } from './schema'
 import { isMockery } from './utils'
 
 export interface MockeryConfigData {

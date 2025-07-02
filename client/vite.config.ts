@@ -1,9 +1,8 @@
 import path from 'node:path'
-import { componentsDir } from '@advjs/gui/node'
 import VueI18n from '@intlify/unplugin-vue-i18n/vite'
 import Shiki from '@shikijs/markdown-it'
 import Vue from '@vitejs/plugin-vue'
-import consola from 'consola'
+import { consola } from 'consola'
 import LinkAttributes from 'markdown-it-link-attributes'
 import colors from 'picocolors'
 import Unocss from 'unocss/vite'
@@ -22,8 +21,8 @@ import { proxyPort } from '../playground/config'
 
 const prefix = `monaco-editor/esm/vs`
 
-export default defineConfig(({ mode }) => {
-  consola.info(`[client] Running in ${colors.green(mode)} mode`)
+export default defineConfig((env) => {
+  consola.info(`[client] Running in ${colors.green(env.mode)} mode`)
   // for dev
 
   return {
@@ -112,7 +111,6 @@ export default defineConfig(({ mode }) => {
         dts: 'src/components.d.ts',
         dirs: [
           'src/components',
-          componentsDir,
         ],
       }),
 
@@ -173,14 +171,6 @@ export default defineConfig(({ mode }) => {
     ssr: {
       // TODO: workaround until they support native ESM
       noExternal: ['workbox-window', /vue-i18n/],
-    },
-
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-      },
     },
   }
 })

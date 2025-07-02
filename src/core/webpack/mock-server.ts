@@ -3,7 +3,7 @@ import type { Options } from '../../types'
 import path, { resolve } from 'node:path'
 
 import bodyParser from 'body-parser'
-import consola from 'consola'
+import { consola } from 'consola'
 
 import colors from 'picocolors'
 import { getMockApiFiles } from '../../core/utils'

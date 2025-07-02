@@ -1,6 +1,6 @@
 import type { Application } from 'express'
 import type { MockeryRequest } from '../../types'
-import consola from 'consola'
+import { consola } from 'consola'
 import colors from 'picocolors'
 import { sleep } from '../../core/utils'
 import { MockeryDB } from '../db'

@@ -1,5 +1,5 @@
 import type { MockeryItem, MockeryRequest } from 'unplugin-mockery'
-import { Toast } from '@advjs/gui'
+// import { Toast } from '@advjs/gui'
 import pathe from 'pathe'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
@@ -71,11 +71,11 @@ export const usePreviewStore = defineStore('preview', () => {
   function openFileInEditor(filePath: string) {
     const absoluteFilePath = filePath.startsWith('/') ? filePath : pathe.resolve(mockDir.value, filePath)
     MockeryTRPCClient.client.file.open.query(absoluteFilePath)
-    Toast({
-      title: `打开文件`,
-      description: absoluteFilePath,
-      type: 'success',
-    })
+    // Toast({
+    //   title: `打开文件`,
+    //   description: absoluteFilePath,
+    //   type: 'success',
+    // })
   }
 
   function previewMockScene(scene: object) {

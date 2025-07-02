@@ -3,7 +3,7 @@ import type { Connect, ResolvedConfig } from 'vite'
 import type { MockeryRequest, Options } from '../../types'
 import { parse } from 'node:querystring'
 import { URL } from 'node:url'
-import consola from 'consola'
+import { consola } from 'consola'
 import { match } from 'path-to-regexp'
 import { MockeryDB } from '../../mockery/db'
 import { getCurKey, getCurResponse, logger, MOCKERY_NAMESPACE, printRequestLog, resolveMockeryRequest } from '../../mockery/utils'
@@ -128,11 +128,11 @@ export async function requestMiddleware(_options: Options) {
         if (response) {
           mockResponse = isFunction(response)
             ? response({
-              url: req.url as any,
-              body,
-              query,
-              headers: req.headers,
-            } as any)
+                url: req.url as any,
+                body,
+                query,
+                headers: req.headers,
+              } as any)
             : response
         }
         else if (Object.keys(results).length > 0) {

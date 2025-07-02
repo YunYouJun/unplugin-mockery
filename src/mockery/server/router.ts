@@ -4,7 +4,6 @@ import { TRPCError } from '@trpc/server'
 
 import fs from 'fs-extra'
 
-// @ts-expect-error launch-editor is not typed
 import launch from 'launch-editor'
 import { z } from 'zod'
 

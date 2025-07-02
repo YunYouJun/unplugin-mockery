@@ -3,7 +3,7 @@ import type { Options } from '../../types'
 import type { SceneData } from '../schema'
 import path from 'node:path'
 
-import consola from 'consola'
+import { consola } from 'consola'
 import fs from 'fs-extra'
 import { defaultOptions } from '../../core/options'
 import { MockeryDB } from '../db'

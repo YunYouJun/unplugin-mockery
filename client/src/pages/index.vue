@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import consola from 'consola'
+import { consola } from 'consola'
 import { Pane, Splitpanes } from 'splitpanes'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
 import 'splitpanes/dist/splitpanes.css'

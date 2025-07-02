@@ -1,7 +1,7 @@
 import type { WebpackCompiler } from 'unplugin'
 import type Server from 'webpack-dev-server'
 import type { Options } from '../../types'
-import consola from 'consola'
+import { consola } from 'consola'
 import colors from 'picocolors'
 import { serveClient } from '../../core/client'
 import { clientDistFolder } from '../../core/constants'

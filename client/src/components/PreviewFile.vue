@@ -4,12 +4,12 @@
 import type { MonacoEditor } from '@guolao/vue-monaco-editor'
 
 import { loader, useMonaco } from '@guolao/vue-monaco-editor'
-import { computed, shallowRef } from 'vue'
+import * as monaco from 'monaco-editor'
 // for monaco editor type definition
 
-import * as monaco from 'monaco-editor'
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
+import { computed, shallowRef } from 'vue'
 // import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 // import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 // import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
