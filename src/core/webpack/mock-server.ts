@@ -6,9 +6,9 @@ import bodyParser from 'body-parser'
 import { consola } from 'consola'
 
 import colors from 'picocolors'
-import { getMockApiFiles } from '../../core/utils'
 import { MockeryDB, registerRoute, registerRoutes, resolveMockeryRequest } from '../../mockery'
 import { createWatcher } from '../../mockery/utils/watch'
+import { getMockApiFiles } from '../utils'
 
 /**
  * adapt webpack-dev-server app

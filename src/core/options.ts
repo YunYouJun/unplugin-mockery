@@ -1,6 +1,14 @@
-import type { Options } from '../types'
+import type { MockeryOptions } from '../types'
+import { createDefu } from 'defu'
 
-export const defaultOptions: Options = {
+export const replaceArrMerge = createDefu((obj, key, val) => {
+  if (key && obj[key] && Array.isArray(obj[key]) && Array.isArray(val)) {
+    obj[key] = val
+    return true
+  }
+})
+
+export const defaultOptions: MockeryOptions = {
   client: {
     enable: true,
     open: false,
@@ -8,16 +16,16 @@ export const defaultOptions: Options = {
   mockDir: 'mock',
 }
 
+export type ResolvedOptions = Omit<MockeryOptions, 'dirs'> & {
+  root: string
+  dirs: string[]
+  resolvedDirs: string[]
+}
+
 /**
  * Resolve options with default values
  */
-export function resolveOptions(options: Options | undefined): Options {
-  return {
-    ...defaultOptions,
-    ...options,
-    client: {
-      ...defaultOptions.client,
-      ...options?.client,
-    },
-  }
+export function resolveOptions(options: MockeryOptions | undefined): ResolvedOptions {
+  const resolved = replaceArrMerge(options || {}, defaultOptions) as ResolvedOptions
+  return resolved
 }

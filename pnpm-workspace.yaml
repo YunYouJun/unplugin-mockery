@@ -5,4 +5,4 @@ packages:
 
 catalogs:
   build:
-    vite: ^7.0.0
+    vite: ^7.0.5

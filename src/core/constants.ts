@@ -1,6 +1,12 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { colors } from 'consola/utils'
 import { filename } from '../shims'
+
+/**
+ * 日志命名空间
+ */
+export const MOCKERY_NAMESPACE = colors.magenta('[🤡]')
 
 export const DIR_DIST = typeof __dirname !== 'undefined'
   ? __dirname

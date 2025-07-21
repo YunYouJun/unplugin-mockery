@@ -1,14 +1,27 @@
 import { consola } from 'consola'
-import fg from 'fast-glob'
-import { createJiti } from 'jiti'
 
-import { resolveMockDir } from '../mockery'
-import { filename } from '../shims'
-// shim for esm
-export const jiti = createJiti(filename, {
-  // clear cache
-  moduleCache: false,
-})
+export * from './logger'
+export * from './mock'
+
+export function noop(): void {}
+
+/**
+ * slash path for windows
+ * @param str
+ */
+export function slash(str: string) {
+  return str.replace(/\\/g, '/')
+}
+
+export function ensurePrefix(prefix: string, str: string) {
+  if (!str.startsWith(prefix))
+    return prefix + str
+  return str
+}
+
+export function toAtFS(path: string) {
+  return `/@fs${ensurePrefix('/', slash(path))}`
+}
 
 /**
  * await sleep(1000)
@@ -28,23 +41,6 @@ export async function openBrowser(address: string) {
     .catch((e) => {
       consola.info('Failed to open browser:', e)
     })
-}
-
-/**
- * Get all mock files
- */
-export function getMockApiFiles(options: {
-  mockDir?: string
-  /**
-   * Absolute path
-   */
-  absolute?: boolean
-} = {}) {
-  const files = fg.sync('api/**/*.ts', {
-    cwd: options.mockDir || resolveMockDir(),
-    absolute: options.absolute ?? true,
-  })
-  return files
 }
 
 // common

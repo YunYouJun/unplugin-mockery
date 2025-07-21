@@ -1,6 +1,7 @@
 import type { JSONSchemaType } from 'ajv'
 import type { Mockery, Options } from '../types'
 
+import type { MockeryContext } from './context'
 import type { SceneData } from './schema'
 import path from 'node:path'
 import { consola } from 'consola'
@@ -30,6 +31,8 @@ export class MockeryDB {
 
   static sceneSchema: JSONSchemaType<SceneData> = initSceneSchema()
   static sceneSchemaPath = ''
+
+  constructor(public ctx: MockeryContext) {}
 
   static async init(options: Options) {
     this.options = options

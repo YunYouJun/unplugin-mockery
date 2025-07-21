@@ -1,62 +1,16 @@
 import type { Request, Response } from 'express'
 import type { IncomingMessage, ServerResponse } from 'node:http'
-
-export interface Options {
-  /**
-   * Base URL for inspector UI
-   *
-   * @default read from Vite's config
-   */
-  base?: string
-
-  // define your plugin options here
-  /**
-   * Display debug information.
-   */
-  debug?: boolean
-
-  /**
-   * The directory where the mock files are located.
-   *
-   * - `<mockDir>/api/`: mock files
-   * - `<mockDir>/scenes/`: scene files
-   * - `<mockDir>/schemas/`: schema file
-   *   - `scene.schema.json`: scene schema file
-   *   - `config.schema.json`: config schema file
-   * - `<mockDir>/config.json`: configuration file
-   *
-   * @default 'mock'
-   */
-  mockDir: string
-
-  /**
-   * mock client ui
-   * @see http://localhost:<port>
-   */
-  client?: {
-    /**
-     * enable client
-     * @default true
-     */
-    enable?: boolean
-    /**
-     * The port to run the client server.
-     */
-    port?: number
-    /**
-     * auto open browser.
-     */
-    open?: boolean
-  }
-}
-
-export type MethodType = 'get' | 'post' | 'put' | 'delete' | 'patch' | 'all'
+import type { MethodType } from './api'
 
 export type MockResponse<T> = ((req: Request) => T | Promise<T>) | T
-
 export type RawResponse = (req: Request, res: Response) => void | Promise<void>
 
 export interface MockeryRequest<T = object> {
+  /**
+   * @default http
+   */
+  type?: 'http'
+
   url: string
   /**
    * 请求描述
@@ -86,10 +40,19 @@ export interface MockeryRequest<T = object> {
   curScene?: string
 
   /**
+   * 是否打印请求日志
+   * @default true
+   *
+   * - `log: 'debug'` 打印更多的日志
+   */
+  log?: boolean | 'debug'
+
+  /**
    * cur result key
    * @inner
    */
   _curKey?: string
+  _curStatus?: string
 }
 
 export type Mockery<T = object> = MockeryRequest<T>
