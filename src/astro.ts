@@ -1,8 +1,8 @@
-import type { Options } from './types'
+import type { MockeryOptions } from './types'
 
 import unplugin from '.'
 
-export default (options: Options) => ({
+export default (options: MockeryOptions) => ({
   name: 'unplugin-mockery',
   hooks: {
     'astro:config:setup': async (astro: any) => {

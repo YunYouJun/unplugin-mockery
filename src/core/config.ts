@@ -1,31 +1,26 @@
-import type { MockeryRequest } from '../types'
+import type { Mockery } from '../types'
+import { defineDefineConfig } from 'define-config-ts'
 
 export const PLUGIN_NAME = 'unplugin-mockery:webpack'
 
 /**
  * curScene only can be one of the keys of scenes
  */
-export function defineMockeryRequest<T = object>(mockery: MockeryRequest<T>): MockeryRequest<T> {
-  if (!mockery.url) {
-    throw new Error('URL is required')
+export function defineMockery<T = object>(mockery: Mockery<T>): Mockery<T> {
+  if (!mockery.path) {
+    throw new Error('Path is required')
   }
   return mockery
 }
 
 /**
  * Define a mockery request
- * @alias defineMockeryRequest
+ * @alias defineMockery
  */
-export const defineHttpMockery = defineMockeryRequest
-
-/**
- * Define a mockery request
- * @alias defineMockeryRequest
- */
-export const defineMockery = defineMockeryRequest
+export const defineHttpMockery = defineMockery
 
 /**
  * @todo
  * mockery.config.ts
  */
-export function defineMockeryConfig() {}
+export const defineMockeryConfig = defineDefineConfig()

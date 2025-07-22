@@ -1,12 +1,30 @@
 import type { Express } from 'express'
 import type * as http from 'node:http'
 import type { AddressInfo } from 'node:net'
+import type { MockeryContext } from '../mockery'
 import process from 'node:process'
 import { consola } from 'consola'
-import c from 'picocolors'
-import { MOCKERY_NAMESPACE, MockeryDB } from '../mockery'
+import { colors } from 'consola/utils'
+import pkg from '../../package.json'
+import { MOCKERY_NAMESPACE } from '../mockery'
 import { createMockClientServer } from '../mockery/server'
-import { openBrowser } from './utils'
+import { GLOBAL_STATE } from './env'
+
+export function printLogForMockeryClient(ctx: MockeryContext) {
+  const client = ctx.options.client
+  const port = client?.port
+  const url = `http://localhost:${port}`
+  ctx.options.resolvedDirs.forEach((dir) => {
+    consola.info(` ${'[📂]'}  ${colors.dim(dir)}`)
+  })
+  consola.info(` ${MOCKERY_NAMESPACE}  ${colors.bold('Mockery Client Server')}: ${colors.cyan(url)}`)
+
+  // if (client?.open)
+  //   openBrowser(url)
+
+  const consumedTime = performance.now() - ctx.db.startTimestamp
+  consola.success(` ${colors.green('[🚀]')}  ${colors.bold('Mockery')} ${colors.magenta(`v${pkg.version}`)}: ${colors.dim('ready in')} ${colors.green(`${consumedTime.toFixed(2)}ms`)}\n`)
+}
 
 /**
  * init mockery client & server
@@ -29,24 +47,19 @@ export function serveClient(options: {
   function callback() {
     const { port = 0 } = listener.address() as AddressInfo
     // set port
-    if (!MockeryDB.options.client) {
-      MockeryDB.options.client = {
+    const ctx = GLOBAL_STATE.mockeryCtx
+    if (!ctx) {
+      return
+    }
+    if (!ctx.options.client) {
+      ctx.options.client = {
         port,
       }
     }
     else {
-      MockeryDB.options.client.port = port
+      ctx.options.client.port = port
     }
-    const url = `http://localhost:${port}`
-    // eslint-disable-next-line no-console
-    console.log()
-    consola.info(`  ${MOCKERY_NAMESPACE}  ${c.bold('Mockery Started')}: ${c.cyan(url)}`)
-
-    if (options.open)
-      openBrowser(url)
-
-    const consumedTime = performance.now() - MockeryDB.startTimestamp
-    consola.success(`  ${c.green('[🚀]')}  ${c.bold('Mockery Ready')}: ${c.green(`${consumedTime.toFixed(2)}ms`)}\n`)
+    printLogForMockeryClient(ctx)
   }
 
   // exit

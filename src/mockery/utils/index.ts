@@ -1,65 +1,42 @@
-import type { MockeryRequest } from '../../types'
-import path from 'node:path'
-import { consola } from 'consola'
-import colors from 'picocolors'
-import { defaultOptions } from '../../core/options'
-import { jiti } from '../../core/utils'
-import { MockeryDB } from '../db'
+import type { Mockery } from '../../types'
+import { GLOBAL_STATE } from '../../core'
+import { getMockeryKey } from './common'
 
+export * from './common'
 export * from './logger'
 
 /**
  * is a mockery
+ *
+ * 是否为一个标准的 Mockery 对象
  * @param mockery
  */
-export function isMockery(mockery: MockeryRequest) {
-  return !!mockery.url
-}
-
-/**
- * resolve mock dir
- */
-export function resolveMockDir(mockDir?: string) {
-  return path.resolve(mockDir || MockeryDB.options?.mockDir || defaultOptions.mockDir)
-}
-
-/**
- * resolve mockery request from file
- */
-export async function resolveMockeryRequest(filePath: string) {
-  consola.debug(`  Registering Mock Server: ${colors.dim(filePath)}`)
-  const mockeryRequest = jiti(filePath).default as (MockeryRequest | (() => MockeryRequest | Promise<MockeryRequest>))
-  if (!mockeryRequest) {
-    return {} as MockeryRequest
-  }
-  else if (typeof mockeryRequest === 'function') {
-    return await mockeryRequest()
-  }
-  else if (typeof mockeryRequest === 'object') {
-    return mockeryRequest
-  }
-  else {
-    throw new TypeError('mockery must be a function or object')
-  }
+export function isMockery(mockery: any): mockery is Mockery {
+  return mockery && mockery instanceof Object && mockery.type && ('url' in mockery || 'methodName' in mockery)
 }
 
 /**
  * get cur key in scene
+ *
+ * 获取当前 Mockery 的结果状态
  */
-export function getCurKey(mockery: MockeryRequest) {
+export function getCurStatus(mockery: Mockery) {
+  const DB = GLOBAL_STATE.mockeryCtx?.db
   const results = mockery.results || {}
-  const curKeyInScene = MockeryDB.sceneData[mockery.url]
-  const resultKey = curKeyInScene || (Object.keys(results)[0])
-  return resultKey
+  const mockeryKey = getMockeryKey(mockery)
+  const curStatusInScene = mockery._curStatus || DB?.curSceneDB?.data[mockeryKey]
+
+  const status = curStatusInScene || (Object.keys(results)[0])
+  return status
 }
 
 /**
  * get current response from results
  */
-export function getCurResponse(mockery: MockeryRequest, curKey?: string) {
+export function getCurResponse(mockery: Mockery, curStatus?: string) {
   const results = mockery.results || {}
-  if (!curKey)
-    curKey = getCurKey(mockery)
+  if (!curStatus)
+    curStatus = getCurStatus(mockery) as string
 
-  return results[curKey] || {}
+  return results[curStatus] || {}
 }

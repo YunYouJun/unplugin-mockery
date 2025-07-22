@@ -21,7 +21,7 @@ function go() {
 }
 
 const displayedResultKey = computed(() => {
-  return previewStore.curSceneData[previewStore.curMockeryRequest?.url || ''] || ''
+  return previewStore.curSceneData[previewStore.curMockeryRequest?.path.toString() || ''] || ''
 })
 
 if (import.meta.env.DEV) {

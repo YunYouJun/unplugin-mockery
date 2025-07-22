@@ -4,6 +4,7 @@
 
 import type { NextHandleFunction } from 'connect'
 
+import type { MockeryContext } from '../../mockery'
 import { colors } from 'consola/utils'
 import { parseJson } from './utils'
 

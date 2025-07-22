@@ -1,4 +1,4 @@
-import type { MethodType, MockeryRequest } from '../../types'
+import type { MethodType, Mockery } from '../../types'
 import { createConsola } from 'consola'
 import { colors } from 'consola/utils'
 
@@ -64,18 +64,18 @@ export function getTimeoutStr(timeout: number) {
 /**
  * 获取日志信息 但是不打印
  */
-export function getMockeryLogInfo(req: MockeryRequest) {
-  const timeoutStr = getTimeoutStr(req.timeout || 0)
-  const descStr = colors.gray(req.description || '')
-  const curStatus = colors.blue(req._curStatus?.toString() || '')
+export function getMockeryLogInfo(mockery: Mockery) {
+  const timeoutStr = getTimeoutStr(mockery.timeout || 0)
+  const descStr = colors.gray(mockery.description || '')
+  const curStatus = colors.blue(mockery._curStatus?.toString() || '')
 
-  switch (req.type) {
+  switch (mockery.type) {
     case 'http': {
-      const methodColor = METHOD_COLOR[req.method?.toLowerCase() as MethodType] || colors.cyan
+      const methodColor = METHOD_COLOR[mockery.method?.toLowerCase() as MethodType] || colors.cyan
       return [
-        colors.bgCyan(` ${colors.bold('HTTP')} `) + methodColor(` ${colors.bold(req.method?.toUpperCase().padEnd(6) || '')} `),
+        colors.bgCyan(` ${colors.bold('HTTP')} `) + methodColor(` ${colors.bold(mockery.method?.toUpperCase().padEnd(6) || '')} `),
         timeoutStr,
-        colors.cyan(colors.underline(req.url.toString())),
+        colors.cyan(colors.underline(mockery.path.toString())),
         descStr,
         curStatus,
       ]
@@ -91,7 +91,7 @@ export function getMockeryLogInfo(req: MockeryRequest) {
  * 打印请求日志
  * Print Request Log
  */
-export function printRequestLog(mockery: MockeryRequest) {
+export function printRequestLog(mockery: Mockery) {
   // false 时不打印日志
   if (mockery.log === false)
     return

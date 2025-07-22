@@ -1,4 +1,4 @@
-import type { MethodType, MockeryRequest } from '../../types'
+import type { MethodType, Mockery } from '../../types'
 import { consola } from 'consola'
 import { colors } from 'consola/utils'
 
@@ -28,17 +28,15 @@ export const logger = {
 }
 
 /**
- * 打印请求日志
- * Print Request Log
+ * 获取请求超时时间字符串
  */
-export function printRequestLog(req: MockeryRequest) {
-  const methodColor = METHOD_COLOR[req.method?.toLowerCase() as MethodType] || colors.cyan
+export function getTimeoutStr(timeout: number) {
   let timeoutType = ''
-  if (req.timeout) {
-    if (req.timeout > 1000) {
+  if (timeout) {
+    if (timeout > 1000) {
       timeoutType = 'slow'
     }
-    else if (req.timeout > 500) {
+    else if (timeout > 500) {
       timeoutType = 'normal'
     }
     else {
@@ -46,11 +44,45 @@ export function printRequestLog(req: MockeryRequest) {
     }
   }
   const timeoutColor = TIMEOUT_COLOR[timeoutType as keyof typeof TIMEOUT_COLOR] || colors.gray
-  logger.info(
-    methodColor(` ${req.method?.toUpperCase()} `),
-    timeoutColor(` ${req.timeout || 0}ms`.padStart(6)),
-    colors.cyan(colors.underline(req.url)),
-    colors.gray(req.description || ''),
-    colors.blue(req._curKey || ''),
-  )
+  return timeoutColor(` ${timeout || 0}ms`.padStart(7))
+}
+
+/**
+ * 获取日志信息 但是不打印
+ */
+export function getMockeryLogInfo(req: Mockery) {
+  const timeoutStr = getTimeoutStr(req.timeout || 0)
+  const descStr = colors.gray(req.description || '')
+  const curStatus = colors.blue(req._curStatus?.toString() || '')
+
+  switch (req.type) {
+    case 'http': {
+      const methodColor = METHOD_COLOR[req.method?.toLowerCase() as MethodType] || colors.cyan
+      return [
+        colors.bgCyan(` ${colors.bold('HTTP')} `) + methodColor(` ${colors.bold(req.method?.toUpperCase().padEnd(6) || '')} `),
+        timeoutStr,
+        colors.cyan(colors.underline(req.path.toString())),
+        descStr,
+        curStatus,
+      ]
+    }
+    default:
+      break
+  }
+
+  return []
+}
+
+/**
+ * 打印请求日志
+ * Print Request Log
+ */
+export function printRequestLog(mockery: Mockery) {
+  // false 时不打印日志
+  if (mockery.log === false)
+    return
+
+  const logInfo = getMockeryLogInfo(mockery)
+  if (logInfo)
+    logger.info(...logInfo)
 }

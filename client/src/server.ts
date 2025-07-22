@@ -1,21 +1,23 @@
-import type { Options } from 'unplugin-mockery'
 import path from 'node:path'
 import { consola } from 'consola'
-import colors from 'picocolors'
+import { colors } from 'consola/utils'
 import { proxyPort } from '../../playground/config'
 import { serveClient } from '../../src/core/client'
-import { MockeryServer } from '../../src/mockery'
+import { createMockeryContext } from '../../src/mockery'
 
-const mode = 'development'
-consola.info(`[server] Running in ${colors.green(mode)} mode`)
+export async function runServer(port: number) {
+  const mode = 'development'
+  consola.info(`[server] Running in ${colors.green(mode)} mode`)
 
-const options: Options = {
-  mockDir: path.resolve(import.meta.dirname, '../../playground/mock'),
+  const ctx = createMockeryContext({
+    dirs: [path.resolve(import.meta.dirname, '../../playground/mock')],
+  })
+  await ctx.init()
+
+  await serveClient({
+    mode,
+    port,
+  })
 }
 
-const mockeryServer = new MockeryServer(options)
-mockeryServer.init()
-serveClient({
-  mode,
-  port: proxyPort,
-})
+runServer(proxyPort)

@@ -1,10 +1,10 @@
-import type { Options } from './types'
+import type { MockeryOptions } from './types'
 import { addVitePlugin, defineNuxtModule } from '@nuxt/kit'
 import { defaultOptions } from './core/options'
 import vite from './vite'
 import '@nuxt/schema'
 
-export interface ModuleOptions extends Options {
+export interface ModuleOptions extends MockeryOptions {
 
 }
 

@@ -3,4 +3,3 @@
 // getWebpackConfig for vue-cli webpack-dev-server
 
 export * from './get-config'
-export * from './mock-server'

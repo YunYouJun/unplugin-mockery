@@ -9,11 +9,14 @@ export const replaceArrMerge = createDefu((obj, key, val) => {
 })
 
 export const defaultOptions: MockeryOptions = {
+  dirs: ['mocks'],
+  deep: true,
   client: {
     enable: true,
     open: false,
   },
-  mockDir: 'mock',
+  globalSetup: 'mocks/setup.ts',
+  forceRerunTriggers: ['**/mockery.config.ts'],
 }
 
 export type ResolvedOptions = Omit<MockeryOptions, 'dirs'> & {

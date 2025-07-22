@@ -2,33 +2,36 @@ import type { UnpluginFactory } from 'unplugin'
 
 import type { ResolvedConfig, ViteDevServer } from 'vite'
 import type Server from 'webpack-dev-server'
-import type { Options } from './types'
+import type { MockeryContext } from './mockery'
+import type { MockeryOptions } from './types'
 import process from 'node:process'
+import { colors } from 'consola/utils'
 import escapeHtml from 'escape-html'
 import fs from 'fs-extra'
-import c from 'picocolors'
-import { createUnplugin } from 'unplugin'
 
+import { createUnplugin } from 'unplugin'
 import { PLUGIN_NAME } from './core'
 import { serveClient } from './core/client'
 import { clientDistFolder, widgetClientEntry } from './core/constants'
-import { resolveOptions } from './core/options'
-import { createMockServer, createVitePlugin } from './core/vite'
 
+import { getRequestMiddleware } from './core/middleware'
+import { resolveOptions } from './core/options'
+import { createVitePlugin } from './core/vite'
 import { getWebpackConfig, MockeryMountIFramePlugin } from './core/webpack'
-import { MockeryDB, MockeryServer } from './mockery'
+import { createMockeryContext } from './mockery'
+import { loadMockeryConfig } from './mockery/config'
 
 export * from './core'
 export * from './types'
 
-export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) => {
+export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (options) => {
   options = resolveOptions(options)
 
   let viteConfig: ResolvedConfig
+  let mockeryCtx: MockeryContext
 
   const {
     setupMiddlewarePerf,
-    requestMiddleware,
   } = createVitePlugin()
 
   return {
@@ -80,11 +83,11 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
 
       async configResolved(config) {
         viteConfig = config
-        createMockServer(options, config)
 
         // init
-        const mockeryServer = new MockeryServer(options)
-        await mockeryServer.init()
+        // init mockery
+        const resolvedConfig = await loadMockeryConfig('', options)
+        mockeryCtx = createMockeryContext(resolvedConfig.config)
       },
 
       async configureServer(server: ViteDevServer) {
@@ -109,15 +112,16 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
           _print()
 
           // print
-          const colorUrl = (url: string) => c.magenta(url.replace(/:(\d+)\//, (_, port) => `:${c.bold(port)}/`))
-          viteConfig.logger.info(`  ${c.green('➜')}  ${c.bold('Mockery')}: ${colorUrl(`${host}${base}`)}`)
+          const colorUrl = (url: string) => colors.magenta(url.replace(/:(\d+)\//, (_, port) => `:${colors.bold(port)}/`))
+          viteConfig.logger.info(`  ${colors.green('➜')}  ${colors.bold('Mockery')}: ${colorUrl(`${host}${base}`)}`)
         }
 
         // middleware
-        const middleware = await requestMiddleware(options)
+        const middleware = getRequestMiddleware(mockeryCtx)
         server.middlewares.use(middleware)
 
-        return () => {
+        return async () => {
+          await mockeryCtx.init()
           setupMiddlewarePerf(server.middlewares.stack)
         }
       },
@@ -129,10 +133,11 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options) =
       },
 
       transformIndexHtml(html) {
+        const resolvedOptions = mockeryCtx.options
         const script = `
 import('${widgetClientEntry}').then(({ main }) => {
   main({
-    port: ${options.client?.port || MockeryDB.options.client?.port},
+    port: ${resolvedOptions.client?.port},
   })
 })
         `

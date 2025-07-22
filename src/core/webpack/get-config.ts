@@ -1,29 +1,28 @@
 import type { WebpackCompiler } from 'unplugin'
 import type Server from 'webpack-dev-server'
-import type { Options } from '../../types'
+import type { MockeryOptions } from '../../types'
 import { consola } from 'consola'
-import colors from 'picocolors'
 import { serveClient } from '../../core/client'
 import { clientDistFolder } from '../../core/constants'
 
 import { defaultOptions, resolveOptions } from '../../core/options'
-import { MockeryDB, MockeryServer } from '../../mockery'
+import { createMockeryContext } from '../../mockery'
+import { loadMockeryConfig } from '../../mockery/config'
 import { PLUGIN_NAME } from '../config'
-import { mockServer } from './mock-server'
+import { GLOBAL_STATE } from '../env'
+import { getRequestMiddleware } from '../middleware'
 
 /**
  * Get webpack config
  * @param options
  */
-export async function getWebpackConfig(options: Options = defaultOptions) {
-  MockeryDB.startTimestamp = performance.now()
-
+export async function getWebpackConfig(options: MockeryOptions = defaultOptions) {
   options = Object.assign({}, defaultOptions, options)
 
-  const startTimestamp = performance.now()
-  const mockeryServer = new MockeryServer(options)
-  // do not async to avoid register api failed
-  await mockeryServer.init()
+  const resolvedConfig = await loadMockeryConfig('', options)
+  const ctx = createMockeryContext(resolvedConfig.config)
+  await ctx.init()
+  const middleware = getRequestMiddleware(ctx)
 
   const webpackConfig: {
     devServer: Server.Configuration
@@ -39,17 +38,7 @@ export async function getWebpackConfig(options: Options = defaultOptions) {
         //   console.log(`Request URL: ${req.url}`)
         //   next()
         // })
-
-        // eslint-disable-next-line no-console
-        console.log()
-        consola.start('Mock Server Starting...')
-
-        mockServer(devServer, options)
-        mockeryServer.writeSceneSchema().then(() => {
-          const consumedTime = performance.now() - startTimestamp
-          consola.success(`Mock Server Started: ${colors.green(`${consumedTime.toFixed(2)}ms`)}`)
-        })
-
+        middlewares.unshift(middleware)
         return middlewares
       },
     },
@@ -72,10 +61,11 @@ export async function getWebpackConfig(options: Options = defaultOptions) {
  * add script to html
  */
 export function addScriptToHtml(html: string) {
+  const options = GLOBAL_STATE.mockeryCtx?.options || defaultOptions
   const script = [
-    `<script src="http://localhost:${MockeryDB.options.client?.port}/"></script>`,
+    `<script src="http://localhost:${options.client?.port}/"></script>`,
     `<script>`,
-    `  window.__MOCKERY__ = ${JSON.stringify(MockeryDB.options)};`,
+    `  window.__MOCKERY__ = ${JSON.stringify(options)};`,
     `</script>`,
   ].join('\n')
   return html.replace('</head>', `${script}</head>`)
@@ -109,12 +99,12 @@ export function configHtmlWebpackPlugin(config: any) {
  * Mockery Mount IFrame Plugin
  */
 export class MockeryMountIFramePlugin {
-  constructor(public options: Options = defaultOptions) {
+  constructor(public options: MockeryOptions = defaultOptions) {
     this.options = resolveOptions(options)
   }
 
   apply(compiler: WebpackCompiler) {
-    const port = (MockeryDB.options.client?.port || 0).toString()
+    const port = (GLOBAL_STATE.mockeryCtx?.options.client?.port || 0).toString()
     // eslint-disable-next-line node/prefer-global/process
     process.env.MOCKERY_CLIENT_PORT = port
     // eslint-disable-next-line node/prefer-global/process

@@ -196,8 +196,7 @@ export class MockeryWatcher {
    * when mock file changes
    */
   async onMockeryFileChange(file: string) {
-    const parentMockeryFile = this.mockeryContext.state.filesMap.get(file)
-    const res = await this.mockeryContext.useMockeryFile(`${file}?v=${Date.now()}`, parentMockeryFile?.mockery._groupOptions)
+    const res = await this.mockeryContext.useMockeryFile(`${file}?v=${Date.now()}`)
     if (res?.mockery) {
       const { mockery } = res
       await this.mockeryContext.db.updateSceneSchema(mockery)

@@ -2,20 +2,24 @@ import type { SetupServerApi } from 'msw/node'
 import type { ViteDevServer } from 'vite'
 import type { defineMockerySetup } from '../core/define'
 import type { ResolvedOptions } from '../core/options'
-import type { MockeryOptions, MockeryRequest } from '../types'
+import type { Mockery, MockeryOptions } from '../types'
 import { resolve } from 'node:path'
 import process from 'node:process'
 import { consola, LogLevels } from 'consola'
 import { colors } from 'consola/utils'
+import { getResponse, http, passthrough, RequestHandler } from 'msw'
 import { setupServer } from 'msw/node'
 import { createServer } from 'vite'
 import { ViteNodeRunner } from 'vite-node/client'
 import { ViteNodeServer } from 'vite-node/server'
+import { GLOBAL_STATE } from '../core/env'
 import { MockeryWatcher } from '../core/node/watcher'
-import { resolveOptions } from '../core/options'
+import { defaultOptions, resolveOptions } from '../core/options'
 import { getMockApiFiles } from '../core/utils'
 import { MockeryDB } from './db'
-import { isMockery, MOCKERY_NAMESPACE } from './utils'
+import { StateManager } from './state'
+import { getMockeryKey, getRequestUrl, isMockery, MOCKERY_NAMESPACE } from './utils'
+import { createMockeryRequest } from './utils/factory'
 
 export class MockeryContext {
   root = process.cwd()
@@ -34,7 +38,9 @@ export class MockeryContext {
   viteNodeServer?: ViteNodeServer
   viteNodeRunner?: ViteNodeRunner
 
-  constructor(private rawOptions: MockeryOptions) {
+  private _state: StateManager = new StateManager()
+
+  constructor(rawOptions: MockeryOptions) {
     this.options = resolveOptions(rawOptions)
     this.db = new MockeryDB(this)
     this.server = setupServer()
@@ -53,6 +59,14 @@ export class MockeryContext {
     }
 
     this.watcher = new MockeryWatcher(this as MockeryContext)
+  }
+
+  /**
+   * global state manager
+   * @experimental The State API is experimental and not subject to semver.
+   */
+  get state(): StateManager {
+    return this._state
   }
 
   async _setServer(server?: ViteDevServer) {
@@ -180,12 +194,12 @@ export class MockeryContext {
    *
    * 从文件中解析 Mockery 请求
    */
-  async resolveMockeryRequest(filePath: string): Promise<MockeryRequest | void> {
+  async resolveMockeryRequest(filePath: string): Promise<Mockery | void> {
     consola.debug(`  Registering Mock Server: ${colors.dim(filePath)}`)
-    let mockeryRequest: MockeryRequest | ((options: ResolvedOptions) => MockeryRequest | Promise<MockeryRequest>)
+    let mockeryRequest: Mockery | ((options: ResolvedOptions) => Mockery | Promise<Mockery>)
     try {
       mockeryRequest = await (await this.viteNodeImport<{
-        default: MockeryRequest | ((options: ResolvedOptions) => MockeryRequest | Promise<MockeryRequest>) | Promise<MockeryRequest>
+        default: Mockery | ((options: ResolvedOptions) => Mockery | Promise<Mockery>) | Promise<Mockery>
       }>(filePath)).default;
 
       // for internal hmr, remove query
@@ -259,7 +273,7 @@ export class MockeryContext {
    * })
    * ```
    */
-  async useMockery(mockery: MockeryRequest | (() => Promise<MockeryRequest> | MockeryRequest)) {
+  async useMockery(mockery: Mockery | (() => Promise<Mockery> | Mockery)) {
     if (typeof mockery === 'function') {
       mockery = await mockery()
     }
@@ -296,7 +310,7 @@ export class MockeryContext {
   /**
    * do not mock this mockery
    */
-  unUseMockery(mockery: MockeryRequest) {
+  unUseMockery(mockery: Mockery) {
     if (!isMockery(mockery)) {
       consola.error('UnUse Invalid Mockery:', mockery)
       return false
@@ -304,8 +318,8 @@ export class MockeryContext {
 
     const url = getRequestUrl(mockery)
 
-    const key = getMockeryKey(mockery)
-    this.mockeryMap.delete(key)
+    // const key = getMockeryKey(mockery)
+    // this.mockeryMap.delete(key)
 
     this.server.use(
       http.all(url, () => {
@@ -313,6 +327,37 @@ export class MockeryContext {
       }),
     )
     return true
+  }
+
+  /**
+   * wrap msw getResponse
+   *
+   * 根据传入的 Mockery/Request 获取对应的 Response
+   *
+   * @example
+   * ```ts
+   * const response = await ctx.getResponse(new Request('http://localhost/api/xxx'))
+   * ```
+   */
+  async getResponse(request: Request | Mockery) {
+    if (isMockery(request)) {
+      const mockery = request as Mockery
+      const url = new URL(getRequestUrl(mockery), `http://localhost`)
+
+      const isGet = 'method' in mockery
+        ? mockery.method?.toUpperCase() === 'GET'
+        : true
+
+      request = new Request(url.toString(), {
+        method: 'method' in mockery ? mockery.method : 'post',
+        body: isGet ? undefined : JSON.stringify({}),
+      })
+    }
+    const handlers = this.server.listHandlers().filter((handler) => {
+      return handler instanceof RequestHandler
+    })
+    const response = await getResponse(handlers, request)
+    return response
   }
 
   /**
@@ -347,4 +392,25 @@ export class MockeryContext {
     this.server.close()
     await this.viteServer?.close()
   }
+}
+
+/**
+ * 创建 Mockery 上下文
+ *
+ * @example
+ * ```ts
+ * const ctx = createMockeryContext({
+ *   dirs: ['mocks'],
+ *   // watch: true,
+ *   // 设置 mode: 'test' 等价于设置 `watch: false`和 `dotFiles: false`
+ *   mode: 'test',
+ * })
+ * await ctx.init()
+ * ```
+ */
+export function createMockeryContext(options: MockeryOptions = defaultOptions): MockeryContext {
+  const ctx = new MockeryContext(options)
+  // for unplugin client
+  GLOBAL_STATE.mockeryCtx = ctx
+  return ctx
 }

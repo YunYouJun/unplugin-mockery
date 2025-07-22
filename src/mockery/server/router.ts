@@ -1,16 +1,27 @@
 import type { Mockery, MockeryItem } from '../../types'
-import path from 'node:path'
+import process from 'node:process'
+
 import { TRPCError } from '@trpc/server'
 
 import fs from 'fs-extra'
-
 import launch from 'launch-editor'
-import { z } from 'zod'
 
-import { getMockApiFiles, jiti } from '../../core/utils'
-import { MockeryDB } from '../db'
-import { resolveMockDir } from '../utils'
+import { z } from 'zod'
+import { GLOBAL_STATE } from '../../core'
+import { getMockeryKey } from '../utils'
 import { publicProcedure, router } from './trpc'
+
+function stringifyMockery(mockery: any): any {
+  // with function toString
+  return JSON.parse(
+    JSON.stringify(mockery, (key, value) => {
+      if (typeof value === 'function') {
+        return value.toString()
+      }
+      return value
+    }),
+  )
+}
 
 export const appRouter = router({
   ping: publicProcedure.query(() => ({
@@ -51,8 +62,20 @@ export const appRouter = router({
      * List all scenes
      */
     list: publicProcedure.query(async () => {
-      const userOptions = MockeryDB.options
-      const sceneDir = path.resolve(userOptions?.mockDir || '', 'scenes')
+      const DB = GLOBAL_STATE.mockeryCtx?.db
+      if (!DB) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'MockeryDB not found',
+        })
+      }
+      const sceneDir = DB.path.sceneDir
+      if (!sceneDir) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Scene directory not found',
+        })
+      }
       const files = await fs.readdir(sceneDir)
       const list = files
         .filter(file => file.endsWith('.scene.json'))
@@ -60,25 +83,28 @@ export const appRouter = router({
           return file.replace('.scene.json', '')
         })
 
-      const curScene = MockeryDB.configDB.curScene
-      const sceneDataPath = path.resolve(sceneDir, `${curScene}.scene.json`)
-      const sceneData = await fs.readJSON(sceneDataPath)
+      const curScene = DB.configDB?.data.curScene
+      await DB.readScene(curScene)
 
       return {
         curScene,
-        sceneData,
+        sceneData: DB.curSceneDB?.data,
         list,
       }
     }),
 
     set: publicProcedure.input(z.string()).mutation(async ({ input }) => {
+      const DB = GLOBAL_STATE.mockeryCtx?.db
+      if (!DB) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'MockeryDB not found',
+        })
+      }
       const sceneName = input
-      MockeryDB.configDB.curScene = sceneName
-      const sceneDataPath = MockeryDB.getScenePath()
+      await DB.configDB?.update(data => data.curScene = sceneName)
+      const sceneDataPath = await DB.getScenePath()
       const sceneData = await fs.readJSON(sceneDataPath)
-      // trigger hot reload
-      await MockeryDB.save()
-
       return {
         sceneName,
         sceneData,
@@ -87,64 +113,96 @@ export const appRouter = router({
   }),
 
   mockery: router({
-    list: publicProcedure.query(async () => {
+    /**
+     * get response from mockery context
+     */
+    request: publicProcedure.input(z.object({
+      filePath: z.string(),
+    })).query(async ({ input }) => {
+      const { filePath } = input
+      const mCtx = GLOBAL_STATE.mockeryCtx
+      const { mockery } = mCtx?.state.filesMap.get(filePath) || {}
+      if (!mockery) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Mockery not found',
+        })
+      }
+      const response = await mCtx?.getResponse(mockery)
+      const data = await response?.json()
+      return data
+    }),
+
+    list: publicProcedure.input(z.object({
+      type: z.string(),
+    })).query(async ({ input }) => {
+      const { type } = input
+
+      const options = GLOBAL_STATE.mockeryCtx?.options
+      const resolvedDirs = options?.resolvedDirs || []
       // resolve absolute path
-      const mockDir = resolveMockDir()
-      const files = getMockApiFiles({
-        mockDir,
-      })
-      const list = files.map((file) => {
-        const mockery = (jiti(file).default || {}) as Mockery
-        if (mockery.results) {
-          // parse function
-          Object.keys(mockery.results).forEach((sceneId) => {
-            const result = mockery.results?.[sceneId]
-            if (result && typeof result === 'function') {
-              mockery.results![sceneId] = (result as any)()
-            }
-          })
-        }
-
-        return {
-          path: path.relative(mockDir, file),
-          mockery,
-        } as MockeryItem
-      })
-
+      // const files = await getMockApiFiles({
+      //   dirs: resolvedDirs,
+      //   include: options?.include,
+      //   exclude: options?.exclude,
+      // })
+      const mCtx = GLOBAL_STATE.mockeryCtx
+      const filesMap = mCtx?.state.filesMap
+      if (!filesMap) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'FilesMap not found',
+        })
+      }
+      const list: MockeryItem[] = Array.from(filesMap, ([key, value]) => ({
+        path: key,
+        // stringify mockery function to show in client
+        mockery: stringifyMockery(value.mockery || {}),
+      }))
+      const filteredList = list.filter(item => item.mockery && item.mockery.type === type)
       return {
-        list,
-        mockDir,
+        list: filteredList,
+        dirs: resolvedDirs,
+        root: options?.root || process.cwd(),
       }
     }),
   }),
 
   result: router({
-    toggle: publicProcedure.input(z.object({
-      url: z.string(),
-      resultKey: z.string(),
-      curScene: z.string(),
-    })).mutation(async ({ input }) => {
-      const { url, resultKey, curScene } = input
-      const userOptions = MockeryDB.options
-      const sceneDataPath = path.resolve(userOptions?.mockDir || '', 'scenes', `${curScene}.scene.json`)
+    toggle: publicProcedure.input(
+      z.object({
+        path: z.string(),
+        type: z.enum(['http']),
+        resultKey: z.string(),
+        curScene: z.string(),
+        status: z.string(),
+      }),
+    ).mutation(async ({ input }) => {
+      const { status, curScene } = input
+      const DB = GLOBAL_STATE.mockeryCtx?.db
+      if (!DB) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'MockeryDB not found',
+        })
+      }
 
-      let sceneData: Record<string, string> = {
-        $schema: '../schemas/scene.schema.json',
+      const key = getMockeryKey(input as Mockery) || ''
+      if (!key) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'url or methodName is required',
+        })
       }
-      if (await fs.exists(sceneDataPath)) {
-        sceneData = await fs.readJSON(sceneDataPath)
-      }
-      else {
-        await fs.writeJSON(sceneDataPath, sceneData, { spaces: 2 })
-      }
-      sceneData[url] = resultKey
-      await fs.writeJSON(sceneDataPath, sceneData, { spaces: 2 })
-      // append \n
-      await fs.appendFile(sceneDataPath, '\n')
+      // console.log('key', key)
+      await DB.readScene(curScene)
+      await DB.curSceneDB?.update((data) => {
+        data[key] = status
+      })
 
       return {
-        resultKey,
-        sceneData,
+        status,
+        sceneData: DB.curSceneDB?.data,
       }
     }),
   }),

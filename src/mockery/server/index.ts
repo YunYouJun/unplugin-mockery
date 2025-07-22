@@ -1,13 +1,11 @@
 // server for mock client
 import express from 'express'
-import serveStatic from 'serve-static'
 
 import { registerClientAPI } from '../../mockery/server/api'
 import { appRouter } from './router'
 
 import { createContext, trpcExpress } from './trpc'
 
-export * from './class'
 export * from './router'
 
 export function createMockClientServer(options: {
@@ -15,7 +13,7 @@ export function createMockClientServer(options: {
 }) {
   const app = express()
   if (options.staticRoot)
-    app.use(serveStatic(options.staticRoot))
+    app.use(express.static(options.staticRoot))
 
   app.use(
     '/trpc',

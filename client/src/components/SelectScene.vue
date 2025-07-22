@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
   SelectViewport,
-} from 'radix-vue'
+} from 'reka-ui'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
 import { ref } from 'vue'
 

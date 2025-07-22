@@ -1,20 +1,5 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  entryPoints: [
-    'src/*.ts',
-  ],
-  clean: true,
-  format: ['cjs', 'esm'],
-  dts: true,
-  cjsInterop: true,
-  // onSuccess: 'npm run build:fix',
-
-  splitting: true,
-  shims: true,
-  external: [
-    // in express
-    'body-parser',
-    'escape-html',
-  ],
+  entry: ['src/*.ts'],
 })

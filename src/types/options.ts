@@ -43,6 +43,11 @@ export interface MockerySharedOptions {
    */
   globalSetup?: string
 
+  /**
+   * Glob patter of file paths that will trigger the whole rerun
+   * @default ['**\/{mockery}.config.ts']
+   */
+  forceRerunTriggers?: string[]
 }
 
 export interface MockeryOptions extends MockerySharedOptions {
@@ -93,18 +98,26 @@ export interface MockeryOptions extends MockerySharedOptions {
   debug?: boolean
 
   /**
-   * The directory where the mock files are located.
+   * Relative paths to the directory where the mock files are located.
    *
-   * - `<mockDir>/api/`: mock files
-   * - `<mockDir>/scenes/`: scene files
-   * - `<mockDir>/schemas/`: schema file
-   *   - `scene.schema.json`: scene schema file
-   *   - `config.schema.json`: config schema file
-   * - `<mockDir>/config.json`: configuration file
-   *
-   * @default 'mock'
+   * mock 文件所在的目录，默认为相对本地路径的 `./mocks`
+   * 通常可以更明确地使用绝对路径，例如：`path.resolve(__dirname, 'mocks')`
+   * @default './mocks'
    */
-  mockDir: string
+  dirs?: string | string[]
+
+  /**
+   * @todo
+   * Search for subdirectories.
+   * @default true
+   */
+  deep?: boolean
+
+  /**
+   * generate config files in .mockery
+   * @default true
+   */
+  dotFiles?: string | boolean
 
   /**
    * mock client ui

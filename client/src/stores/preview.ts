@@ -1,4 +1,5 @@
-import type { MockeryItem, MockeryRequest } from 'unplugin-mockery'
+import type { Mockery, MockeryItem } from '../../../src'
+import { useStorage } from '@vueuse/core'
 // import { Toast } from '@advjs/gui'
 import pathe from 'pathe'
 import { acceptHMRUpdate, defineStore } from 'pinia'
@@ -21,8 +22,10 @@ export const usePreviewStore = defineStore('preview', () => {
    * cur scene name
    */
   const curScene = useStorage('curScene', '')
-  const curMockeryRequest = useStorage<MockeryRequest>('curMockeryRequest', {
-    url: '',
+  const curMockeryRequest = useStorage<Mockery>('curMockeryRequest', {
+    // url: '',
+    type: 'http',
+    path: '',
   })
 
   /**
@@ -51,7 +54,7 @@ export const usePreviewStore = defineStore('preview', () => {
     fileContent.value = JSON.stringify(item.mockery, null, 2)
   }
 
-  function previewMockeryRequest(path: string, mockery: MockeryRequest, activeResultKey?: string) {
+  function previewMockeryRequest(path: string, mockery: Mockery, activeResultKey?: string) {
     language.value = 'json'
     curFilePath.value = getAbsoluteFilePath(path)
     curMockeryRequest.value = mockery

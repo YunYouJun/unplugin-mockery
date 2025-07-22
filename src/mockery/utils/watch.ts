@@ -1,7 +1,7 @@
 import chokidar from 'chokidar'
 import { consola } from 'consola'
 
-import colors from 'picocolors'
+import { colors } from 'consola/utils'
 import { logger } from './logger'
 
 /**
