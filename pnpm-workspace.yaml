@@ -1,7 +1,6 @@
 packages:
-  - client/
-  - widget/
-  - 'playground/*'
+  - packages/*
+  - playground/*
 
 catalogs:
   build:

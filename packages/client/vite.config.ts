@@ -17,7 +17,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 import Layouts from 'vite-plugin-vue-layouts'
 
-import { proxyPort } from '../playground/config'
+import { proxyPort } from '../../playground/config'
 
 const prefix = `monaco-editor/esm/vs`
 
@@ -28,7 +28,7 @@ export default defineConfig((env) => {
   return {
     build: {
       target: 'esnext',
-      outDir: path.resolve(__dirname, '../dist-client'),
+      outDir: path.resolve(__dirname, '../../dist-client'),
       minify: false, // 'esbuild',
       emptyOutDir: true,
 
