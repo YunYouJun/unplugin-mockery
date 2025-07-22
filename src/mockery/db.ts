@@ -9,8 +9,9 @@ import { consola } from 'consola'
 import { colors } from 'consola/utils'
 import fs from 'fs-extra'
 import { JSONFilePreset } from 'lowdb/node'
+import { getMockeryKey } from '../../packages/shared'
 import { defaultConfigSchemaJSON, defaultSceneSchemaJSON } from './schema'
-import { getMockeryKey, isMockery } from './utils'
+import { isMockery } from './utils'
 
 /**
  * global state
@@ -152,7 +153,7 @@ export class MockeryDB {
    * 获取当前场景的路径
    */
   async getScenePath(sceneName?: string) {
-    const curScene = sceneName || this.configDB?.data.curScene
+    const curScene = sceneName || this.configDB?.data.curScene || 'default'
     const scenePath = path.resolve(this.path.sceneDir, `${curScene}.scene.json`)
     if (!await fs.exists(scenePath)) {
       const sceneStr = colors.magenta('SCENE')

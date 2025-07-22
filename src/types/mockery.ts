@@ -5,9 +5,14 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 export type MockResponse<T> = ((req: Request) => T | Promise<T>) | T
 export type RawResponse = (req: Request, res: Response) => void | Promise<void>
 
-// export type MSWHttpResponseResolver = HttpResponseResolver<Params, RequestBodyType, ResponseBodyType>
-
 export interface MSWHandlerOptions {
+  /**
+   * same with msw path
+   *
+   * `/user` or `https://api.example.com/user`
+   *
+   * may be you need `*\/user`(remove `\`) to match all prefixes
+   */
   path: Path
   /**
    * @default all support(get/post/put/delete/patch)

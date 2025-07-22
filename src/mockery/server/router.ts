@@ -7,8 +7,8 @@ import fs from 'fs-extra'
 import launch from 'launch-editor'
 
 import { z } from 'zod'
+import { getMockeryKey } from '../../../packages/shared'
 import { GLOBAL_STATE } from '../../core'
-import { getMockeryKey } from '../utils'
 import { publicProcedure, router } from './trpc'
 
 function stringifyMockery(mockery: any): any {

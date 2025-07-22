@@ -1,6 +1,6 @@
 import type { Mockery } from '../../types'
+import { getMockeryKey } from '../../../packages/shared'
 import { GLOBAL_STATE } from '../../core'
-import { getMockeryKey } from './common'
 
 export * from './common'
 export * from './logger'
@@ -12,7 +12,7 @@ export * from './logger'
  * @param mockery
  */
 export function isMockery(mockery: any): mockery is Mockery {
-  return mockery && mockery instanceof Object && mockery.type && ('url' in mockery || 'methodName' in mockery)
+  return mockery && mockery instanceof Object && mockery.type && ('path' in mockery || 'methodName' in mockery)
 }
 
 /**

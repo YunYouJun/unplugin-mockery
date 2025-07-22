@@ -22,6 +22,7 @@ import { createMockeryContext } from './mockery'
 import { loadMockeryConfig } from './mockery/config'
 
 export * from './core'
+export * from './mockery'
 export * from './types'
 
 export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (options) => {
@@ -92,29 +93,7 @@ export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (opt
 
       async configureServer(server: ViteDevServer) {
         const base = (options.base ?? server.config.base) || '/'
-
-        const { listener } = serveClient({
-          staticPath: clientDistFolder,
-          port: options.client?.port,
-        })
-        const address = listener.address()
-        const port = typeof address === 'string' ? 0 : address?.port
-
-        if (!port) {
-          server.config.logger.error('Failed to get port')
-          return
-        }
-
         const _print = server.printUrls
-        server.printUrls = () => {
-          const host = `${viteConfig.server.https ? 'https' : 'http'}://localhost:${port}`
-
-          _print()
-
-          // print
-          const colorUrl = (url: string) => colors.magenta(url.replace(/:(\d+)\//, (_, port) => `:${colors.bold(port)}/`))
-          viteConfig.logger.info(`  ${colors.green('➜')}  ${colors.bold('Mockery')}: ${colorUrl(`${host}${base}`)}`)
-        }
 
         // middleware
         const middleware = getRequestMiddleware(mockeryCtx)
@@ -122,6 +101,22 @@ export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (opt
 
         return async () => {
           await mockeryCtx.init()
+
+          const { listener } = await serveClient({
+            staticPath: clientDistFolder,
+            port: options.client?.port,
+          })
+          const address = listener.address()
+          const port = typeof address === 'string' ? 0 : address?.port
+          server.printUrls = () => {
+            const host = `${viteConfig.server.https ? 'https' : 'http'}://localhost:${port}`
+
+            _print()
+
+            // print
+            const colorUrl = (url: string) => colors.magenta(url.replace(/:(\d+)\//, (_, port) => `:${colors.bold(port)}/`))
+            viteConfig.logger.info(`  ${colors.green('➜')}  ${colors.bold('Mockery')}: ${colorUrl(`${host}${base}`)}`)
+          }
           setupMiddlewarePerf(server.middlewares.stack)
         }
       },

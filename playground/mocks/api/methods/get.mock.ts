@@ -1,13 +1,10 @@
 import { defineHttpMockery } from 'unplugin-mockery'
 
 export default defineHttpMockery({
-  path: '/api/test',
+  path: '/methods/get',
   method: 'get',
+  timeout: 200,
   response: {
-    code: 0,
-    message: 'success',
-    data: {
-      name: 'test',
-    },
+    message: 'I am a GET method',
   },
 })

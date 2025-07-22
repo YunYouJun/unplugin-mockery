@@ -5,6 +5,14 @@ import type { InlineConfig } from 'vite'
 
 export interface MockerySharedOptions {
   /**
+   * - `dev`: development mode
+   * - `prod`: production mode
+   * - `test`: test mode, default options with `watch: false` and `dotFiles: false`
+   * @default 'dev'
+   */
+  mode?: 'dev' | 'prod' | 'test'
+
+  /**
    * Watch the mock files and update the server automatically.
    * @default true
    */
@@ -23,7 +31,14 @@ export interface MockerySharedOptions {
    */
   exclude?: FilterPattern
 
-  vite?: InlineConfig
+  /**
+   * 是否生成类型文件
+   * generate dts for mockery.d.ts
+   * @default true
+   *
+   * string: custom dts file path
+   */
+  dts?: boolean | string
 
   /**
    * @see https://mswjs.io/
@@ -48,9 +63,7 @@ export interface MockerySharedOptions {
    * @default ['**\/{mockery}.config.ts']
    */
   forceRerunTriggers?: string[]
-}
 
-export interface MockeryOptions extends MockerySharedOptions {
   /**
    * Log Level 日志等级
    *
@@ -138,4 +151,24 @@ export interface MockeryOptions extends MockerySharedOptions {
      */
     open?: boolean
   }
+}
+
+export interface MockeryOptions extends MockerySharedOptions {
+  /**
+   * vite options
+   * @see https://vitejs.dev/config/
+   *
+   * `resolve.alias` to support alias
+   * @see https://vite.dev/config/shared-options.html#resolve-alias
+   *
+   * @example
+   * ```ts
+   * resolve: {
+   *   alias: {
+   *     '~/': `${path.resolve(__dirname, 'src')}/`,
+   *   },
+   * },
+   * ```
+   */
+  vite?: InlineConfig
 }

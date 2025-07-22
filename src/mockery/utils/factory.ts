@@ -1,6 +1,6 @@
 import type { MockeryContext } from '..'
 import type { Mockery } from '../../types'
-import { getMockeryKey } from '.'
+import { getMockeryKey } from '../../../packages/shared'
 
 /**
  * mount helper

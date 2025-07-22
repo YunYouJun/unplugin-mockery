@@ -49,7 +49,7 @@ export default defineConfig((env) => {
     resolve: {
       alias: {
         '~/': `${path.resolve(__dirname, 'src')}/`,
-        'unplugin-mockery/client': path.resolve(__dirname, '../src/mockery/client/index.ts'),
+        'unplugin-mockery/client': path.resolve(__dirname, '../../src/mockery/client/index.ts'),
       },
     },
 

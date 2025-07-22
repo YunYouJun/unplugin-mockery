@@ -14,7 +14,7 @@ import { computed, shallowRef } from 'vue'
 // import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 // import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 
-import typeText from '../../../src/types?raw'
+import typeText from '../../../../src/types?raw'
 import { isDark } from '../composables/dark'
 
 // @ts-expect-error exist

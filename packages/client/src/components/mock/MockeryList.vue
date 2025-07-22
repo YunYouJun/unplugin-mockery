@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { MockeryItem } from '../../../../src/types'
+import type { MockeryItem } from '../../../../../src/types'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
 
 const previewStore = usePreviewStore()
@@ -16,16 +16,20 @@ const mockeryList = computed(() => {
   // path/url/description
   return list.filter(item =>
     item.path.includes(appStore.searchKeywords)
-    || item.mockery.url.includes(appStore.searchKeywords)
+    || item.mockery.path.toString().includes(appStore.searchKeywords)
     || item.mockery.description?.includes(appStore.searchKeywords),
   )
 })
 
 const error = ref<string | null>(null)
-function queryList() {
-  MockeryTRPCClient.client.mockery.list.query().then((data) => {
-    previewStore.mockDir = data.mockDir
-    fullMockeryList.value = data.list
+function queryList(type: 'http' | 'ws' = 'http') {
+  MockeryTRPCClient.client.mockery.list.query({
+    type,
+  }).then((data) => {
+    previewStore.mockDir = data.root
+    fullMockeryList.value = (data.list as MockeryItem[]).sort((a, b) => {
+      return a.path.localeCompare(b.path)
+    })
   }).catch((err) => {
     error.value = err.message
   })

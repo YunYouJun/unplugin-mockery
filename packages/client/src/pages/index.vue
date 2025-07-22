@@ -2,6 +2,7 @@
 import { consola } from 'consola'
 import { Pane, Splitpanes } from 'splitpanes'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
+import { getMockeryKey } from '../../../shared'
 import 'splitpanes/dist/splitpanes.css'
 
 defineOptions({
@@ -20,8 +21,10 @@ function go() {
     router.push(`/hi/${encodeURIComponent(name.value)}`)
 }
 
-const displayedResultKey = computed(() => {
-  return previewStore.curSceneData[previewStore.curMockeryRequest?.path.toString() || ''] || ''
+const displayedStatus = computed(() => {
+  const curMockery = previewStore.curMockeryRequest
+  const key = getMockeryKey(curMockery)
+  return previewStore.curSceneData[key || ''] || ''
 })
 
 if (import.meta.env.DEV) {
@@ -68,8 +71,8 @@ if (import.meta.env.DEV) {
         <div i-vscode-icons:file-type-vscode />
         <span class="text-left" :title="previewStore.curAbsoluteFilePath">{{ previewStore.curFilePath }}</span>
         <div flex-1 />
-        <span v-if="displayedResultKey" class="text-blue">
-          {{ displayedResultKey }}
+        <span v-if="displayedStatus" class="text-blue">
+          {{ displayedStatus }}
         </span>
         <span>
           <div v-if="previewStore.language === 'typescript'" i-vscode-icons:file-type-typescript />

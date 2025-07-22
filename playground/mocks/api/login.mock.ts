@@ -1,4 +1,4 @@
-import { defineMockery } from 'unplugin-mockery'
+import { defineHttpMockery } from 'unplugin-mockery'
 
 const successResponse = {
   code: 0,
@@ -11,7 +11,7 @@ const successResponse = {
 /**
  * multiple results
  */
-const results = {
+export const results = {
   '登录成功': successResponse,
   '登录失败-密码错误': {
     code: -1,
@@ -26,9 +26,9 @@ const results = {
   },
 }
 
-export default defineMockery({
-  url: '/api/login',
+export default defineHttpMockery({
+  path: '/api/login',
   description: '登录接口',
   method: 'post',
-  results,
+  // results,
 })

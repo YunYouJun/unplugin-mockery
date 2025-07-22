@@ -12,13 +12,15 @@ import { setupServer } from 'msw/node'
 import { createServer } from 'vite'
 import { ViteNodeRunner } from 'vite-node/client'
 import { ViteNodeServer } from 'vite-node/server'
+import { getMockeryKey } from '../../packages/shared'
 import { GLOBAL_STATE } from '../core/env'
 import { MockeryWatcher } from '../core/node/watcher'
 import { defaultOptions, resolveOptions } from '../core/options'
 import { getMockApiFiles } from '../core/utils'
+import { getHandlerFromMockery } from '../msw'
 import { MockeryDB } from './db'
 import { StateManager } from './state'
-import { getMockeryKey, getRequestUrl, isMockery, MOCKERY_NAMESPACE } from './utils'
+import { getRequestUrl, isMockery, MOCKERY_NAMESPACE } from './utils'
 import { createMockeryRequest } from './utils/factory'
 
 export class MockeryContext {
@@ -41,7 +43,7 @@ export class MockeryContext {
   private _state: StateManager = new StateManager()
 
   constructor(rawOptions: MockeryOptions) {
-    this.options = resolveOptions(rawOptions)
+    this.options = resolveOptions(rawOptions, this.root)
     this.db = new MockeryDB(this)
     this.server = setupServer()
 
@@ -287,15 +289,14 @@ export class MockeryContext {
     // set in map
     const key = getMockeryKey(mockery)
     if (!key) {
-      throw new Error('Mockery Key is required, please set `url` or `methodName`')
+      throw new Error('Mockery Key is required, please set `path` or `methodName`')
     }
     mockery = createMockeryRequest({
       mockery,
       mockeryContext: this as MockeryContext,
     })
 
-    let handler
-
+    const handler = getHandlerFromMockery(mockery)
     if (handler)
       this.server.use(handler)
 

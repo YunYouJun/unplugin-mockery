@@ -1,11 +1,10 @@
 import { defineHttpMockery } from 'unplugin-mockery'
 
 export default defineHttpMockery({
-  url: '/api/proposal',
-  description: '提案',
-  method: 'post',
+  path: '/methods/put',
+  method: 'put',
+  timeout: 5000,
   response: {
-    code: -1,
-    message: 'No',
+    message: 'I am a PUT method',
   },
 })

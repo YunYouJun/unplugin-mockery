@@ -5,6 +5,7 @@ import type { MockeryContext } from '../mockery'
 import process from 'node:process'
 import { consola } from 'consola'
 import { colors } from 'consola/utils'
+import { getPort } from 'get-port-please'
 import pkg from '../../package.json'
 import { MOCKERY_NAMESPACE } from '../mockery'
 import { createMockClientServer } from '../mockery/server'
@@ -29,20 +30,22 @@ export function printLogForMockeryClient(ctx: MockeryContext) {
 /**
  * init mockery client & server
  */
-export function serveClient(options: {
+export async function serveClient(options: {
   mode?: 'development' | 'production'
   staticPath?: string
   port?: number
   open?: boolean
-}): {
+}): Promise<{
   app: Express
   listener: http.Server
-} {
+}> {
   const app = createMockClientServer({
     staticRoot: options.staticPath,
   })
 
-  const listener = app.listen(options.port || 0, callback)
+  // 检查端口是否被占用，自动获取可用端口
+  const port = await getPort(options.port)
+  const listener = app.listen(port, callback)
 
   function callback() {
     const { port = 0 } = listener.address() as AddressInfo

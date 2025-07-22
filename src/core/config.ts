@@ -1,4 +1,4 @@
-import type { Mockery } from '../types'
+import type { HttpMockery, Mockery } from '../types'
 import { defineDefineConfig } from 'define-config-ts'
 
 export const PLUGIN_NAME = 'unplugin-mockery:webpack'
@@ -15,9 +15,16 @@ export function defineMockery<T = object>(mockery: Mockery<T>): Mockery<T> {
 
 /**
  * Define a mockery request
- * @alias defineMockery
  */
-export const defineHttpMockery = defineMockery
+export function defineHttpMockery<T = object>(mockery: Omit<HttpMockery<T>, 'type'>): HttpMockery<T> {
+  if (!mockery.path) {
+    throw new Error('Path is required')
+  }
+  return {
+    ...mockery,
+    type: 'http',
+  }
+}
 
 /**
  * @todo
