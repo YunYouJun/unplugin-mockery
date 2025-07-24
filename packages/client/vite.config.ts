@@ -28,7 +28,6 @@ export default defineConfig((env) => {
   return {
     build: {
       target: 'esnext',
-      outDir: path.resolve(__dirname, '../../dist-client'),
       minify: false, // 'esbuild',
       emptyOutDir: true,
 

@@ -75,7 +75,6 @@ typings/
 .idea
 
 dist/
-dist-client/
 
 # vite-ssg
 .vite-ssg-dist

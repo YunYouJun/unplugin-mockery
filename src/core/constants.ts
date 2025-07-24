@@ -1,5 +1,4 @@
-import { dirname, resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
 import { colors } from 'consola/utils'
 
 /**
@@ -7,11 +6,11 @@ import { colors } from 'consola/utils'
  */
 export const MOCKERY_NAMESPACE = colors.magenta('[🤡]')
 
-export const DIR_DIST = dirname(fileURLToPath(import.meta.dirname))
+export const DIR_DIST = resolve(import.meta.dirname, '../../dist')
 /**
  * build client dist folder
  */
-export const clientDistFolder = resolve(import.meta.dirname, '../../dist-client')
+export const clientDistFolder = resolve(import.meta.dirname, '../../packages/client/dist')
 export const DIR_CLIENT = clientDistFolder
 /**
  * widget client entry

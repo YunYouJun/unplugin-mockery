@@ -86,7 +86,7 @@
   "files": [
     "client/dist",
     "dist",
-    "dist-client",
+    "packages/client/dist",
     "packages/widget/dist"
   ],
   "scripts": {
