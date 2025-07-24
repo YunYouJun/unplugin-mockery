@@ -107,7 +107,7 @@
     "prepublishOnly": "npm run build",
     "release": "bumpp --execute 'npm run changelog' --all",
     "release:local": "bump --no-commit --no-tag && npm publish",
-    "release:local:alpha": "bumpp --no-commit --no-tag && npm publish --tag beta",
+    "release:local:beta": "bumpp --no-commit --no-tag && npm publish --tag beta",
     "start": "esno src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
