@@ -139,6 +139,7 @@ export class MockeryDB<T extends Record<string, any>> {
           curScene: 'default',
         })
         await this.configDB.write()
+        await fs.appendFile(this.path.configFile, '\n')
       })(),
     ])
 
@@ -163,6 +164,7 @@ export class MockeryDB<T extends Record<string, any>> {
         $schema: '../schemas/scene.schema.json',
       })
       await this.curSceneDB.write()
+      await fs.appendFile(scenePath, '\n')
       consola.info(`Create ${sceneStr} file: ${colors.gray(scenePath)}`)
     }
     return scenePath
@@ -228,6 +230,7 @@ export class MockeryDB<T extends Record<string, any>> {
       })
     })
     await this.sceneSchemaDB.write()
+    await fs.appendFile(this.path.sceneSchemaFile, '\n')
   }
 
   /**
@@ -257,6 +260,7 @@ export class MockeryDB<T extends Record<string, any>> {
         this.sceneSchemaDB.data.properties[mockeryKey] = propSchema
         if (options.write) {
           await this.sceneSchemaDB?.write()
+          await fs.appendFile(this.path.sceneSchemaFile, '\n')
         }
       }
     }
@@ -264,6 +268,7 @@ export class MockeryDB<T extends Record<string, any>> {
 
   async saveSceneSchema() {
     await this.sceneSchemaDB?.write()
+    await fs.appendFile(this.path.sceneSchemaFile, '\n')
   }
 
   async updateConfigSchema() {
@@ -272,7 +277,6 @@ export class MockeryDB<T extends Record<string, any>> {
       const enumScenes = scenes.filter(i => i.endsWith('.scene.json')).map(i => i.replace('.scene.json', ''))
       this.configSchemaDB.data.properties.curScene.enum = Array.from((new Set(enumScenes)).add('default'))
       await this.configSchemaDB.write()
-      // empty line at the end of file
       await fs.appendFile(this.path.configSchemaFile, '\n')
     }
   }
