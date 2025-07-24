@@ -58,7 +58,11 @@ function toggleStatusItem(params: {
     <div class="flex items-center gap-2 text-sm">
       <div i-ri-link />
       <span class="w-28 inline-flex items-center justify-between text-sm">
-        <span class="font-bold uppercase" :class="getMethodClass(httpMethod)">{{ httpMethod }}</span>
+        <span
+          class="cursor-pointer font-bold uppercase"
+          :class="getMethodClass(httpMethod)"
+          @click="previewStore.previewMockeryItem({ path, mockery })"
+        >{{ httpMethod }}</span>
         <span
           class="text-right"
           :class="getTimeoutClass(mockery.timeout)"

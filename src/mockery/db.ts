@@ -272,6 +272,8 @@ export class MockeryDB<T extends Record<string, any>> {
       const enumScenes = scenes.filter(i => i.endsWith('.scene.json')).map(i => i.replace('.scene.json', ''))
       this.configSchemaDB.data.properties.curScene.enum = Array.from((new Set(enumScenes)).add('default'))
       await this.configSchemaDB.write()
+      // empty line at the end of file
+      await fs.appendFile(this.path.configSchemaFile, '\n')
     }
   }
 }

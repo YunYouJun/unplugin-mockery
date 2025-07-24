@@ -19,7 +19,7 @@ const previewStore = usePreviewStore()
     <div class="flex items-center justify-between">
       <div
         class="flex cursor-pointer items-center gap-2 text-xs"
-        @click="previewStore.previewMockeryItem(item)"
+        @click="previewStore.previewRawFile(item.path)"
       >
         <div i-vscode-icons:file-type-typescript />
         <span v-if="item.mockery.description" class="text-sm font-bold" op-90 hover:op-100>

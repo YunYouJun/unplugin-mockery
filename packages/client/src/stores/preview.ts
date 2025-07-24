@@ -29,9 +29,6 @@ export const usePreviewStore = defineStore('preview', () => {
     path: '',
   })
 
-  /**
-   * @deprecated
-   */
   async function previewRawFile(filePath: string) {
     language.value = 'typescript'
     curFilePath.value = filePath

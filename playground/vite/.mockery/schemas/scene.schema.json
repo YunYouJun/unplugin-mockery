@@ -1,6 +1,10 @@
 {
   "type": "object",
   "properties": {
+    "/adv/stories/:storyId": {
+      "type": "string",
+      "description": "获取故事详情"
+    },
     "/api/help": {
       "type": "string",
       "description": "帮助"
@@ -15,6 +19,10 @@
     "/api/examples": {
       "type": "string",
       "description": "示例"
+    },
+    "/api/login": {
+      "type": "string",
+      "description": "登录接口"
     },
     "/methods/all": {
       "type": "string"
@@ -33,18 +41,6 @@
     },
     "/methods/put": {
       "type": "string"
-    },
-    "/api/login": {
-      "type": "string",
-      "description": "登录接口"
-    },
-    "*/api/login": {
-      "type": "string",
-      "description": "登录接口"
-    },
-    "/adv/stories/:storyId": {
-      "type": "string",
-      "description": "获取故事详情"
     }
   }
 }
