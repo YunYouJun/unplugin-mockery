@@ -23,16 +23,8 @@ export function createMockeryRequest(options: {
     }
     return curStatus
   }
-  (mockery as any).setStatus = async (status?: string | object) => {
-    if (typeof status === 'object') {
-      if (typeof mockery._curStatus !== 'object') {
-        mockery._curStatus = {}
-      }
-      Object.assign(mockery._curStatus, status)
-    }
-    else {
-      mockery._curStatus = status
-    }
+  (mockery as any).setStatus = async (status?: string) => {
+    mockery._curStatus = status
     // not update db
     // const key = getMockeryKey(mockery)
     // await mockeryContext.db.curSceneDB?.update((data) => {

@@ -2,7 +2,8 @@ import type { MockeryContext } from '../../mockery/context'
 import { createFilter } from '@rollup/pluginutils'
 import { colors } from 'consola/utils'
 import mm from 'micromatch'
-import { consola, getMockeryLogInfo, logger, noop, slash } from '../utils'
+import { consola, getMockeryLogInfo, logger } from '../../utils'
+import { noop, slash } from '../utils'
 
 /**
  * @todo

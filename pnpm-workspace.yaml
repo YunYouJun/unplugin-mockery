@@ -5,3 +5,7 @@ packages:
 catalogs:
   build:
     vite: ^7.0.5
+  dev:
+    '@vitejs/plugin-vue': ^5.2.4
+  fe:
+    vue: ^3.5.18

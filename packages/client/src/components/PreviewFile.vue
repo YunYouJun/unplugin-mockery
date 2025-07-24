@@ -1,7 +1,6 @@
 <!-- eslint-disable new-cap -->
 <script lang="ts" setup>
 // import type { MonacoEditor } from '@guolao/vue-monaco-editor'
-import type { MonacoEditor } from '@guolao/vue-monaco-editor'
 
 import { loader, useMonaco } from '@guolao/vue-monaco-editor'
 import * as monaco from 'monaco-editor'
@@ -9,13 +8,14 @@ import * as monaco from 'monaco-editor'
 
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
-import { computed, shallowRef } from 'vue'
 // import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 // import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
-// import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
+import { computed } from 'vue'
 
 import typeText from '../../../../src/types?raw'
 import { isDark } from '../composables/dark'
+import { editorRef } from '../stores/editor'
 
 // @ts-expect-error exist
 globalThis.MonacoEnvironment = {
@@ -30,9 +30,9 @@ globalThis.MonacoEnvironment = {
     // if (label === 'html' || label === 'handlebars' || label === 'razor') {
     //   return new htmlWorker()
     // }
-    // if (label === 'typescript' || label === 'javascript') {
-    //   return new tsWorker()
-    // }
+    if (label === 'typescript' || label === 'javascript') {
+      return new tsWorker()
+    }
     return new editorWorker()
   },
 }
@@ -52,13 +52,12 @@ const previewStore = usePreviewStore()
 const theme = computed(() => {
   return isDark.value ? 'vs-dark' : 'vs'
 })
-const editorRef = shallowRef()
 
 const { monacoRef } = useMonaco()
 
 // https://stackoverflow.com/questions/43058191/how-to-use-addextralib-in-monaco-with-an-external-type-definition
 
-function handleMount(editor: MonacoEditor['editor']) {
+function handleMount(editor: monaco.editor.IStandaloneCodeEditor) {
   editorRef.value = editor
 
   // monacoRef.value?.languages.typescript.typescriptDefaults.setCompilerOptions({

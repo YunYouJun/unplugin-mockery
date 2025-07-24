@@ -1,4 +1,4 @@
-import type { Mockery, MockeryItem } from '../../../src'
+import type { Mockery, MockeryItem } from 'unplugin-mockery'
 import { useStorage } from '@vueuse/core'
 // import { Toast } from '@advjs/gui'
 import pathe from 'pathe'
@@ -6,6 +6,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { MockeryTRPCClient } from 'unplugin-mockery/client'
 import { ref } from 'vue'
 import { mockeryAxios } from '~/utils/axios'
+import { editorRef } from './editor'
 
 export const usePreviewStore = defineStore('preview', () => {
   const curFilePath = useStorage('curFilePath', '')
@@ -54,17 +55,29 @@ export const usePreviewStore = defineStore('preview', () => {
     fileContent.value = JSON.stringify(item.mockery, null, 2)
   }
 
-  function previewMockeryRequest(path: string, mockery: Mockery, activeResultKey?: string) {
+  async function previewMockeryRequest(path: string, mockery: Mockery) {
     language.value = 'json'
     curFilePath.value = getAbsoluteFilePath(path)
     curMockeryRequest.value = mockery
 
-    const response = mockery.response
+    let response = mockery.response
       ? mockery.response
-      : mockery.results && activeResultKey && mockery.results[activeResultKey]
-        ? mockery.results[activeResultKey]
-        : Object.values(mockery.results || [])[0]
-    fileContent.value = JSON.stringify(response || {}, null, 2)
+      : null
+
+    // fetch real response data
+    if (!response) {
+      response = await MockeryTRPCClient.client.mockery.request.query({
+        filePath: getAbsoluteFilePath(path),
+      }) || {}
+    }
+
+    if (typeof response === 'string') {
+      language.value = 'typescript'
+      fileContent.value = response
+    }
+    else {
+      fileContent.value = JSON.stringify(response || {}, null, 2)
+    }
   }
 
   /**
@@ -104,18 +117,33 @@ export const usePreviewStore = defineStore('preview', () => {
   /**
    * toggle mock result
    */
-  function toggleMockResult(params: {
-    url: string
-    resultKey: string
+  async function toggleMockResult(params: {
+    type: 'http'
+    path: string
+    status: string
   }) {
-    language.value = 'json'
-    MockeryTRPCClient.client.result.toggle.mutate({
-      url: params.url,
-      resultKey: params.resultKey,
-      curScene: curScene.value || 'default',
-    }).then((res) => {
-      curSceneData.value = res.sceneData
-    })
+    const sceneName = curScene.value || 'default'
+    curSceneData.value = (await MockeryTRPCClient.client.result.toggle.mutate({
+      ...params,
+      type: 'http',
+      curScene: sceneName,
+    })).sceneData || {}
+  }
+
+  function previewMockeryResult(result: object | string) {
+    const resultType = typeof result
+    switch (resultType) {
+      case 'object':
+        language.value = 'json'
+        fileContent.value = JSON.stringify(result, null, 2)
+        break
+      case 'string':
+      default:
+        language.value = 'typescript'
+        fileContent.value = result.toString()
+        break
+    }
+    editorRef.value?.getAction('editor.action.formatDocument')?.run()
   }
 
   return {
@@ -132,6 +160,7 @@ export const usePreviewStore = defineStore('preview', () => {
     previewRawFile,
     previewMockeryItem,
     previewMockeryRequest,
+    previewMockeryResult,
     previewMockScene,
     toggleMockScene,
     toggleMockResult,

@@ -7,8 +7,8 @@ import { consola } from 'consola'
 import { colors } from 'consola/utils'
 import { getPort } from 'get-port-please'
 import pkg from '../../package.json'
-import { MOCKERY_NAMESPACE } from '../mockery'
 import { createMockClientServer } from '../mockery/server'
+import { MOCKERY_NAMESPACE } from './constants'
 import { GLOBAL_STATE } from './env'
 
 export function printLogForMockeryClient(ctx: MockeryContext) {

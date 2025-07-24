@@ -10,12 +10,14 @@ export function getRequestUrl(mockery: Mockery) {
 
   switch (mockery.type) {
     case 'http':
-    default:
-      url = mockery.path.toString()
+    default:{
+      const path = mockery.path || mockery.url || ''
+      url = path?.toString()
       if (url.startsWith('http')) {
         url = new URL(url).pathname
       }
       break
+    }
   }
   return url
 }

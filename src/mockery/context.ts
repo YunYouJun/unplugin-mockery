@@ -3,6 +3,7 @@ import type { ViteDevServer } from 'vite'
 import type { defineMockerySetup } from '../core/define'
 import type { ResolvedOptions } from '../core/options'
 import type { Mockery, MockeryOptions } from '../types'
+import type { MockeryMapType } from './typed-map'
 import { resolve } from 'node:path'
 import process from 'node:process'
 import { consola, LogLevels } from 'consola'
@@ -13,6 +14,7 @@ import { createServer } from 'vite'
 import { ViteNodeRunner } from 'vite-node/client'
 import { ViteNodeServer } from 'vite-node/server'
 import { getMockeryKey } from '../../packages/shared'
+import { MOCKERY_NAMESPACE } from '../core'
 import { GLOBAL_STATE } from '../core/env'
 import { MockeryWatcher } from '../core/node/watcher'
 import { defaultOptions, resolveOptions } from '../core/options'
@@ -20,20 +22,23 @@ import { getMockApiFiles } from '../core/utils'
 import { getHandlerFromMockery } from '../msw'
 import { MockeryDB } from './db'
 import { StateManager } from './state'
-import { getRequestUrl, isMockery, MOCKERY_NAMESPACE } from './utils'
+import { TypedMockeryMap } from './typed-map'
+import { getRequestUrl, isMockery } from './utils'
 import { createMockeryRequest } from './utils/factory'
 
-export class MockeryContext {
+export class MockeryContext<T extends Record<string, any> = MockeryMapType> {
   root = process.cwd()
   options: ResolvedOptions
 
-  db: MockeryDB
+  db: MockeryDB<T>
 
   /**
    * msw server
    * @see https://mswjs.io/docs/api/setup-server
    */
   server: SetupServerApi
+
+  mockeryMap = new TypedMockeryMap<T>()
 
   private readonly watcher: MockeryWatcher
   viteServer?: ViteDevServer
@@ -44,16 +49,13 @@ export class MockeryContext {
 
   constructor(rawOptions: MockeryOptions) {
     this.options = resolveOptions(rawOptions, this.root)
-    this.db = new MockeryDB(this)
+    this.db = new MockeryDB<T>(this)
     this.server = setupServer()
 
     // set consola level
     if (typeof this.options.logLevel !== 'undefined') {
       consola.level = this.options.logLevel
     }
-
-    // TODO vite
-    // this.watcher = new MockeryWatcher(this as MockeryContext)
 
     // set consola level
     if (typeof this.options.logLevel !== 'undefined') {
@@ -135,10 +137,10 @@ export class MockeryContext {
 
     server.listen(options.msw?.listenOptions)
 
-    // await this.db.init()
-    // if (options.dts) {
-    //   await this.db.initTypes()
-    // }
+    await this.db.init()
+    if (options.dts) {
+      await this.db.initTypes()
+    }
   }
 
   /**
@@ -297,8 +299,10 @@ export class MockeryContext {
     })
 
     const handler = getHandlerFromMockery(mockery)
-    if (handler)
+    if (handler) {
       this.server.use(handler)
+      this.mockeryMap.set(key, mockery)
+    }
 
     mockery.handler = handler
 

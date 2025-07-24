@@ -1,7 +1,7 @@
 import { defineHttpMockery } from 'unplugin-mockery'
 
 export default defineHttpMockery({
-  path: '/api/examples',
+  url: '/api/examples',
   description: '示例',
   method: 'get',
   response: {

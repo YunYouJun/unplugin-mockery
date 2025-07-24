@@ -1,7 +1,7 @@
 import { defineHttpMockery } from 'unplugin-mockery'
 
 export default defineHttpMockery({
-  path: '/methods/patch',
+  url: '/methods/patch',
   method: 'patch',
   timeout: 2000,
   response: {

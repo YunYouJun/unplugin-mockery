@@ -1,6 +1,5 @@
 import { consola } from 'consola'
 
-export * from './logger'
 export * from './mock'
 
 export function noop(): void {}

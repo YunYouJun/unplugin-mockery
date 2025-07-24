@@ -1,20 +1,35 @@
-import type { MethodType, Mockery } from '../../types'
-import { consola } from 'consola'
+import type { ColorFunction } from 'consola/utils'
+import type { MethodType, Mockery } from '../types'
+import { createConsola } from 'consola'
 import { colors } from 'consola/utils'
 
-// export const MOCKERY_NAMESPACE = colors.dim('🤡' + ' |')
-export const MOCKERY_NAMESPACE = colors.magenta('[🤡]')
+import { MOCKERY_NAMESPACE } from '../core/constants'
 
-const METHOD_COLOR = {
+/**
+ * logger 的 consola 实例
+ * 可修改全局配置，如日志等级等
+ * @see https://www.npmjs.com/package/consola
+ */
+export const consola = createConsola()
+
+/**
+ * HTTP 请求方法 日志颜色
+ */
+export const METHOD_COLOR: Record<MethodType, ColorFunction> = {
   all: colors.bgCyan,
   get: colors.bgGreen,
   post: colors.bgBlue,
   put: colors.bgYellow,
   delete: colors.bgRed,
   patch: colors.bgMagenta,
+  head: colors.gray,
+  options: colors.bgWhite,
 }
 
-const TIMEOUT_COLOR = {
+/**
+ * 请求耗时时间 日志颜色
+ */
+export const TIMEOUT_COLOR = {
   slow: colors.red,
   normal: colors.yellow,
   fast: colors.green,
@@ -22,6 +37,7 @@ const TIMEOUT_COLOR = {
 
 /**
  * custom logger for mockery
+ * 带有命名空间的 Mockery logger
  */
 export const logger = {
   info: (...args: any[]) => consola.info(MOCKERY_NAMESPACE, ...args),
@@ -50,18 +66,19 @@ export function getTimeoutStr(timeout: number) {
 /**
  * 获取日志信息 但是不打印
  */
-export function getMockeryLogInfo(req: Mockery) {
-  const timeoutStr = getTimeoutStr(req.timeout || 0)
-  const descStr = colors.gray(req.description || '')
-  const curStatus = colors.blue(req._curStatus?.toString() || '')
+export function getMockeryLogInfo(mockery: Mockery) {
+  const timeoutStr = getTimeoutStr(mockery.timeout || 0)
+  const descStr = colors.gray(mockery.description || '')
+  const curStatus = colors.blue(mockery._curStatus?.toString() || '')
 
-  switch (req.type) {
+  switch (mockery.type) {
     case 'http': {
-      const methodColor = METHOD_COLOR[req.method?.toLowerCase() as MethodType] || colors.cyan
+      const methodColor = METHOD_COLOR[mockery.method?.toLowerCase() as MethodType] || colors.cyan
+      const path = mockery.path || mockery.url || ''
       return [
-        colors.bgCyan(` ${colors.bold('HTTP')} `) + methodColor(` ${colors.bold(req.method?.toUpperCase().padEnd(6) || '')} `),
+        colors.bgCyan(` ${colors.bold('HTTP')} `) + methodColor(` ${colors.bold(mockery.method?.toUpperCase().padEnd(6) || '')} `),
         timeoutStr,
-        colors.cyan(colors.underline(req.path.toString())),
+        colors.cyan(colors.underline(path.toString())),
         descStr,
         curStatus,
       ]

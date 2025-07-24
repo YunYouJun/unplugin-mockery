@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import type { http, HttpHandler, Path, RequestHandlerOptions, ResponseResolver } from 'msw'
+import type { http, HttpHandler, HttpResponseResolver, Path, RequestHandlerOptions } from 'msw'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
 export type MockResponse<T> = ((req: Request) => T | Promise<T>) | T
@@ -13,11 +13,7 @@ export interface MSWHandlerOptions {
    *
    * may be you need `*\/user`(remove `\`) to match all prefixes
    */
-  path: Path
-  /**
-   * @default all support(get/post/put/delete/patch)
-   */
-  method?: keyof typeof http
+  path?: Path
   /**
    * msw resolver
    * resolver 优先级高于 response
@@ -43,11 +39,17 @@ export interface MSWHandlerOptions {
    * })
    * ```
    */
-  resolver?: ResponseResolver
+  resolver?: HttpResponseResolver
   options?: RequestHandlerOptions
 }
 
 export interface BaseMockery<T = object, STATUS extends string = string> extends MSWHandlerOptions {
+  /**
+   * same with msw path
+   *
+   * different with `url`, `path` will not add `*` automatically
+   */
+  path?: Path
   /**
    * @inner
    */
@@ -72,16 +74,11 @@ export interface BaseMockery<T = object, STATUS extends string = string> extends
   response?: MockResponse<T>
   rawResponse?: RawResponse | ((req: IncomingMessage, res: ServerResponse) => Promise<void>)
 
+  /**
+   * @deprecated
+   * use `statusMap` instead
+   */
   results?: Record<string, MockResponse<T>>
-  /**
-   * @deprecated let's use jsonc to combine scenes
-   */
-  scenes?: T
-  /**
-   * @deprecated let's use jsonc to combine scenes
-   * @inner
-   */
-  curScene?: string
 
   /**
    * 是否打印请求日志
@@ -107,17 +104,48 @@ export interface BaseMockery<T = object, STATUS extends string = string> extends
    * 可通过 `setStatus` 设置，请勿手动直接修改该变量
    * 通过 `getStatus` 获取当前状态
    */
-  _curStatus?: STATUS | Record<string, STATUS>
+  _curStatus?: STATUS
 }
 
-export interface HttpMockery<T = object> extends BaseMockery<T> {
+export interface StatusItem {
+  /**
+   * 结果名称
+   * 若不设置，则使用 key 展示
+   */
+  name?: string
+  /**
+   * 结果描述
+   */
+  description?: string
+  resolver: HttpResponseResolver
+}
+
+export type HttpMockery<T = object, STATUS extends string = string> = BaseMockery<T, STATUS> & {
   type: 'http'
+  /**
+   * @default all support(get/post/put/delete/patch)
+   */
+  method?: keyof typeof http
+  /**
+   * 返回状态 map
+   */
+  statusMap?: Record<STATUS, StatusItem>
+  /**
+   * same with msw path
+   *
+   * `/user` or `https://api.example.com/user`
+   *
+   * may be you need `*\/user`(remove `\`) to match all prefixes
+   *
+   * if url not starts with '*', it will automatically add `*` to match all prefixes
+   */
+  url?: Path
 }
 
 /**
  * one mock as mockery
  */
-export type Mockery<T = object> = HttpMockery<T>
+export type Mockery<T = object, STATUS extends string = string> = HttpMockery<T, STATUS>
 
 export interface MockeryItem<T = object> {
   path: string

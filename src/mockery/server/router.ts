@@ -173,13 +173,13 @@ export const appRouter = router({
       z.object({
         path: z.string(),
         type: z.enum(['http']),
-        resultKey: z.string(),
         curScene: z.string(),
         status: z.string(),
       }),
     ).mutation(async ({ input }) => {
       const { status, curScene } = input
-      const DB = GLOBAL_STATE.mockeryCtx?.db
+      const mockeryCtx = GLOBAL_STATE.mockeryCtx
+      const DB = mockeryCtx?.db
       if (!DB) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -199,6 +199,10 @@ export const appRouter = router({
       await DB.curSceneDB?.update((data) => {
         data[key] = status
       })
+
+      const curMockery = mockeryCtx.mockeryMap.get(key)
+      curMockery._curStatus = status
+      await mockeryCtx.useMockery(curMockery)
 
       return {
         status,

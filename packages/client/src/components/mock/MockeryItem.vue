@@ -1,34 +1,18 @@
 <script lang="ts" setup>
-import type { MethodType, MockeryRequest } from 'unplugin-mockery'
+import type { MethodType, Mockery, StatusItem } from 'unplugin-mockery'
+import { getMockeryKey } from '../../../../shared'
+import { methodInfo } from '../../constants/css'
 
 const props = defineProps<{
-  mockery: MockeryRequest
+  mockery: Mockery
   path: string
 }>()
 
 const previewStore = usePreviewStore()
 
-const methodInfo: Record<MethodType, {
-  className: string
-}> = {
-  all: {
-    className: 'text-cyan-500',
-  },
-  get: {
-    className: 'text-green-500',
-  },
-  post: {
-    className: 'text-blue-500',
-  },
-  put: {
-    className: 'text-yellow-500',
-  },
-  delete: {
-    className: 'text-red-500',
-  },
-  patch: {
-    className: 'text-purple-500',
-  },
+function isActive(key: string) {
+  const mockeryKey = getMockeryKey(props.mockery)
+  return previewStore.curSceneData[mockeryKey] === key
 }
 
 function getMethodClass(method: MethodType) {
@@ -44,8 +28,29 @@ function getTimeoutClass(timeout: number = 0) {
   return 'text-green-500'
 }
 
-const activeResultKey = ref<string>()
 const httpMethod = computed(() => props.mockery.method || 'get')
+
+function toggleStatusItem(params: {
+  key: string
+  statusItem: StatusItem
+}) {
+  const { key, statusItem } = params
+  const mockery = props.mockery
+
+  previewStore.curFilePath = props.path
+
+  previewStore.previewMockeryResult(statusItem.resolver.toString())
+  switch (mockery.type) {
+    case 'http':
+    default:
+      previewStore.toggleMockResult({
+        type: mockery.type,
+        path: mockery.path?.toString() || mockery.url?.toString() || '',
+        status: key,
+      })
+      break
+  }
+}
 </script>
 
 <template>
@@ -63,21 +68,23 @@ const httpMethod = computed(() => props.mockery.method || 'get')
       </span>
       <span
         class="text-blue dark:text-blue-300" ml-2 cursor-pointer op-90 hover:op-100
-        @click="previewStore.previewMockeryRequest(path, mockery, activeResultKey)"
+        @click="previewStore.previewMockeryRequest(path, mockery)"
       >
-        {{ mockery.url }}
+        {{ mockery.path || mockery.url }}
       </span>
     </div>
 
-    <div v-if="mockery.results" class="mock-scene-container gap-2 pl-6" flex="~ wrap">
+    <div v-if="mockery.statusMap" class="mock-scene-container gap-2 pl-6" flex="~ wrap">
       <MockeryResultItem
-        v-for="(scene, key) in mockery.results"
+        v-for="(statusItem, key) in mockery.statusMap"
         :id="key"
         :key="key"
-        :url="mockery.url"
-        :scene="scene"
-        :path="path"
-        :active="previewStore.curSceneData[mockery.url] === key"
+        :active="isActive(key)"
+        :item="statusItem"
+        @click="toggleStatusItem({
+          key,
+          statusItem,
+        })"
       />
     </div>
   </div>

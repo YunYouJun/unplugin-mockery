@@ -1,7 +1,7 @@
 import { defineHttpMockery } from 'unplugin-mockery'
 
 export default defineHttpMockery({
-  path: '/methods/delete',
+  url: '/methods/delete',
   timeout: 1500,
   method: 'delete',
   response: {

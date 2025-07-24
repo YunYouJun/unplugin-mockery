@@ -1,27 +1,15 @@
 <script lang="ts" setup>
-import { usePreviewStore } from '../../stores/preview'
+import type { StatusItem } from 'unplugin-mockery'
 
-const props = defineProps<{
+defineProps<{
   id: string
   active: boolean
-  scene: any
-  url: string
-  path: string
+  item: StatusItem
 }>()
-
-const previewStore = usePreviewStore()
-function onClickScene() {
-  previewStore.previewMockScene(props.scene)
-
-  previewStore.toggleMockResult({
-    url: props.url,
-    resultKey: props.id,
-  })
-}
 </script>
 
 <template>
-  <div
+  <button
     text="xs"
     border="blue-500"
     class="inline-flex cursor-pointer items-center justify-center border rounded px-2 py-1 shadow"
@@ -29,9 +17,8 @@ function onClickScene() {
       'bg-blue-500 text-white': active,
       '': !active,
     }"
-
-    @click="onClickScene"
+    :title="item.description"
   >
     {{ id }}
-  </div>
+  </button>
 </template>

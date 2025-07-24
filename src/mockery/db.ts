@@ -5,18 +5,19 @@ import type { MockeryContext } from './context'
 import type { MockeryConfigData, SceneData } from './schema'
 import path from 'node:path'
 import process from 'node:process'
-import { consola } from 'consola'
+import { consola, LogLevels } from 'consola'
 import { colors } from 'consola/utils'
 import fs from 'fs-extra'
 import { JSONFilePreset } from 'lowdb/node'
 import { getMockeryKey } from '../../packages/shared'
+import { generateMockeryDTS } from './dts'
 import { defaultConfigSchemaJSON, defaultSceneSchemaJSON } from './schema'
 import { isMockery } from './utils'
 
 /**
  * global state
  */
-export class MockeryDB {
+export class MockeryDB<T extends Record<string, any>> {
   /**
    * Server Start timestamp
    */
@@ -81,7 +82,7 @@ export class MockeryDB {
     mockeryTypeFile: string
   }
 
-  constructor(public ctx: MockeryContext) {
+  constructor(public ctx: MockeryContext<T>) {
     this.path = this.getDotFilesPath('.mockery')
   }
 
@@ -182,6 +183,29 @@ export class MockeryDB {
       this.sceneDBMap[sceneName] = this.curSceneDB
     }
     return this.curSceneDB
+  }
+
+  /**
+   * Initialize types *.d.ts
+   * mockery.d.ts
+   */
+  async initTypes() {
+    const genDTSStart = performance.now()
+    const dts = generateMockeryDTS(this.ctx.mockeryMap as MockeryContext['mockeryMap'])
+    let mockeryTypeFile = this.path.mockeryTypeFile
+    if (typeof this.ctx.options.dts === 'string') {
+      mockeryTypeFile = path.resolve(this.root, this.ctx.options.dts)
+    }
+
+    await fs.ensureDir(path.dirname(mockeryTypeFile))
+    await fs.writeFile(mockeryTypeFile, dts)
+
+    const logLevel = this.ctx.options.logLevel || LogLevels.log
+    if (logLevel >= LogLevels.debug) {
+      const consumedTime = performance.now() - genDTSStart
+      consola.success(`Generate ${colors.blue('dts')} in ${colors.green(`${consumedTime.toFixed(2)}ms`)}`)
+    }
+    return dts
   }
 
   /**

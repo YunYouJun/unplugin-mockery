@@ -8,9 +8,11 @@ import { consola } from 'consola'
  */
 export function getMockeryKey(mockery: Mockery) {
   let key = ''
+  const { path, url } = mockery
+
   switch (mockery.type) {
     case 'http': {
-      key = mockery.path?.toString()
+      key = (path || url)?.toString() || ''
       break
     }
     default:

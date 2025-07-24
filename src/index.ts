@@ -24,6 +24,7 @@ import { loadMockeryConfig } from './mockery/config'
 export * from './core'
 export * from './mockery'
 export * from './types'
+export * from './utils'
 
 export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (options) => {
   options = resolveOptions(options)

@@ -6,13 +6,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "~/*": ["./client/src/*"],
+      "~/*": ["./packages/client/src/*"],
       "unplugin-mockery": ["./src/index.ts"],
       "unplugin-mockery/client": ["./src/mockery/client/index.ts"]
     },
     "resolveJsonModule": true,
     "types": [
-      "@types/wicg-file-system-access",
       "vitest",
       "vite/client",
       "vite-plugin-vue-layouts/client",

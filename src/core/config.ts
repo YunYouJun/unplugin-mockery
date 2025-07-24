@@ -8,7 +8,7 @@ export const PLUGIN_NAME = 'unplugin-mockery:webpack'
  */
 export function defineMockery<T = object>(mockery: Mockery<T>): Mockery<T> {
   if (!mockery.path) {
-    throw new Error('Path is required')
+    throw new Error('`path` Or `url` is required')
   }
   return mockery
 }
@@ -17,8 +17,8 @@ export function defineMockery<T = object>(mockery: Mockery<T>): Mockery<T> {
  * Define a mockery request
  */
 export function defineHttpMockery<T = object>(mockery: Omit<HttpMockery<T>, 'type'>): HttpMockery<T> {
-  if (!mockery.path) {
-    throw new Error('Path is required')
+  if (!mockery.path && !mockery.url) {
+    throw new Error('`path` Or `url` is required')
   }
   return {
     ...mockery,

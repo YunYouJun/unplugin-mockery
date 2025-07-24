@@ -2,7 +2,7 @@ import chokidar from 'chokidar'
 import { consola } from 'consola'
 
 import { colors } from 'consola/utils'
-import { logger } from './logger'
+import { logger } from '../../utils'
 
 /**
  * Create a watcher to watch for changes in the mock server files
