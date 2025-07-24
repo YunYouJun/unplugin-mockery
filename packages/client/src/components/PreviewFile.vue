@@ -2,7 +2,7 @@
 <script lang="ts" setup>
 // import type { MonacoEditor } from '@guolao/vue-monaco-editor'
 
-import { loader, useMonaco } from '@guolao/vue-monaco-editor'
+import { loader } from '@guolao/vue-monaco-editor'
 import * as monaco from 'monaco-editor'
 // for monaco editor type definition
 
@@ -13,9 +13,11 @@ import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 import { computed } from 'vue'
 
-import typeText from '../../../../src/types?raw'
+// import typeText from '../../../../src/types/mockery?raw'
+
 import { isDark } from '../composables/dark'
 import { editorRef } from '../stores/editor'
+import { initExtraLibs } from '../utils/monaco-editor'
 
 // @ts-expect-error exist
 globalThis.MonacoEnvironment = {
@@ -53,12 +55,12 @@ const theme = computed(() => {
   return isDark.value ? 'vs-dark' : 'vs'
 })
 
-const { monacoRef } = useMonaco()
-
 // https://stackoverflow.com/questions/43058191/how-to-use-addextralib-in-monaco-with-an-external-type-definition
 
-function handleMount(editor: monaco.editor.IStandaloneCodeEditor) {
+async function handleMount(editor: monaco.editor.IStandaloneCodeEditor) {
   editorRef.value = editor
+
+  initExtraLibs()
 
   // monacoRef.value?.languages.typescript.typescriptDefaults.setCompilerOptions({
   //   paths: {
@@ -66,32 +68,9 @@ function handleMount(editor: monaco.editor.IStandaloneCodeEditor) {
   //   },
   // })
 
-  monacoRef.value?.languages.typescript.typescriptDefaults.addExtraLib(`
-declare module 'node:http' {
-  // import type { IncomingMessage, ServerResponse } from 'node:http'
-
-  export interface IncomingMessage {
-    headers: Record<string, string>
-  }
-
-  export interface ServerResponse {
-    statusCode: number
-  }
-}
-
-declare module 'unplugin-mockery' {
-${typeText.split('\n').map(line => `  ${line}`).join('\n')}
-  /**
-   * curScene only can be one of the keys of scenes
-   */
-  declare function defineMockeryRequest<T extends MockeryRequest['scenes']>(method: MockeryRequest<T>): MockeryRequest<T>;
-  /**
-   * Define a mockery request
-   * @alias defineMockeryRequest
-   */
-  declare const defineMockery: typeof defineMockeryRequest;
-`,
-  )
+  // add msw
+  // monacoRef.value?.languages.typescript.typescriptDefaults.addExtraLib(dts, 'file:///node_modules/msw/index.d.ts')
+  // monacoRef.value?.languages.typescript.typescriptDefaults.addExtraLib(unpluginMockeryDts, 'file:///node_modules/unplugin-mockery/index.d.ts')
 }
 
 // your action
@@ -107,6 +86,7 @@ ${typeText.split('\n').map(line => `  ${line}`).join('\n')}
       :theme="theme"
       :options="MONACO_EDITOR_OPTIONS"
       :language="previewStore.language"
+      :path="previewStore.curFilePath"
       @mount="handleMount"
     />
   </ClientOnly>

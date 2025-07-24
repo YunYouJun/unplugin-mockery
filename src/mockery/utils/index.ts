@@ -23,11 +23,11 @@ export function isMockery(mockery: any): mockery is Mockery {
  */
 export function getCurStatus(mockery: Mockery) {
   const DB = GLOBAL_STATE.mockeryCtx?.db
-  const results = mockery.results || {}
+  const statusMap = mockery.statusMap || {}
   const mockeryKey = getMockeryKey(mockery)
   const curStatusInScene = mockery._curStatus || DB?.curSceneDB?.data[mockeryKey]
 
-  const status = curStatusInScene || (Object.keys(results)[0])
+  const status = curStatusInScene || (Object.keys(statusMap)[0])
   return status
 }
 
@@ -35,9 +35,9 @@ export function getCurStatus(mockery: Mockery) {
  * get current response from results
  */
 export function getCurResponse(mockery: Mockery, curStatus?: string) {
-  const results = mockery.results || {}
+  const statusMap = mockery.statusMap || {}
   if (!curStatus)
     curStatus = getCurStatus(mockery) as string
 
-  return results[curStatus] || {}
+  return statusMap[curStatus] || {}
 }

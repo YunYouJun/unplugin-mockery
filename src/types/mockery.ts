@@ -1,9 +1,4 @@
-import type { Request, Response } from 'express'
 import type { http, HttpHandler, HttpResponseResolver, Path, RequestHandlerOptions } from 'msw'
-import type { IncomingMessage, ServerResponse } from 'node:http'
-
-export type MockResponse<T> = ((req: Request) => T | Promise<T>) | T
-export type RawResponse = (req: Request, res: Response) => void | Promise<void>
 
 export interface MSWHandlerOptions {
   /**
@@ -71,14 +66,7 @@ export interface BaseMockery<T = object, STATUS extends string = string> extends
   timeout?: number
   statusCode?: number
 
-  response?: MockResponse<T>
-  rawResponse?: RawResponse | ((req: IncomingMessage, res: ServerResponse) => Promise<void>)
-
-  /**
-   * @deprecated
-   * use `statusMap` instead
-   */
-  results?: Record<string, MockResponse<T>>
+  response?: T
 
   /**
    * 是否打印请求日志

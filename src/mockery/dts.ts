@@ -14,13 +14,13 @@ export function generateMockeryDTS(mockeryMap: any) {
     if (!mockery)
       continue
 
-    const results = mockery.results as object
-    if (results) {
+    const statusMap = mockery.statusMap || {}
+    if (statusMap) {
       if (mockery.description) {
         mapTypeLines.push(`    /** ${mockery.description} */`)
       }
 
-      const mockeryKeys = Object.keys(results)
+      const mockeryKeys = Object.keys(statusMap)
       mapTypeLines.push(
         `    '${key}': ${mockeryKeys.map(k => `'${k}'`).join(' | ')},`,
       )
