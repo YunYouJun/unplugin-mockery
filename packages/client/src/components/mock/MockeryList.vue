@@ -27,7 +27,7 @@ function queryList(type: 'http' | 'ws' = 'http') {
   MockeryTRPCClient.client.mockery.list.query({
     type,
   }).then((data) => {
-    previewStore.mockDir = data.root
+    previewStore.projectRoot = data.root
     fullMockeryList.value = (data.list as MockeryItem[]).sort((a, b) => {
       return a.path.localeCompare(b.path)
     })

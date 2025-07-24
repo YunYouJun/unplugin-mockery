@@ -1,44 +1,52 @@
 <script lang="ts" setup>
+import path from 'pathe'
+
 defineProps<{
   active?: boolean
   item: any
 }>()
 
 const previewStore = usePreviewStore()
+
+function getRelativePath(filePath: string) {
+  return path.relative(previewStore.projectRoot, filePath)
+}
 </script>
 
 <template>
   <div
-    flex="~ col"
-    class="gap-2 rounded bg-white p-2 text-left shadow"
-    :class="{
+    flex="~ col" class="gap-2 rounded bg-white p-2 text-left shadow" :class="{
       'dark:bg-dark-300': active,
       'dark:bg-dark-500': !active,
     }"
   >
-    <div class="flex items-center justify-between">
+    <div class="w-full flex items-center justify-between gap-2">
       <div
-        class="flex cursor-pointer items-center gap-2 text-xs"
+        class="min-w-0 flex flex-1 flex-col cursor-pointer items-start justify-center gap-2 text-xs"
         @click="previewStore.previewRawFile(item.path)"
       >
-        <div i-vscode-icons:file-type-typescript />
-        <span v-if="item.mockery.description" class="text-sm font-bold" op-90 hover:op-100>
+        <div class="max-w-100% flex items-center gap-2">
+          <div
+            class="cursor-pointer" i-vscode-icons:file-type-vscode
+            @click="previewStore.openFileInEditor(item.path)"
+          />
+
+          <span
+            class="flex-1 truncate whitespace-normal text-xs hover:op-100" :class="{
+              'text-blue-600 dark:text-blue-200 op-100': active,
+              'op-80': !active,
+            }"
+
+            :title="item.path"
+          >
+            {{ getRelativePath(item.path) }}
+          </span>
+        </div>
+
+        <div v-if="item.mockery.description" class="ml-4 text-xs font-bold" op-90 hover:op-100>
           {{ item.mockery.description }}
-        </span>
-        <span
-          text-xs hover:op-100
-          :class="{
-            'text-blue-600 dark:text-blue-200 op-100 font-medium': active,
-            'op-80': !active,
-          }"
-        >
-          {{ item.path }}
-        </span>
+        </div>
       </div>
-      <div
-        class="cursor-pointer" i-vscode-icons:file-type-vscode
-        @click="previewStore.openFileInEditor(item.path)"
-      />
     </div>
 
     <div class="flex flex-col gap-2">

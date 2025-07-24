@@ -17,7 +17,7 @@ export const usePreviewStore = defineStore('preview', () => {
   const fileContent = useStorage('fileContent', '')
   const language = useStorage<'typescript' | 'json'>('language', 'json')
   const curSceneData = ref<Record<string, string>>({})
-  const mockDir = ref('')
+  const projectRoot = ref('')
 
   /**
    * cur scene name
@@ -38,7 +38,7 @@ export const usePreviewStore = defineStore('preview', () => {
   }
 
   function getAbsoluteFilePath(filePath: string) {
-    return filePath.startsWith('/') ? filePath : pathe.resolve(mockDir.value, filePath)
+    return filePath.startsWith('/') ? filePath : pathe.resolve(projectRoot.value, filePath)
   }
 
   /**
@@ -149,7 +149,7 @@ export const usePreviewStore = defineStore('preview', () => {
     curMockeryRequest,
     curScene,
     curSceneData,
-    mockDir,
+    projectRoot,
 
     language,
 

@@ -34,10 +34,12 @@ if (import.meta.env.DEV) {
     })
   })
 }
+
+const app = useAppStore()
 </script>
 
 <template>
-  <Splitpanes class="w-full">
+  <Splitpanes class="w-full" :horizontal="app.isMobile">
     <Pane class="h-full flex flex-col">
       <!-- TODO search -->
       <div class="relative flex items-center justify-center gap-2 shadow">
@@ -63,7 +65,7 @@ if (import.meta.env.DEV) {
       </div>
       <MockeryList />
     </Pane>
-    <Pane class="flex flex-col border-l dark:border-l-dark-200">
+    <Pane v-if="app.layout !== 'top'" class="flex flex-col border-l dark:border-l-dark-200">
       <div
         class="flex cursor-pointer items-center gap-2 p-1 text-xs op-80 hover:op-100"
         @click="previewStore.openFileInEditor(previewStore.curFilePath)"

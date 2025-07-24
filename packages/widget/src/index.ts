@@ -75,6 +75,12 @@ export function mountIframe(options: {
   iframe.id = 'unplugin-mockery_iframe'
   iframe.src = `http://localhost:${port}/`
   iframe.style.display = 'none'
+
+  const isMobile = window.innerWidth < 768
+  if (isMobile) {
+    iframe.style.width = '100%'
+  }
+
   document.body.appendChild(iframe)
   document.body.appendChild(mask)
 
