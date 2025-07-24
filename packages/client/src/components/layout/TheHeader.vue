@@ -32,7 +32,10 @@ function openCurUrlInNewTab() {
         </template>
       </a>
 
+      <SettingsDialog />
+
       <ToggleDark />
+
       <a icon-btn rel="noreferrer" href="https://github.com/YunYouJun/unplugin-mockery" target="_blank" title="GitHub">
         <div i-carbon-logo-github />
       </a>

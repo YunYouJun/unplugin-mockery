@@ -82,7 +82,7 @@ export const usePreviewStore = defineStore('preview', () => {
    * @param filePath
    */
   function openFileInEditor(filePath: string) {
-    const absoluteFilePath = filePath.startsWith('/') ? filePath : pathe.resolve(mockDir.value, filePath)
+    const absoluteFilePath = filePath.startsWith('/') ? filePath : pathe.resolve(projectRoot.value, filePath)
     MockeryTRPCClient.client.file.open.query(absoluteFilePath)
     // Toast({
     //   title: `打开文件`,
