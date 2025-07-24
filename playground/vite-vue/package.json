@@ -1,0 +1,22 @@
+{
+  "name": "vite-vue",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "catalog:fe"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "catalog:dev",
+    "@vue/tsconfig": "^0.7.0",
+    "typescript": "catalog:dev",
+    "unplugin-mockery": "workspace:*",
+    "vite": "catalog:build",
+    "vue-tsc": "catalog:dev"
+  }
+}

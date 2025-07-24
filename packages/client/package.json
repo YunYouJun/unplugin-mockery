@@ -57,7 +57,7 @@
     "simple-git-hooks": "^2.13.0",
     "splitpanes": "^4.0.4",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3",
+    "typescript": "catalog:dev",
     "unbuild": "^3.6.0",
     "unocss": "^66.3.3",
     "unplugin-auto-import": "^19.3.0",

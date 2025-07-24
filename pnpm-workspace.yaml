@@ -7,5 +7,7 @@ catalogs:
     vite: ^7.0.6
   dev:
     '@vitejs/plugin-vue': ^5.2.4
+    typescript: ~5.8.3
+    vue-tsc: ^3.0.3
   fe:
     vue: ^3.5.18
