@@ -87,7 +87,7 @@
     "client/dist",
     "dist",
     "dist-client",
-    "widget/dist"
+    "packages/widget/dist"
   ],
   "scripts": {
     "build": "npm run build:unplugin && npm run build:client && npm run build:widget",
