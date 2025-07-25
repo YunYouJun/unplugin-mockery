@@ -1,5 +1,5 @@
 {
-  "name": "@unplugin-mockery/widget",
+  "name": "@mockery/widget",
   "type": "module",
   "private": true,
   "scripts": {

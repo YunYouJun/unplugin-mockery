@@ -9,7 +9,7 @@ import { colors } from 'consola/utils'
 import fs from 'fs-extra'
 
 import { createUnplugin } from 'unplugin'
-import { CLIENT_DIST_DIR, WIDGET_CLIENT_ENTRY } from './constants'
+import { UI_DIST_DIR, WIDGET_CLIENT_ENTRY } from './constants'
 import { PLUGIN_NAME } from './core'
 import { serveClient } from './core/client'
 
@@ -94,7 +94,7 @@ export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (opt
           await mockeryCtx.init()
 
           const { listener } = await serveClient({
-            staticPath: CLIENT_DIST_DIR,
+            staticPath: UI_DIST_DIR,
             port: options.client?.port,
           })
           const address = listener.address()

@@ -1,7 +1,10 @@
 {
+  "name": "@mockery/ui",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@10.13.1",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "run-p dev:*",
@@ -53,6 +56,7 @@
     "pathe": "^2.0.3",
     "reka-ui": "^2.4.0",
     "rollup": "^4.45.1",
+    "sass": "^1.89.2",
     "shiki": "^3.8.1",
     "simple-git-hooks": "^2.13.0",
     "splitpanes": "^4.0.4",

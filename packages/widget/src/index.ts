@@ -109,6 +109,6 @@ export function main(options: {
    */
   port: number
 }) {
-  consola.info('DOMContentLoaded', 'Inject Mockery Client')
+  consola.info('[🤡]', '@mockery/widget injected')
   mountIframe(options)
 }

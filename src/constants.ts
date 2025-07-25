@@ -8,11 +8,11 @@ export const MOCKERY_NAMESPACE = colors.magenta('[🤡]')
 
 export const PACKAGES_ROOT = resolve(import.meta.dirname, '../packages')
 /**
- * build client dist folder
+ * build ui dist folder
  */
-export const CLIENT_DIST_DIR = resolve(PACKAGES_ROOT, 'client/dist')
+export const UI_DIST_DIR = resolve(PACKAGES_ROOT, 'ui/dist')
 /**
  * widget client entry
  * 挂件，用于在其他网站上嵌入
  */
-export const WIDGET_CLIENT_ENTRY = resolve(PACKAGES_ROOT, 'widget/dist/index.js')
+export const WIDGET_CLIENT_ENTRY = resolve(PACKAGES_ROOT, 'widget/dist/index.mjs')

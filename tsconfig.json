@@ -6,7 +6,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "paths": {
-      "~/*": ["./packages/client/src/*"],
+      "~/*": ["./packages/ui/src/*"],
       "unplugin-mockery": ["./src/index.ts"],
       "unplugin-mockery/client": ["./src/mockery/client/index.ts"]
     },

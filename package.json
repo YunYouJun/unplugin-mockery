@@ -1,9 +1,9 @@
 {
   "name": "unplugin-mockery",
   "type": "module",
-  "version": "0.4.0-beta.10",
+  "version": "0.4.0-beta.11",
   "packageManager": "pnpm@10.13.1",
-  "description": "",
+  "description": "Mock API Client",
   "license": "MIT",
   "homepage": "https://github.com/YunYouJun/unplugin-mockery#readme",
   "repository": {
@@ -14,11 +14,11 @@
     "url": "https://github.com/YunYouJun/unplugin-mockery/issues"
   },
   "keywords": [
+    "mock",
+    "mockery",
     "unplugin",
     "vite",
-    "webpack",
-    "rollup",
-    "transform"
+    "webpack"
   ],
   "exports": {
     ".": {
@@ -27,8 +27,8 @@
       "require": "./dist/index.cjs"
     },
     "./widget": {
-      "types": "./widget/dist/index.d.ts",
-      "import": "./widget/dist/index.mjs"
+      "types": "./packages/widget/dist/index.d.ts",
+      "import": "./packages/widget/dist/index.mjs"
     },
     "./astro": {
       "types": "./dist/astro.d.ts",
@@ -85,17 +85,19 @@
   },
   "files": [
     "dist",
-    "packages/client/dist",
-    "packages/widget/dist"
+    "packages/ui/dist",
+    "packages/ui/package.json",
+    "packages/widget/dist",
+    "packages/widget/package.json"
   ],
   "scripts": {
-    "build": "npm run build:unplugin && npm run build:client && npm run build:widget",
+    "build": "npm run build:unplugin && npm run build:ui && npm run build:widget",
     "build:unplugin": "tsdown",
-    "build:client": "pnpm -C packages/client run build",
+    "build:ui": "pnpm -C packages/ui run build",
     "build:widget": "pnpm -C packages/widget run build",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "dev": "tsdown --watch src",
-    "dev:client": "pnpm -C packages/client run dev",
+    "dev:ui": "pnpm -C packages/ui run dev",
     "lint": "eslint .",
     "play": "npm -C playground run dev",
     "play:webpack": "pnpm -C playground/webpack run serve",
@@ -103,12 +105,12 @@
     "play:vite-vue": "pnpm -C playground/vite-vue run dev",
     "play:vue-cli": "pnpm -C playground/vue-cli run serve",
     "play:nuxt": "pnpm -C playground/nuxt run dev",
-    "prepublishOnly": "npm run build",
     "release": "bumpp --execute 'npm run changelog' --all",
     "release:local": "bump --no-commit --no-tag && npm publish",
     "release:local:beta": "bumpp --no-commit --no-tag && npm publish --tag beta",
     "start": "esno src/index.ts",
     "test": "vitest",
+    "prepublishOnly": "build",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
@@ -181,7 +183,6 @@
     "nodemon": "^3.1.10",
     "rimraf": "^6.0.1",
     "rollup": "^4.45.1",
-    "sass": "^1.89.2",
     "simple-git-hooks": "^2.13.0",
     "tsdown": "^0.13.0",
     "tsx": "^4.20.3",

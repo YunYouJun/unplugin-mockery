@@ -1,5 +1,6 @@
 import type monaco from 'monaco-editor'
 import type { Nullable } from 'unplugin'
+import type { Ref } from 'vue'
 
 function addExtraLibs(monacoRef: Ref<Nullable<typeof monaco>>) {
   const unpluginMockeryTypes = import.meta.glob('../../../../dist/**/*.d.ts', { eager: true, query: '?raw', import: 'default' },

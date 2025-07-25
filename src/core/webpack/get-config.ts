@@ -2,7 +2,7 @@ import type { WebpackCompiler } from 'unplugin'
 import type Server from 'webpack-dev-server'
 import type { MockeryOptions } from '../../types'
 import { consola } from 'consola'
-import { CLIENT_DIST_DIR } from '../../constants'
+import { UI_DIST_DIR } from '../../constants'
 import { serveClient } from '../../core/client'
 
 import { defaultOptions, resolveOptions } from '../../core/options'
@@ -46,7 +46,7 @@ export async function getWebpackConfig(options: MockeryOptions = defaultOptions)
 
   if (options.client?.enable) {
     serveClient({
-      staticPath: CLIENT_DIST_DIR,
+      staticPath: UI_DIST_DIR,
       port: options.client?.port,
     })
   }

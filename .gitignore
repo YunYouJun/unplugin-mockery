@@ -76,8 +76,18 @@ typings/
 
 dist/
 
-# vite-ssg
+.astro
+
+# client
+.DS_Store
 .vite-ssg-dist
 .vite-ssg-temp
+*.local
+dist
+dist-ssr
+node_modules
+.idea/
+*.log
+cypress/downloads
 
-.astro
+.mockery
