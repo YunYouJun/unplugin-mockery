@@ -96,7 +96,6 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "dev": "tsdown --watch src",
     "dev:client": "pnpm -C packages/client run dev",
-    "build:fix": "esno scripts/postbuild.ts",
     "lint": "eslint .",
     "play": "npm -C playground run dev",
     "play:webpack": "pnpm -C playground/webpack run serve",
@@ -141,9 +140,8 @@
     }
   },
   "dependencies": {
-    "@mswjs/interceptors": "^0.39.3",
     "@rollup/pluginutils": "^5.2.0",
-    "@types/express": "^5.0.3",
+    "@trpc/server": "11.4.3",
     "@types/express-serve-static-core": "^5.0.7",
     "ajv": "^8.17.1",
     "chokidar": "^4.0.3",
@@ -161,24 +159,25 @@
     "open": "^10.2.0",
     "path-to-regexp": "^8.2.0",
     "serve-static": "^2.2.0",
-    "unplugin": "^2.3.5"
+    "unplugin": "^2.3.5",
+    "vite": "catalog:build",
+    "vite-node": "^3.2.4",
+    "zod": "^4.0.10"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.0.0",
     "@nuxt/kit": "^4.0.1",
     "@nuxt/schema": "^4.0.1",
     "@trpc/client": "11.4.3",
-    "@trpc/server": "11.4.3",
+    "@types/express": "^5.0.3",
     "@types/fs-extra": "^11.0.4",
     "@types/micromatch": "^4.0.9",
     "@types/node": "^24.1.0",
     "@unocss/eslint-config": "^66.3.3",
     "bumpp": "^10.2.0",
-    "chalk": "^5.4.1",
     "conventional-changelog-cli": "^5.0.0",
     "eslint": "^9.32.0",
     "eslint-plugin-format": "^1.0.1",
-    "esno": "^4.8.0",
     "monaco-editor": "^0.52.2",
     "nodemon": "^3.1.10",
     "rimraf": "^6.0.1",
@@ -186,11 +185,10 @@
     "sass": "^1.89.2",
     "simple-git-hooks": "^2.13.0",
     "tsdown": "^0.13.0",
+    "tsx": "^4.20.3",
     "typescript": "catalog:dev",
-    "vite": "catalog:build",
     "vitest": "^3.2.4",
-    "webpack": "^5.100.2",
-    "zod": "^4.0.10"
+    "webpack": "^5.100.2"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"

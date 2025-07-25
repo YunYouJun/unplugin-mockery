@@ -18,7 +18,6 @@ function addExtraLibs() {
 export function initExtraLibs() {
   monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
     paths: {
-      // '@mswjs/interceptors': ['file:///node_modules/@mswjs/interceptors/dist/index.d.ts'],
       'msw': ['file:///node_modules/msw/lib/core/index.d.ts'],
       'unplugin-mockery': ['file:///dist/index.d.ts'],
     },
