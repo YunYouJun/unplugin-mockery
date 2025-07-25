@@ -28,7 +28,7 @@ export default defineConfig((env) => {
   return {
     build: {
       target: 'esnext',
-      minify: false, // 'esbuild',
+      minify: true,
       emptyOutDir: true,
 
       rollupOptions: {
