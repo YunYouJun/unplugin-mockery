@@ -150,6 +150,12 @@ export interface MockerySharedOptions {
      * auto open browser.
      */
     open?: boolean
+    /**
+     * 是否展示挂件（仅在 Vite 中生效，Webpack 需手动引入）
+     *
+     * @default true
+     */
+    widget?: boolean
   }
 }
 
