@@ -1,3 +1,25 @@
+# [0.4.0-beta.8](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.17...v0.4.0-beta.8) (2025-07-25)
+
+
+### Bug Fixes
+
+* all type & allow statusMap to toggle resolver ([9d56f20](https://github.com/YunYouJun/unplugin-mockery/commit/9d56f20845283ab969e463c205bfb9f7a7a42b9f))
+* not throw error when not found ([6b52a36](https://github.com/YunYouJun/unplugin-mockery/commit/6b52a36921dad8b0e34909ef870d83e8323628b0))
+* search mockery by path/url ([130e584](https://github.com/YunYouJun/unplugin-mockery/commit/130e5840224a0bba57fb8de82bb897b072ca4223))
+* set default watch: true ([230aeb7](https://github.com/YunYouJun/unplugin-mockery/commit/230aeb7cf6f4a9a5de1bbf1be4f1b740d9e9208c))
+* widget import.meta.dirname path ([26b86d6](https://github.com/YunYouJun/unplugin-mockery/commit/26b86d6ba22b8a9056631813bab2a1c73be52229))
+
+
+### Features
+
+* add extra lib for ts ([8d2bb36](https://github.com/YunYouJun/unplugin-mockery/commit/8d2bb365b264dec65b446ce2303ca9243318d568))
+* add playground vite-vue ([89dc2f2](https://github.com/YunYouJun/unplugin-mockery/commit/89dc2f2cea0e83794967eedbb7287b08705ea96e))
+* **client:** adapt for mobile ([9215dab](https://github.com/YunYouJun/unplugin-mockery/commit/9215dabe353d2a758fd2d62bcc7cef042a7c6673))
+* **client:** show project root in settings ([8e1e376](https://github.com/YunYouJun/unplugin-mockery/commit/8e1e37686ffb6b9895d3598352ae30bbb3e61fd8))
+* support defaultStatus & fix default status ([d1b80d8](https://github.com/YunYouJun/unplugin-mockery/commit/d1b80d808b02f673ec2943315a09b41df28cf401))
+
+
+
 ## [0.3.17](https://github.com/YunYouJun/unplugin-mockery/compare/v0.3.16...v0.3.17) (2024-11-09)
 
 
