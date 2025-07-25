@@ -6,13 +6,12 @@ import type { MockeryContext } from './mockery'
 import type { MockeryOptions } from './types'
 import process from 'node:process'
 import { colors } from 'consola/utils'
-import escapeHtml from 'escape-html'
 import fs from 'fs-extra'
 
 import { createUnplugin } from 'unplugin'
+import { CLIENT_DIST_DIR, WIDGET_CLIENT_ENTRY } from './constants'
 import { PLUGIN_NAME } from './core'
 import { serveClient } from './core/client'
-import { CLIENT_DIST_DIR, WIDGET_CLIENT_ENTRY } from './core/constants'
 
 import { getRequestMiddleware } from './core/middleware'
 import { resolveOptions } from './core/options'
@@ -21,6 +20,7 @@ import { getWebpackConfig, MockeryMountIFramePlugin } from './core/webpack'
 import { createMockeryContext } from './mockery'
 import { loadMockeryConfig } from './mockery/config'
 
+export * from './constants'
 export * from './core'
 export * from './mockery'
 export * from './types'
@@ -38,16 +38,6 @@ export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (opt
 
   return {
     name: 'unplugin-mockery',
-    transformInclude(id) {
-      return id.endsWith('main.ts')
-    },
-    transform(code) {
-      const htmlCodeLines = [
-        '<h1>Hello Unplugin!</h1>',
-        `<pre><code>${escapeHtml(JSON.stringify(options || {}))}</code></pre>`,
-      ]
-      return code.replace('__UNPLUGIN__', htmlCodeLines.join(''))
-    },
 
     webpack(compiler) {
       if (process.env.NODE_ENV === 'development') {

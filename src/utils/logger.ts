@@ -3,7 +3,7 @@ import type { MethodType, Mockery } from '../types'
 import { createConsola } from 'consola'
 import { colors } from 'consola/utils'
 
-import { MOCKERY_NAMESPACE } from '../core/constants'
+import { MOCKERY_NAMESPACE } from '../constants'
 
 /**
  * logger 的 consola 实例

@@ -160,7 +160,6 @@
     "msw": "^2.10.4",
     "open": "^10.2.0",
     "path-to-regexp": "^8.2.0",
-    "picocolors": "^1.1.1",
     "serve-static": "^2.2.0",
     "unplugin": "^2.3.5"
   },
@@ -170,7 +169,6 @@
     "@nuxt/schema": "^4.0.1",
     "@trpc/client": "11.4.3",
     "@trpc/server": "11.4.3",
-    "@types/escape-html": "^1.0.4",
     "@types/fs-extra": "^11.0.4",
     "@types/micromatch": "^4.0.9",
     "@types/node": "^24.1.0",

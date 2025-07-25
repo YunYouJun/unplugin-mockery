@@ -1,3 +1,4 @@
+import type { HttpHandler } from 'msw'
 import type { SetupServerApi } from 'msw/node'
 import type { ViteDevServer } from 'vite'
 import type { defineMockerySetup } from '../core/define'
@@ -8,18 +9,16 @@ import { resolve } from 'node:path'
 import process from 'node:process'
 import { consola, LogLevels } from 'consola'
 import { colors } from 'consola/utils'
-import { getResponse, http, passthrough, RequestHandler } from 'msw'
+import { getResponse, http, HttpResponse, passthrough, RequestHandler } from 'msw'
 import { setupServer } from 'msw/node'
 import { createServer } from 'vite'
 import { ViteNodeRunner } from 'vite-node/client'
 import { ViteNodeServer } from 'vite-node/server'
+import { GLOBAL_STATE, MOCKERY_NAMESPACE } from '..'
 import { getMockeryKey } from '../../packages/shared'
-import { MOCKERY_NAMESPACE } from '../core'
-import { GLOBAL_STATE } from '../core/env'
 import { MockeryWatcher } from '../core/node/watcher'
 import { defaultOptions, resolveOptions } from '../core/options'
 import { getMockApiFiles } from '../core/utils'
-import { getHandlerFromMockery } from '../msw'
 import { MockeryDB } from './db'
 import { StateManager } from './state'
 import { TypedMockeryMap } from './typed-map'
@@ -51,11 +50,6 @@ export class MockeryContext<T extends Record<string, any> = MockeryMapType> {
     this.options = resolveOptions(rawOptions, this.root)
     this.db = new MockeryDB<T>(this)
     this.server = setupServer()
-
-    // set consola level
-    if (typeof this.options.logLevel !== 'undefined') {
-      consola.level = this.options.logLevel
-    }
 
     // set consola level
     if (typeof this.options.logLevel !== 'undefined') {
@@ -128,16 +122,16 @@ export class MockeryContext<T extends Record<string, any> = MockeryMapType> {
     await this._setServer()
     const { options, server } = this
 
+    // init db to read resolver key
+    await this.db.init()
     // resolve handlers from folder
     if (options.resolvedDirs) {
       await this.useMockeryDirs(options.resolvedDirs)
     }
 
     await this.setup()
-
     server.listen(options.msw?.listenOptions)
 
-    await this.db.init()
     if (options.dts) {
       await this.db.initTypes()
     }
@@ -173,7 +167,7 @@ export class MockeryContext<T extends Record<string, any> = MockeryMapType> {
       const use = await this.useMockeryFile(file)
       if (use) {
         useResults.push(use)
-        // await this.db.updateSceneSchema(use.mockery)
+        await this.db.updateSceneSchema(use.mockery)
       }
     }
     const handlers = useResults.map(res => res.handler)
@@ -298,7 +292,7 @@ export class MockeryContext<T extends Record<string, any> = MockeryMapType> {
       mockeryContext: this as MockeryContext,
     })
 
-    const handler = getHandlerFromMockery(mockery)
+    const handler = this.getHandlerFromMockery(mockery)
     if (handler) {
       this.server.use(handler)
       this.mockeryMap.set(key, mockery)
@@ -310,6 +304,49 @@ export class MockeryContext<T extends Record<string, any> = MockeryMapType> {
       unUse: () => this.unUseMockery(mockery),
       handler,
     }
+  }
+
+  /**
+   * get cur key in scene
+   *
+   * 获取当前 Mockery 的结果状态
+   */
+  getMockeryStatus(mockery: Mockery): string {
+    const statusMap = mockery.statusMap || {}
+    const mockeryKey = getMockeryKey(mockery)
+    const curStatusInScene = mockery._curStatus || this.db?.curSceneDB?.data[mockeryKey]
+    const status = curStatusInScene || mockery.defaultStatus || (Object.keys(statusMap)[0])
+    return status
+  }
+
+  /**
+   * get msw handler from mockery
+   * @param mockery ge
+   */
+  getHandlerFromMockery(mockery: Mockery) {
+    let handler: HttpHandler
+    let resolver = mockery.resolver || (() => HttpResponse.json(mockery.response || {}))
+
+    if (mockery.statusMap && Object.keys(mockery.statusMap).length > 0) {
+      const status = this.getMockeryStatus(mockery)
+      resolver = mockery.statusMap[status]?.resolver || resolver
+    }
+
+    switch (mockery.type) {
+      case 'http':
+      default:{
+        const path = mockery.path
+          ? mockery.path
+          : mockery.url
+            ? mockery.url.toString().startsWith('*')
+              ? mockery.url.toString()
+              : `*${mockery.url.toString()}`
+            : '*'
+        handler = http[mockery.method || 'all'](path, resolver, mockery.options)
+        break
+      }
+    }
+    return handler
   }
 
   /**

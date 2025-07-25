@@ -7,8 +7,8 @@ import { consola } from 'consola'
 import { colors } from 'consola/utils'
 import { getPort } from 'get-port-please'
 import pkg from '../../package.json'
+import { MOCKERY_NAMESPACE } from '../constants'
 import { createMockClientServer } from '../mockery/server'
-import { MOCKERY_NAMESPACE } from './constants'
 import { GLOBAL_STATE } from './env'
 
 export function printLogForMockeryClient(ctx: MockeryContext) {
@@ -38,12 +38,11 @@ export async function serveClient(options: {
   app: Express
   listener: http.Server
 }> {
+  // 检查端口是否被占用，自动获取可用端口
+  const port = await getPort(options.port)
   const app = createMockClientServer({
     staticRoot: options.staticPath,
   })
-
-  // 检查端口是否被占用，自动获取可用端口
-  const port = await getPort(options.port)
   const listener = app.listen(port, callback)
 
   function callback() {
