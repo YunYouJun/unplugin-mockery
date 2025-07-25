@@ -102,6 +102,7 @@
     "play": "npm -C playground run dev",
     "play:webpack": "pnpm -C playground/webpack run serve",
     "play:vite": "pnpm -C playground/vite run dev",
+    "play:vite-vue": "pnpm -C playground/vite-vue run dev",
     "play:vue-cli": "pnpm -C playground/vue-cli run serve",
     "play:nuxt": "pnpm -C playground/nuxt run dev",
     "prepublishOnly": "npm run build",

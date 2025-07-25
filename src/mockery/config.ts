@@ -14,6 +14,7 @@ export async function loadMockeryConfig(cwd?: string, options?: MockeryOptions) 
   const resolvedConfig = await loadConfig<MockeryOptions>({
     name: 'mockery',
     cwd: cwd || process.cwd(),
+    throwOnNotFound: false,
   })
   const duration = Date.now() - start
 
