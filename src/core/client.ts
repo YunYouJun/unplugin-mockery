@@ -12,8 +12,7 @@ import { MOCKERY_NAMESPACE } from './constants'
 import { GLOBAL_STATE } from './env'
 
 export function printLogForMockeryClient(ctx: MockeryContext) {
-  const client = ctx.options.client
-  const port = client?.port
+  const port = ctx.options.client?.port
   const url = `http://localhost:${port}`
   ctx.options.resolvedDirs.forEach((dir) => {
     consola.info(` ${'[📂]'}  ${colors.dim(dir)}`)

@@ -13,7 +13,6 @@
     "test": "vitest",
     "test:e2e": "cypress open",
     "test:unit": "vitest",
-    "typecheck": "vue-tsc --noEmit",
     "up": "taze major -I",
     "sizecheck": "npx vite-bundle-visualizer"
   },
@@ -70,7 +69,6 @@
     "vite-plugin-vue-devtools": "^7.7.7",
     "vite-plugin-vue-layouts": "^0.11.0",
     "vite-ssg": "^28.0.0",
-    "vitest": "^3.2.4",
-    "vue-tsc": "^3.0.3"
+    "vitest": "^3.2.4"
   }
 }

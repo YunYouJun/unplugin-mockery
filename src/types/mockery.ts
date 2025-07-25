@@ -115,6 +115,10 @@ export type HttpMockery<T = object, STATUS extends string = string> = BaseMocker
    */
   method?: keyof typeof http
   /**
+   * default status
+   */
+  defaultStatus?: STATUS
+  /**
    * 返回状态 map
    */
   statusMap?: Record<STATUS, StatusItem>

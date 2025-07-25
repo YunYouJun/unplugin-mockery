@@ -12,7 +12,7 @@ import fs from 'fs-extra'
 import { createUnplugin } from 'unplugin'
 import { PLUGIN_NAME } from './core'
 import { serveClient } from './core/client'
-import { clientDistFolder, widgetClientEntry } from './core/constants'
+import { CLIENT_DIST_DIR, WIDGET_CLIENT_ENTRY } from './core/constants'
 
 import { getRequestMiddleware } from './core/middleware'
 import { resolveOptions } from './core/options'
@@ -104,7 +104,7 @@ export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (opt
           await mockeryCtx.init()
 
           const { listener } = await serveClient({
-            staticPath: clientDistFolder,
+            staticPath: CLIENT_DIST_DIR,
             port: options.client?.port,
           })
           const address = listener.address()
@@ -123,15 +123,15 @@ export const unpluginFactory: UnpluginFactory<MockeryOptions | undefined> = (opt
       },
 
       async load(id) {
-        if (id === 'unplugin-mockery/client') {
-          return await fs.readFile(widgetClientEntry, 'utf-8')
+        if (id === 'unplugin-mockery/widget') {
+          return await fs.readFile(WIDGET_CLIENT_ENTRY, 'utf-8')
         }
       },
 
       transformIndexHtml(html) {
         const resolvedOptions = mockeryCtx.options
         const script = `
-import('${widgetClientEntry}').then(({ main }) => {
+import('${WIDGET_CLIENT_ENTRY}').then(({ main }) => {
   main({
     port: ${resolvedOptions.client?.port},
   })
