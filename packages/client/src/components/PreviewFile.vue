@@ -1,10 +1,8 @@
 <!-- eslint-disable new-cap -->
 <script lang="ts" setup>
+import type monaco from 'monaco-editor'
 // import type { MonacoEditor } from '@guolao/vue-monaco-editor'
-
-import { loader } from '@guolao/vue-monaco-editor'
-import * as monaco from 'monaco-editor'
-// for monaco editor type definition
+import { loader, useMonaco } from '@guolao/vue-monaco-editor'
 
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker'
@@ -18,6 +16,9 @@ import { computed } from 'vue'
 import { isDark } from '../composables/dark'
 import { editorRef } from '../stores/editor'
 import { initExtraLibs } from '../utils/monaco-editor'
+// import * as monaco from 'monaco-editor'
+// for monaco editor type definition
+const { monacoRef } = useMonaco()
 
 // @ts-expect-error exist
 globalThis.MonacoEnvironment = {
@@ -39,7 +40,9 @@ globalThis.MonacoEnvironment = {
   },
 }
 
-loader.config({ monaco })
+if (monacoRef.value) {
+  loader.config({ monaco: monacoRef.value })
+}
 
 // : MonacoEditor['editor']['EditorOptions']
 const MONACO_EDITOR_OPTIONS = {
@@ -60,7 +63,7 @@ const theme = computed(() => {
 async function handleMount(editor: monaco.editor.IStandaloneCodeEditor) {
   editorRef.value = editor
 
-  initExtraLibs()
+  initExtraLibs(monacoRef)
 
   // monacoRef.value?.languages.typescript.typescriptDefaults.setCompilerOptions({
   //   paths: {

@@ -178,7 +178,6 @@
     "conventional-changelog-cli": "^5.0.0",
     "eslint": "^9.32.0",
     "eslint-plugin-format": "^1.0.1",
-    "monaco-editor": "^0.52.2",
     "nodemon": "^3.1.10",
     "rimraf": "^6.0.1",
     "rollup": "^4.45.1",

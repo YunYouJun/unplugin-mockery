@@ -36,8 +36,8 @@ export default defineConfig((env) => {
           manualChunks: {
             monacoEditor: [`${prefix}/editor/editor.main`],
             jsonWorker: [`${prefix}/language/json/json.worker`],
-            cssWorker: [`${prefix}/language/css/css.worker`],
-            htmlWorker: [`${prefix}/language/html/html.worker`],
+            // cssWorker: [`${prefix}/language/css/css.worker`],
+            // htmlWorker: [`${prefix}/language/html/html.worker`],
             tsWorker: [`${prefix}/language/typescript/ts.worker`],
             editorWorker: [`${prefix}/editor/editor.worker`],
           },
