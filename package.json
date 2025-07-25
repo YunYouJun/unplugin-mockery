@@ -1,7 +1,7 @@
 {
   "name": "unplugin-mockery",
   "type": "module",
-  "version": "0.4.0-beta.12",
+  "version": "0.4.0-beta.13",
   "packageManager": "pnpm@10.13.1",
   "description": "Mock API Client",
   "license": "MIT",
@@ -110,7 +110,7 @@
     "release:local:beta": "bumpp --no-commit --no-tag && npm publish --tag beta",
     "start": "esno src/index.ts",
     "test": "vitest",
-    "prepublishOnly": "build",
+    "prepublishOnly": "npm run build",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
